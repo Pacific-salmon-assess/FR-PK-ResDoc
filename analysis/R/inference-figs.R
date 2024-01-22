@@ -9,10 +9,16 @@ source(here("analysis/R/fwd-sim.R"))
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
   mutate(harvest = round(harvest/1000000, 2),
          spawn = round(spawn/1000000, 2))
+
 model.pars <- rstan::extract(stan.fit)
+
 current.hcr <- read.csv(here("analysis/data/raw/current_hcr.csv"))
+
 avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.csv"))
 colnames(avg_mass) <- c("year", "avg.weight", "reference")
+
+compitetors <- read.csv(here("analysis/data/raw/bio/competitor_density_long.csv")) |>
+  filter(species == "pink", area == "np")
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -165,9 +171,11 @@ ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
 my.ggsave(here("figure/catch-esc.png"))
 
 #plot avg mass through time
-ggplot(avg_mass, aes(year, avg.weight)) +
+ggplot(avg_mass, aes(year, scale(avg.weight))) +
   geom_line() +
-  labs(x = "Year", y = "Average body mass (kg)")
+  geom_line(data = compitetors, aes(x = Year, y = scale(value)), color = "red") +
+  scale_y_continuous(sec.axis = sec_axis(~., name = "N. Pacific Pink abundance (scaled)")) +
+  labs(x = "Year", y = "Average body mass (scaled)")
 
 my.ggsave(here("figure/avg-mass.png"))
 
@@ -240,18 +248,18 @@ ggplot(resids, aes(x=year, y = mid)) +
 my.ggsave(here("figure/rec-resid.png"))
 
 #plot fwd sim of escapement --------------------------------------------------------------
-ggplot(data = filter(fwd.sim.S, year <= 2021), aes(x=year)) +
-  geom_rect(aes(xmin = min(fwd.sim.S$year), xmax = max(fwd.sim.S$year),
+ggplot(data = filter(fwd.sim.S, year >= 2019 & year <= 2021), aes(x=year)) +
+  geom_rect(aes(xmin = min(2019), xmax = max(fwd.sim.S$year),
                   ymin = benchmarks$`lower CI`[1], ymax = benchmarks$`upper CI`[1]),
             fill = "forestgreen", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[1],
              color = "forestgreen") +
-  annotate("text", x = 1964, y = 4.5, label = "Smsy", color = "forestgreen") +
-  geom_rect(aes(xmin = min(fwd.sim.S$year), xmax = max(fwd.sim.S$year),
+  annotate("text", x = 2019.5, y = 4.5, label = "Smsy", color = "forestgreen") +
+  geom_rect(aes(xmin = min(2019), xmax = max(fwd.sim.S$year),
                   ymin = benchmarks$`lower CI`[2], ymax = benchmarks$`upper CI`[2]),
             fill = "darkred", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
-  annotate("text", x = 1982, y = 2, label = "Sgen", color = "darkred") +
+  annotate("text", x = 2019.5, y = 2, label = "Sgen", color = "darkred") +
   geom_line(aes(y = mid)) +
   geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
   geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
