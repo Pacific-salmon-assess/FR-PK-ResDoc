@@ -10,10 +10,11 @@ stan.fit <- readRDS(here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
 model.pars <- rstan::extract(stan.fit)
 
 # get the last yr of rec & parameter posteriors -------------------------------------
-sim.gens <- 1+3 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
+last.yr <- 2021 #final yr of model fit
+sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
-last.yr <- ncol(model.pars$lnR) #index the last year of data
+last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
 HCRs <- c("current", "proposed", "low_a_current", "low_a_proposed")
 for.error <- 0.25 #forecast error
 OU.CV <- 0.1 #outcome uncertainty
@@ -53,11 +54,11 @@ for(i in 1:length(HCRs)){
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
     #draw final states from model to start fwd sim from
-    R <- sub.pars$R[r, last.yr]
-    S <- sub.pars$S[r, last.yr]
-    C <- sub.pars$C[r, last.yr]
-    U <- sub.pars$U[r, last.yr]
-    last.lnresid <- sub.pars$lnresid[r, last.yr]
+    R <- sub.pars$R[r, last.yr.ind]
+    S <- sub.pars$S[r, last.yr.ind]
+    C <- sub.pars$C[r, last.yr.ind]
+    U <- sub.pars$U[r, last.yr.ind]
+    last.lnresid <- sub.pars$lnresid[r, last.yr.ind]
     fwd.states[j,,1,i] <- c(R,S,C,U,last.lnresid) #write final state from model to array
     for(k in 2:sim.gens){
       #get previous state
@@ -75,19 +76,18 @@ for(i in 1:length(HCRs)){
         post_HCR <- alt_HCR(R, OU = 1+rnorm(1, 0, OU.CV))
       }
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
-      
+
       Smsy <- get_Smsy(lnalpha_c, beta)
       Sgen <- get_Sgen(exp(lnalpha_c), beta, -1, 1/beta*2, Smsy)
       ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy, post_HCR[1]/Sgen)
     }
   }
 }
-#to debug for a given sim j and HCR i use `t(fwd.states[j,,,i])`
-#yields cols R, S, C, U, lnresid
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR]
 fwd.states.summary <- NULL
-yrs <- as.character(c(2021, 2023, 2025, 2027)) #final yr of sim + fwd sims
+yrs <- as.character(seq(from = last.yr,
+                        to = last.yr+((sim.gens-1)*2), by=2)) #final yr of sim + fwd sims
 
 for(i in 1:length(HCRs)){
   sub <- fwd.states[,,,i]
@@ -102,8 +102,8 @@ for(i in 1:length(HCRs)){
 }
 
 fwd.states.summary <- fwd.states.summary |>
-  mutate(sim = c(rep(HCRs, each = 4)),
-         year = rep(yrs, 4)) |>
+  mutate(sim = c(rep(HCRs, each = sim.gens)),
+         year = rep(yrs, length(HCRs))) |>
   relocate(c(year, sim), 1) |>
   arrange(year, sim)
 
@@ -113,7 +113,7 @@ colnames(fwd.states.summary) <- c("year", "sim", "R_lwr", "R_mid_lwr", "R", "R_m
                                   "U_mid_lwr", "U", "U_mid_upr", "U_upr", "lnresid_lwr",
                                   "lnresid_mid_lwr", "lnresid", "lnresid_mid_upr", "lnresid_upr")
 
-# summarise some performance metrics
+# summarise some performance metrics------------------------------------------------------
 perf.summary <- NULL
 perf.total <- NULL
 OCP.total <- NULL
@@ -123,22 +123,22 @@ for(i in 1:length(HCRs)){
   below.Smsy.all <- nrow(filter(as.data.frame(sub.refs[,1,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,1,])*100
   below.Sgen.all <- nrow(filter(as.data.frame(sub.refs[,2,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,2,])*100
   HCR <- HCRs[i]
-  
+
   perf.total <- rbind(perf.total, data.frame(sim = HCR,
                                              below.Smsy.all = below.Smsy.all,
                                              below.Sgen.all = below.Sgen.all))
-  
+
   lwr.OCP <- round(length(which(sub.data[,1,2:4] <= 7.059))/length(sub.data[,1,2:4]), 4)*100 #all yrs of R (except start)
   mid.OCP <- round(length(which(sub.data[,1,2:4] >= 7.059 & sub.data[,1,2:4] <= 20))/
                      length(sub.data[,1,2:4]), 4)*100
   upr.OCP <- round(length(which(sub.data[,1,2:4] >= 20))/length(sub.data[,1,2:4]), 4)*100
-  
+
   OCP.total <- rbind(OCP.total, data.frame(sim = HCR, lwr.OCP, mid.OCP, upr.OCP))
-  
+
   for(j in 1:(sim.gens-1)){
     below.Smsy <- (length(which(sub.refs[,1,j]<1))/nrow(sub.refs))*100
     below.Sgen <- (length(which(sub.refs[,2,j]<1))/nrow(sub.refs))*100
-    
+
     perf.summary <- rbind(perf.summary,
                           data.frame(sim = HCR, year = yrs[j+1], below.Smsy,below.Sgen))
   }
@@ -147,7 +147,7 @@ for(i in 1:length(HCRs)){
 #add catch to performance summaries
 #could add stability too but need to think about how to do by year
 perf.summary <- fwd.states.summary |>
-  filter(year != 2021) |>
+  filter(year != last.yr) |>
   select(year, sim, C) |>
   mutate(catch = round(C, 2)) |>
   select(-C) |>
@@ -157,7 +157,7 @@ colnames(perf.summary) <- c("Year", "Simulaiton", "Median catch (millions)", "Be
                             "Below Sgen (%)")
 
 perf.total <- fwd.states.summary |>
-  filter(year != 2021) |>
+  filter(year != last.yr) |>
   group_by(sim) |>
   summarise(total.catch = round(sum(C), 2)) |>
   left_join(perf.total, by = "sim") #could add catch stability
@@ -169,4 +169,4 @@ colnames(OCP.total) <- c("Simulation", "% below lower OCP", "% between OCPs",
 rm(beta, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, lwr.OCP,
    mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi, post_HCR, pred.R, r, R,
    S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen, below.Sgen.all, below.Smsy,
-   below.Smsy.all, ref.pts, Sgen,Smsy, sub, sub.pars, yrs, U)
+   below.Smsy.all, ref.pts, Sgen,Smsy, sub, sub.pars, yrs, U, last.yr.ind)
