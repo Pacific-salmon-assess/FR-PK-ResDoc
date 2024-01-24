@@ -2,6 +2,7 @@ library(tidyverse)
 library(here)
 library(gsl)
 library(patchwork)
+library(scales) #for pretty_breaks() on fig axes
 source(here("analysis/R/functions.R"))
 source(here("analysis/R/fwd-sim.R"))
 
@@ -248,26 +249,32 @@ ggplot(resids, aes(x=year, y = mid)) +
 my.ggsave(here("figure/rec-resid.png"))
 
 #plot fwd sim of escapement --------------------------------------------------------------
-ggplot(data = filter(fwd.sim.S, year >= 2019 & year <= 2021), aes(x=year)) +
-  geom_rect(aes(xmin = min(2019), xmax = max(fwd.sim.S$year),
+#define some fwd sim parms
+d_start <- 2015
+d_end <- 2021
+
+ggplot(data = filter(fwd.sim.S, year >= d_start & year <= d_end), aes(x=year)) +
+  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.S$year),
                   ymin = benchmarks$`lower CI`[1], ymax = benchmarks$`upper CI`[1]),
             fill = "forestgreen", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[1],
              color = "forestgreen") +
-  annotate("text", x = 2019.5, y = 4.5, label = "Smsy", color = "forestgreen") +
-  geom_rect(aes(xmin = min(2019), xmax = max(fwd.sim.S$year),
+  annotate("text", x = d_start + .5, y = 4.5,
+           label = "italic(S[MSY])", parse = TRUE, color = "forestgreen") +
+  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.S$year),
                   ymin = benchmarks$`lower CI`[2], ymax = benchmarks$`upper CI`[2]),
             fill = "darkred", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
-  annotate("text", x = 2019.5, y = 2, label = "Sgen", color = "darkred") +
+  annotate("text", x = d_start + .5, y = 2,
+           label = "italic(S[Gen])", parse = TRUE, color = "darkred") +
   geom_line(aes(y = mid)) +
   geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
   geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.S, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
               aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.S, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
               aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.S, year >= 2021, !is.na(sim)),
+  geom_line(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
             aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
   coord_cartesian(expand = FALSE) +
   labs(x = "return year", y = "escapement") +
@@ -279,26 +286,28 @@ ggplot(data = filter(fwd.sim.S, year >= 2019 & year <= 2021), aes(x=year)) +
                         breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
                         labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
                                    "low prod. (alt. HCR)")) +
+  scale_x_continuous(breaks= pretty_breaks()) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-S.png"))
 
 #and fwd sim harvest rate
-ggplot(data = filter(fwd.sim.U, year <= 2021), aes(x=year)) +
-  geom_rect(aes(xmin = min(fwd.sim.U$year), xmax = max(fwd.sim.U$year),
+ggplot(data = filter(fwd.sim.U, year >= d_start & year <= d_end), aes(x=year)) +
+  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.U$year),
                 ymin = benchmarks$`lower CI`[3], ymax = benchmarks$`upper CI`[3]),
             fill = "forestgreen", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[3],
              color = "forestgreen") +
-  annotate("text", x = 1973, y = 0.55, label = "Umsy", color = "forestgreen") +
+  annotate("text", x = d_start + 0.5, y = 0.55,
+           label = "italic(U[MSY])", parse = TRUE, color = "forestgreen") +
   geom_line(aes(y = mid)) +
   geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
   geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.U, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
               aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.U, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
               aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.U, year >= 2021, !is.na(sim)),
+  geom_line(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
             aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
   coord_cartesian(expand = FALSE) +
   labs(x = "return year", y = "exploitation rate") +
@@ -310,19 +319,20 @@ ggplot(data = filter(fwd.sim.U, year <= 2021), aes(x=year)) +
                         breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
                         labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
                                    "low prod. (alt. HCR)")) +
+  scale_x_continuous(breaks= pretty_breaks()) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-U.png"))
 
-ggplot(data = filter(fwd.sim.R, year <= 2021), aes(x=year)) +
+ggplot(data = filter(fwd.sim.R, year >= d_start & year <= d_end), aes(x=year)) +
 geom_line(aes(y = mid)) +
   geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
   geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.R, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
               aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.R, year >= 2021, !is.na(sim)),
+  geom_ribbon(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
               aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.R, year >= 2021, !is.na(sim)),
+  geom_line(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
             aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
   coord_cartesian(expand = FALSE) +
   labs(x = "return year", y = "recruits") +
@@ -334,5 +344,6 @@ geom_line(aes(y = mid)) +
                         breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
                         labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
                                    "low prod. (alt. HCR)")) +
+  scale_x_continuous(breaks= pretty_breaks()) +
   theme(legend.position = "bottom")
 my.ggsave(here("figure/fwd-R.png"))
