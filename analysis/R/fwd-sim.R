@@ -16,8 +16,26 @@ n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
 HCRs <- c("current", "proposed", "low_a_current", "low_a_proposed")
-for.error <- 0.25 #forecast error
 OU.CV <- 0.1 #outcome uncertainty
+
+# calc forecast error---------------------------------------------------------------------
+  #using mean absolute percent error approach (MAPE)
+for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
+  mutate(error = abs(PreSeasonForecast - FinalRunSize)/FinalRunSize)
+
+if(FALSE){ #check trends and distribution of error
+  ggplot(for.error, aes(YearX, error)) +
+    geom_point() +
+    stat_smooth(method = "lm") +
+    labs(y="forecast error (CV)", x = "year")
+  ggplot(lm(error~YearX, data = for.error), aes(x = .fitted, y = .resid)) +
+    geom_point() +
+    stat_smooth()
+}
+
+for.error <- for.error |>
+  pull(error) |>
+  mean()
 
 fwd.states <- array(NA, dim = c(n.sims, length(states), sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
@@ -41,10 +59,10 @@ for(i in 1:length(HCRs)){
     sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
     model.pars$phi <- sub.pars$phi[low_a_rows]
     #draw sub.pars states to start from
-    sub.pars$R <- sub.pars$R[low_a_rows, ]
-    sub.pars$S <- sub.pars$S[low_a_rows, ]
-    sub.pars$C <- sub.pars$C[low_a_rows, ]
-    sub.pars$U <- sub.pars$U[low_a_rows, ]
+    sub.pars$R <- sub.pars$R[low_a_rows,]
+    sub.pars$S <- sub.pars$S[low_a_rows,]
+    sub.pars$C <- sub.pars$C[low_a_rows,]
+    sub.pars$U <- sub.pars$U[low_a_rows,]
   }
   for(j in 1:n.sims){
     r <- sample(length(sub.pars$lnalpha_c), 1, replace = TRUE)
