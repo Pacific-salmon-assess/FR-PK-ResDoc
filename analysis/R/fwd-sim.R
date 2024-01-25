@@ -7,7 +7,12 @@ set.seed(123)
 
 # read in data ---------------------------------------------------------------------------
 stan.fit <- readRDS(here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
+
 model.pars <- rstan::extract(stan.fit)
+
+data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
+  mutate(harvest = round(harvest/1000000, 2),
+         spawn = round(spawn/1000000, 2))
 
 # get the last yr of rec & parameter posteriors -------------------------------------
 last.yr <- 2021 #final yr of model fit
@@ -37,6 +42,45 @@ for.error <- for.error |>
   pull(error) |>
   mean()
 
+# get benchmarks (needed for fwd sim) ----------------------------------------------------
+bench <- matrix(NA,1000,3,
+                dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy")))
+
+for(i in 1:1000){
+  r <- sample(seq(1,1000),1,replace=T)
+  a <- model.pars$lnalpha[r]
+  b <- model.pars$beta[r]
+  bench[i,2] <- get_Smsy(a,b) #Smsy
+  bench[i,1] <- get_Sgen(exp(a),b,-1,1/b*2,bench[i,2]) #Sgen
+  bench[i,3] <- (1 - lambert_W0(exp(1 - a))) #Umsy
+}
+
+bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
+bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
+
+percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
+
+benchmarks <- matrix(NA,5,3)
+benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
+benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
+benchmarks[3,] <- c(bench.quant[2,3],bench.quant[1,3],bench.quant[3,3])
+benchmarks[4,1] <- percentiles[1]
+benchmarks[5,1] <- percentiles[2]
+
+rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
+                          "50th percentile (spawners)")
+colnames(benchmarks) <- c("median","lower CI","upper CI")
+
+benchmarks <- as.data.frame(benchmarks) |>
+  round(2)
+
+#pull some values to apply HCRs below
+Smsy.8 <- benchmarks[1,1]
+Sgen <- benchmarks[2,1]
+Umsy <- benchmarks[3,1]
+
+rm(bench, bench.quant)
+# do fwd sim -----------------------------------------------------------------------------
 fwd.states <- array(NA, dim = c(n.sims, length(states), sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
 
@@ -94,10 +138,7 @@ for(i in 1:length(HCRs)){
         post_HCR <- alt_HCR(R, OU = 1+rnorm(1, 0, OU.CV))
       }
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
-
-      Smsy <- get_Smsy(lnalpha_c, beta)
-      Sgen <- get_Sgen(exp(lnalpha_c), beta, -1, 1/beta*2, Smsy)
-      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy, post_HCR[1]/Sgen)
+      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy.8, post_HCR[1]/Sgen)
     }
   }
 }
@@ -187,4 +228,4 @@ colnames(OCP.total) <- c("Simulation", "% below lower OCP", "% between OCPs",
 rm(beta, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, lwr.OCP,
    mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi, post_HCR, pred.R, r, R,
    S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen, below.Sgen.all, below.Smsy,
-   below.Smsy.all, ref.pts, Sgen,Smsy, sub, sub.pars, yrs, U, last.yr.ind)
+   below.Smsy.all, ref.pts, Sgen, Smsy.8, Umsy, sub, sub.pars, yrs, U, last.yr.ind)

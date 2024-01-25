@@ -7,12 +7,6 @@ source(here("analysis/R/functions.R"))
 source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
-data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
-  mutate(harvest = round(harvest/1000000, 2),
-         spawn = round(spawn/1000000, 2))
-
-model.pars <- rstan::extract(stan.fit)
-
 current.hcr <- read.csv(here("analysis/data/raw/current_hcr.csv"))
 
 avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.csv"))
@@ -57,38 +51,6 @@ colnames(er_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 R.quant <- apply(model.pars$R, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))
 R_df <- as.data.frame(cbind(data$year, t(R.quant)))
 colnames(R_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
-
-# get benchmarks---
-bench <- matrix(NA,1000,3,
-                dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy")))
-
-for(i in 1:1000){
-  r <- sample(seq(1,1000),1,replace=T)
-  a <- model.pars$lnalpha[r]
-  b <- model.pars$beta[r]
-  bench[i,2] <- get_Smsy(a,b) #Smsy
-  bench[i,1] <- get_Sgen(exp(a),b,-1,1/b*2,bench[i,2]) #Sgen
-  bench[i,3] <- (1 - lambert_W0(exp(1 - a))) #Umsy
-}
-
-bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
-bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
-
-percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
-
-benchmarks <- matrix(NA,5,3)
-benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
-benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
-benchmarks[3,] <- c(bench.quant[2,3],bench.quant[1,3],bench.quant[3,3])
-benchmarks[4,1] <- percentiles[1]
-benchmarks[5,1] <- percentiles[2]
-
-rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
-                          "50th percentile (spawners)")
-colnames(benchmarks) <- c("median","lower CI","upper CI")
-
-benchmarks <- as.data.frame(benchmarks) |>
-  round(2)
 
 kobe_df <- data.frame(S = spwn_df$mid,
                       S_LCI = spwn_df$lwr,
