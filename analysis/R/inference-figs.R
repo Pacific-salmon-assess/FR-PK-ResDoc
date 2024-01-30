@@ -15,6 +15,9 @@ colnames(avg_mass) <- c("year", "avg.weight", "reference")
 compitetors <- read.csv(here("analysis/data/raw/bio/competitor_density_long.csv")) |>
   filter(species == "pink", area == "np")
 
+benchmarks <- as.data.frame(benchmarks) |>
+  round(2)
+
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
 spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.025,0.5,0.975))[,1:31]
