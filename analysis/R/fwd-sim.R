@@ -20,7 +20,7 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "proposed", "low_a_current", "low_a_proposed")
+HCRs <- c("current", "proposed", "BB", "low_a_current", "low_a_proposed", "low_a_BB")
 OU.CV <- 0.1 #outcome uncertainty
 
 # calc forecast error---------------------------------------------------------------------
@@ -71,15 +71,11 @@ rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
                           "50th percentile (spawners)")
 colnames(benchmarks) <- c("median","lower CI","upper CI")
 
-benchmarks <- as.data.frame(benchmarks) |>
-  round(2)
-
 #pull some values to apply HCRs below
-Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
+R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 
-rm(bench, bench.quant)
 # do fwd sim -----------------------------------------------------------------------------
 fwd.states <- array(NA, dim = c(n.sims, length(states), sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
@@ -101,7 +97,7 @@ for(i in 1:length(HCRs)){
     sub.pars$lnalpha_c <- sub.pars$lnalpha_c[low_a_rows]
     sub.pars$beta <- sub.pars$beta[low_a_rows]
     sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
-    model.pars$phi <- sub.pars$phi[low_a_rows]
+    sub.pars$phi <- sub.pars$phi[low_a_rows]
     #draw sub.pars states to start from
     sub.pars$R <- sub.pars$R[low_a_rows,]
     sub.pars$S <- sub.pars$S[low_a_rows,]
@@ -124,7 +120,7 @@ for(i in 1:length(HCRs)){
     fwd.states[j,,1,i] <- c(R,S,C,U,last.lnresid) #write final state from model to array
     for(k in 2:sim.gens){
       #get previous state
-      last.S <- fwd.states[j,2,k-1,i] # COULD just call 'S' instead of renaming
+      last.S <- fwd.states[j,2,k-1,i]
       last.lnresid <- fwd.states[j,5,k-1,i]
       #calc R and pred R
       R <- exp(lnalpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
@@ -132,16 +128,19 @@ for(i in 1:length(HCRs)){
       pred.R <- exp(lnalpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid)
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
-      if(grepl("current", HCR)){
-        post_HCR <- current_HCR(R, OU = 1+rnorm(1, 0, OU.CV))
-      }else{
-        post_HCR <- alt_HCR(R, OU = 1+rnorm(1, 0, OU.CV))
-      }
+      if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
+      if(grepl("proposed", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
+      if(grepl("BB", HCR)){post_HCR <- BB_HCR(R, OU=1+rnorm(1, 0, OU.CV),
+                                              Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
+
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
-      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy.8, post_HCR[1]/Sgen)
+      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/R.Smsy.8, post_HCR[1]/Sgen)
     }
   }
 }
+
+#debug fwd sim dims = fwd.states[j=sim, states = c(R, S, C, U, last.lnresid), k=sim.gen, i=HCR]
+#t(fwd.states[j, ,,i])
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR]
 fwd.states.summary <- NULL
@@ -173,12 +172,13 @@ colnames(fwd.states.summary) <- c("year", "sim", "R_lwr", "R_mid_lwr", "R", "R_m
                                   "lnresid_mid_lwr", "lnresid", "lnresid_mid_upr", "lnresid_upr")
 
 # summarise some performance metrics------------------------------------------------------
-perf.summary <- NULL
-perf.total <- NULL
-OCP.total <- NULL
+perf.summary <- NULL #perf by years
+perf.total <- NULL #total perf across sim
+OCP.total <- NULL #?
 for(i in 1:length(HCRs)){
   sub.refs <- ref.pts[,,,i]
   sub.data <- fwd.states[,,,i]
+  #THIS IS ALL FUCKED - need to make new ones, and make sure I use S & R where appropriate
   below.Smsy.all <- nrow(filter(as.data.frame(sub.refs[,1,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,1,])*100
   below.Sgen.all <- nrow(filter(as.data.frame(sub.refs[,2,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,2,])*100
   HCR <- HCRs[i]
@@ -225,7 +225,8 @@ colnames(perf.total) <- c("Simulaiton", "Total median catch (millions)", "All yr
 colnames(OCP.total) <- c("Simulation", "% below lower OCP", "% between OCPs",
                          "% above upper OCP")
 
-rm(beta, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, lwr.OCP,
-   mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi, post_HCR, pred.R, r, R,
-   S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen, below.Sgen.all, below.Smsy,
-   below.Smsy.all, ref.pts, Sgen, Smsy.8, Umsy, sub, sub.pars, yrs, U, last.yr.ind)
+rm(beta, bench, bench.quant, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr,
+   lnalpha_c, lwr.OCP,mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi,
+   post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
+   below.Sgen.all, below.Smsy,below.Smsy.all, ref.pts, Sgen, Smsy.8, Umsy, sub, sub.pars,
+   yrs, U, last.yr.ind)
