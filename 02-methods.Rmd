@@ -1,0 +1,57 @@
+Due to concerns over different sampling regimes, changing demography, behavior and recognition of non-stationarity we model the spawner-recruit data in a state-space framework with auto correlated recruitment residuals. 
+First, the spawner-recruit model is developed and fit to data to estimate biological benchmarks (i.e. $S_{MSY}$, $U_{MSY}$ and $S_{Gen}$). 
+Then forward simulations are used to evaluate potential harvest control rules.
+
+## Data compilation  
+
+***where from, picking observation error***
+
+
+## Modelling  
+
+A state-space Ricker spawner-recruit model was fit to Fraser Pink catch and escapement data. State-space models are useful for modelling because they explicitly partition variation in natural processes from observation error [@auger-metheGuideStateSpace2021]. 
+@grantFraserRiverPink2014 noted that differences in assessment methodologies make it difficult to compare escapement among years. Here, state-space modelling is especially useful because we assign observation specific error to different estimation methods.  
+
+Observation error (coefficients of variation; CVs) was assigned to the different methodologies of assessing escapement after reviewing methods reported in @grantFraserRiverPink2014 (Table \@ref(tab:spawner-est-methods)). 
+These CVs were used as observation error in the state-space spawner-recruit model. 
+Since catch was heavily monitored and methods had not changed much through the years, catch CV was assumed to be 0.05. 
+
+We fit a Ricker spawner-recruit model with autocorrelated (i.e. AR(1)) error on recruitment residuals:
+
+\begin{equation}
+log(R_{y}) = log(S_{y}) + log(\alpha) - \beta S_{y} + \phi log(R_{y-1}/\hat{R}_{y-1})+r_{y}
+\label{eq:SR}
+\end{equation}
+
+Where $R_y$ and $S_y$ are recruits and spawners from brood year $y$; $\alpha$ and $\beta$ are intrinsic growth rate and density dependence, respectively; $\phi$ is the degree of autocorrelation in recruitment from one year to the next; $R_{y-1}$ and $\hat{R}_{y-1}$ are the observed and expected recruitment in the previous generation; and $r_y$ is the residual variation in recruitment. 
+
+Priors were weakly informative with: 
+\begin{align*}
+log(\alpha) &\sim {\sf Norm}(0, 3)\\
+\beta &\sim {\sf Norm}(0, 1)\\
+r &\sim {\sf Norm}(0, 2)\\
+log(r_{0}) &\sim {\sf Norm}(0,20)\\
+log(\overline{r}_{0}) &\sim {\sf Norm}(0,20)\\
+\sigma r_{0} &\sim {\sf InvGamma}(2,1)\\
+\end{align*}
+
+where $log(\overline{r}_{0})$ and $\sigma r_{0}$ are the mean and variance of the first recruitment state, and $log(r_{0})$ describes variance at the second recruitment state.
+
+Analyses were conducted in R and Stan via the rstan package [@rcoreteamLanguageEnvironmentStastical2019; @standevelopmentteamRstanInterfaceStan2023].
+$\hat{R}$ were all less than 1.01, there were no divergent transitions and ESS was all greater than 400. 
+
+## Forward simulations  
+
+Closed loop forward simulations used the existing state-space spawner-recruit model (Equation \@ref(eq:SR)) and projected population dynamics 3 generations forward (i.e. 6 years). 
+Simulations were done with the current and alternate HCR (***add a table and expand on why we used these HCRs***) with population dynamics reflecting the modeled spawner-recruit relationship, and also included a robustness test where productivity (Ricker $\alpha$) is restricted to 10% of the estimated parameter (i.e. posterior distribution).
+
+We sampled posteriors and starting states 1000 times with replacement for each of the HCRs and projected forward while accounting for uncertainty in the previous time step, forecast error and outcome uncertainty. Forecast error was applied to recruits before the HCR was applied and assumed the CV of forecasts was `r for.error` (***edit with new method***). 
+Outcome uncertainty was applied to the total catch during the HCR and had a CV of `r OU.CV`. 
+
+### HCR performance asessment
+***In general draft:***
+- x HCR allowed the most catch in x scenarios
+- y was less likely for pops to go below Smsy
+- similar inference on Sgen
+- Umsy too?
+

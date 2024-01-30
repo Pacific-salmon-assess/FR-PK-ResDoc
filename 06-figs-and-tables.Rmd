@@ -1,1 +1,85 @@
-#holder
+# Figures
+
+(ref:map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
+```{r map, fig.cap = "(ref:map)"}
+knitr::include_graphics(here::here("figure/map.png"))
+```
+
+(ref:avg-mass) Average body mass (kg) for Fraser Pinks.  
+```{r avg-mass, fig.cap = "(ref:avg-mass)"}
+knitr::include_graphics(here::here("figure/avg-mass.png"))
+```
+
+(ref:current-HCR) Current harvest control rule showing target escapement (top) and exploitation rate (bottom) for Fraser Pinks.  
+```{r current-HCR, fig.cap = "(ref:current-HCR)"}
+knitr::include_graphics(here::here("figure/current-HCR.png"))
+```
+
+(ref:catch-esc) Catch and escapement for Fraser Pinks.  
+```{r catch-esc, fig.cap = "(ref:catch-esc)"}
+knitr::include_graphics(here::here("figure/catch-esc.png"))
+```
+
+(ref:SRR) State-space spawner-recruit relationship with autocorrelated residuals. Shaded bars are 95% confidence interval.   
+```{r SRR, fig.cap = "(ref:SRR)"}
+knitr::include_graphics(here::here("figure/SRR.png"))
+```
+
+(ref:rec-resid) Recruitment residuals from the spawner-recruit fit.   
+```{r rec-resid, fig.cap = "(ref:rec-resid)"}
+knitr::include_graphics(here::here("figure/rec-resid.png"))
+```
+
+
+# Tables 
+
+(ref:HCR-table) Existing Harvest Control Rule for Fraser Pinks.
+```{r HCR-table, results = "asis"} 
+df <- data.frame(run_sz = c("Less than 7.059M", "Between 7.059M & 20M", "Over 20M"),
+                 esc_plan = c("The exploitation rate (ER) increases linearly from zero percent at a run size of zero to 15% at a run size of 7.059M.", 
+                              "The escapement goal is 6M and the remainder is harvestable surplus; the allowable ER increases from 15% to 70%.", 
+                              "The TAM is 70%. The escapement target increases as the run size moves beyond 20M."))
+
+#rows don't render with breaks when running this and table is too wide
+#csasdown::csas_table(df,
+#                     caption = "(ref:HCR-table)",
+#                     format = "pandoc",
+#                     landscape = FALSE,
+#                     font_size = 7,
+#                     repeat_header = TRUE)
+
+#this one doesn't work when knitting to word
+kbl(df, 
+    booktabs = TRUE,
+    col.names = c("Run Size", "Escapement Goal"), 
+    caption = "(ref:HCR-table)") |>
+  kableExtra::column_spec(2:3, width = "10 cm")
+```
+
+(ref:spawner-est-methods) Methods of assessing spawner escapement and CVs. 
+```{r spawner-est-methods, results = "asis"}
+df <- data.frame(Years = c("1957-1985 ", "1987-1991", "1993-2001", "2003-2007", 
+                           "2009-2011", "2013-2021"), 
+                 Method = c("PSC mark-recapture (system specific)", 
+                            "DFO mark-recapture (system specific)", 
+                            "DFO mark-recapture (mainstem)", "Test fishery", 
+                            "Mission post-season", "Mission in-season"), 
+                 CV = c("20%", "20%", "20%", "50%", "35%", "35%"))
+
+csasdown::csas_table(df,
+                     caption = "(ref:spawner-est-methods)",
+                     format = "pandoc",
+                     landscape = FALSE,
+                     font_size = 7,
+                     repeat_header = TRUE)
+``` 
+
+(ref:bench-table) Biological and historical benchmarks. 
+```{r bench-table, results = "asis"}
+csas_table(benchmarks,
+           caption = "(ref:bench-table)",
+           format = "pandoc",
+           landscape = FALSE,
+           font_size = 7,
+           repeat_header = TRUE)
+```

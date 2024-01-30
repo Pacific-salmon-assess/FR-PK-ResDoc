@@ -1,0 +1,71 @@
+### Policy Context  
+
+The Fraser River Panel of the Pacific Salmon Commission currently manages the single CU of Fraser River Pink Salmon. 
+Data back to `r min(rec_prop$year)` shows an average run size of `r mean(rec_prop$rec)` million fish (SD = `r sd(rec_prop$rec)`). 
+In 1999 total recruits dropped to 3.6 million fish; the lowest recruitment since 1961. 
+This dip in recruitment coincided with an approximately 50% decrease in exploitation rate that remains today. Because of a growing demand for Fraser Pink Salmon and a long period of time since the escapement goal was created, managers consider it necessary to re-examine the escapement policy [@grantFraserRiverPink2014; @macdonaldStateCanadianPacific2023]. 
+Further, principles laid out in the Precautionary Approach and Wild Salmon Policy state benchmarks need to be biologically based, where lower and higher benchmarks are placed where the biological production status of a CU changes significantly [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009].  
+
+**Other reasons to assess: analytical challenges, climate change, harvest interest**
+
+
+## Background  
+
+The Fraser River is a large free-flowing river draining 233 thousand square kilometers and supports all five species of Pacific Salmon native to North America (Figure \@ref(fig:map)). **generic holtby & ciruna stuff**
+
+
+### Biology
+
+The Pink salmon run in the Fraser is the largest in BC and occurs on 2 year cycles, with odd years having dominant runs [@dfoPreseasonRunSize2021]. Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
+***add # spawn pops, genetic diffs***
+A recent COSEWIC report suggests splitting this DU into 2 based on run timing and suggests this run timing differences could be genetically based (COSEWIC *in prep*).  
+
+Pinks salmon have a 2 year life cycle where fry migrate in the spring, adults spend 1 year at sea, return to the river in ***?*** and spawn in the late summer. ***upstream pops migrate earlier***
+
+Data collected between 1977 and 2001 reported sex ratios ranging from 0.9 to 1.4 female:male (mean 1.1) with no clear trend in a changing ratio [@grantFraserRiverPink2014].
+
+Average body mass appeared to be relatively stable at around 2.5kg until 1975 when it declined until the late 90's and has been fluctuating around 1.75kg (Figure \@ref(fig:avg-mass); @pacificsalmoncommissionPSCBiologicalData2023). 
+***due to competition?***
+A decrease in average body size means recent spawners may not be contributing as much eggs as they did historically. This demographic change (i.e. decreased fecundity via growth) can impact spawner-recruit relationships and warrants further investigation [@statonIncorporatingDemographicInformation2021]. 
+
+Migration behavior of Pinks also appears to be changing. The percent of fish migrating north around Vancouver Island has been increasing [@hagueMovingTargetsAssessing2021]. This change in behavior not only affects how pinks are captured in test fisheries, but will also expose fish to different environmental conditions during the end of their ocean migration. 
+
+***Climate change impacts***
+
+
+## Stock assessment  
+Escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
+Data before `r min(rec_prop$year)` was not available because commercial landings did not partition catch into specific stocks. 
+Escapement data was collected with a variety of methods. 
+In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present).  
+
+Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
+Contribution of Fraser stocks was based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
+Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
+The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon. 
+Recreational catch is estimated through agency creel surveys in both countries.
+First Nations catch is reported using similar methods of estimating commercial catch (i.e. fish sales slips). 
+See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape, with detailed methodologies for estimating escapement, catch, and biological data. 
+
+
+## Fisheries Management
+
+The odd year Pink runs create harvest opportunities for first nations, commercial and recreational fisheries [@dfoSouthernSalmonIntegrated2023]. 
+Commercial fisheries are shared between the US and Canada and are managed by the Pacific Salmon Commission (PSC). Due to bycatch concerns, harvest targets of Pinks may be impeded by management objectives for Fraser Sockeye, Coho and Steelhead [@dfoSouthernSalmonIntegrated2023].
+
+The current harvest control rule has been in place since the mid 1980's and has not been updated.
+When the return is over 20 million the total allowable mortality (TAM) is 70%.
+IF the run size is between 7.059 and 20 million fish, the escapement target is 6 million fish and the rest is a harvestable surplus. 
+When the escapement is less than 7.059, the exploitation rate increases linearly from 0% at a run size of 0 to 15% at a run size of 7.059 [@fisheriesandoceanscanadaSouthernSalmonIntegrated2023].  
+
+This harvest control rule implies that the lower reference point (LRP) is 7.059 million and the upper stock reference (USR) is 20 million, with a TAM of 70%. 
+Note that the current reference points do not explicitly account for uncertainty, which is recommended in the Precautionary Approach [@dfoFisheryDecisionmakingFramework2009].
+
+
+## Objectives  
+The objectives of this report are to:  
+1. Compile available data on escapement, catch and biology of Fraser River Pink Salmon.  
+2. Describe the current management context.  
+3. Develop a state-space spawner-recruit model and fit it to data.  
+4. Estimate biological benchmarks based on the spawner-recruit model, then use these to recommend reference points.  
+5. Evaluate a potential harvest control rule that uses the above benchmarks to meet fishery and biological needs.
