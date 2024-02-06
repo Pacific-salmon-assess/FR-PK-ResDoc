@@ -20,10 +20,10 @@ benchmarks <- as.data.frame(benchmarks) |>
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
-spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.025,0.5,0.975))[,1:31]
-rec.quant <- apply(model.pars$R, 2, quantile, probs=c(0.025,0.5,0.975))[,2:32]
+spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.025,0.5,0.975))[,1:32]
+rec.quant <- apply(model.pars$R, 2, quantile, probs=c(0.025,0.5,0.975))[,2:33]
 
-brood_t <- as.data.frame(cbind(data$year[1:31],t(spwn.quant), t(rec.quant))) |>
+brood_t <- as.data.frame(cbind(data$year[1:32],t(spwn.quant), t(rec.quant))) |>
   round(2)
 colnames(brood_t) <- c("BroodYear","S_lwr","S_med","S_upr","R_lwr","R_med","R_upr")
 
