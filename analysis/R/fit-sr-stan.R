@@ -31,7 +31,7 @@ model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
 
 # Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
   # values at zero can be ignored as these are unsampled parameters.
-min(model.summary$n_eff, na.rm = T)
+min(model.summary$n_eff, na.rm = TRUE)
 ggplot(model.summary, aes(n_eff/2000)) +
   geom_histogram() +
   labs(y = "frequency",

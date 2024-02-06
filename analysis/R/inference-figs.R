@@ -104,8 +104,7 @@ fwd.sim.R <- fwd.states.summary |>
   bind_rows(R_df) |>
   arrange(year)
 
-rm(bench, bench.quant, er_df, er.quant, rec.quant, spwn_df, spwn.quant,
-   max_samples, percentiles, a,b,r, spw)
+rm(er_df, er.quant, rec.quant, spwn_df, spwn.quant, max_samples, percentiles, a,b, spw)
 
 # INFERENCE ------------------------------------------------------------------------------
 #get DATA (not latent state) of avg run sizes for context/background section
@@ -139,7 +138,10 @@ my.ggsave(here("figure/catch-esc.png"))
 #plot avg mass through time
 ggplot(avg_mass, aes(year, scale(avg.weight))) +
   geom_line() +
-  geom_line(data = compitetors, aes(x = Year, y = scale(value)), color = "red") +
+  geom_point() +
+  geom_point(data = compitetors, aes(x = Year, y = scale(value)), color = "red") +
+  stat_smooth(data = compitetors, aes(x = Year, y = scale(value)), color = "red",
+              se = FALSE) +
   scale_y_continuous(sec.axis = sec_axis(~., name = "N. Pacific Pink abundance (scaled)")) +
   labs(x = "Year", y = "Average body mass (scaled)")
 
@@ -195,9 +197,9 @@ ggplot() +
 my.ggsave(here("figure/SRR.png"))
 
 # then residuals
-resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:31]
+resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:32]
 
-resids <- as.data.frame(cbind(data$year[1:31], t(resid.quant)))
+resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
 colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
 
 ggplot(resids, aes(x=year, y = mid)) +
@@ -214,9 +216,9 @@ ggplot(resids, aes(x=year, y = mid)) +
 my.ggsave(here("figure/rec-resid.png"))
 
 #plot fwd sim of escapement --------------------------------------------------------------
-#define some fwd sim parms
-d_start <- 2015
-d_end <- 2021
+#how much of the old data do you want to show?
+d_start <- 2017
+d_end <- 2023
 
 ggplot(data = filter(fwd.sim.S, year >= d_start & year <= d_end), aes(x=year)) +
   geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.S$year),

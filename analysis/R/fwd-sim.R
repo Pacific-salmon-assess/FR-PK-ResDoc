@@ -15,7 +15,7 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
          spawn = round(spawn/1000000, 2))
 
 # get the last yr of rec & parameter posteriors -------------------------------------
-last.yr <- 2021 #final yr of model fit
+last.yr <- max(data$year) #final yr of model fit
 sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
@@ -47,7 +47,7 @@ bench <- matrix(NA,1000,3,
                 dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy")))
 
 for(i in 1:1000){
-  r <- sample(seq(1,1000),1,replace=T)
+  r <- sample(seq(1,1000),1,replace=TRUE)
   a <- model.pars$lnalpha[r]
   b <- model.pars$beta[r]
   bench[i,2] <- get_Smsy(a,b) #Smsy
@@ -69,7 +69,7 @@ benchmarks[5,1] <- percentiles[2]
 
 rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
                           "50th percentile (spawners)")
-colnames(benchmarks) <- c("median","lower CI","upper CI")
+colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
 
 #pull some values to apply HCRs below
 Sgen <- benchmarks[2,1]
@@ -228,5 +228,5 @@ colnames(OCP.total) <- c("Simulation", "% below lower OCP", "% between OCPs",
 rm(beta, bench, bench.quant, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr,
    lnalpha_c, lwr.OCP,mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi,
    post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   below.Sgen.all, below.Smsy,below.Smsy.all, ref.pts, Sgen, Smsy.8, Umsy, sub, sub.pars,
+   below.Sgen.all, below.Smsy,below.Smsy.all, ref.pts, Sgen, Umsy, sub, sub.pars,
    yrs, U, last.yr.ind)
