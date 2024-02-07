@@ -20,13 +20,13 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "proposed", "BB", "low_a_current", "low_a_proposed", "low_a_BB")
+HCRs <- c("current", "alt", "BB", "low_a_current", "low_a_alt", "low_a_BB")
 OU.CV <- 0.1 #outcome uncertainty
 
 # calc forecast error---------------------------------------------------------------------
   #using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = abs(PreSeasonForecast - FinalRunSize)/FinalRunSize)
+  mutate(error = abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)
 
 if(FALSE){ #check trends and distribution of error
   ggplot(for.error, aes(YearX, error)) +
@@ -72,6 +72,7 @@ rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
 colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
 
 #pull some values to apply HCRs below
+Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
@@ -90,7 +91,7 @@ if(FALSE){ #turn off so it doesn't render in doc
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
-  sub.pars <- model.pars
+  sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
   if(grepl("low_a", HCR)){ #overwrite posterior & final state to low productivity if "low_a"
     low_a_rows <- which(sub.pars$lnalpha_c <= quantile(sub.pars$lnalpha_c, probs = 0.1))
     #subset posterior to only draw parms and states from low productivity draws
@@ -129,12 +130,12 @@ for(i in 1:length(HCRs)){
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
-      if(grepl("proposed", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
+      if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV), Umsy=Umsy)}
       if(grepl("BB", HCR)){post_HCR <- BB_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                               Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
 
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
-      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/R.Smsy.8, post_HCR[1]/Sgen)
+      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy.8, post_HCR[1]/Sgen)
     }
   }
 }
