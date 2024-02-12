@@ -16,11 +16,11 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
 
 # get the last yr of rec & parameter posteriors -------------------------------------
 last.yr <- max(data$year) #final yr of model fit
-sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
+sim.gens <- 1+10 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt", "BB", "low_a_current", "low_a_alt", "low_a_BB")
+HCRs <- c("current", "alt", "WSP", "low_a_current", "low_a_alt", "low_a_WSP")
 OU.CV <- 0.1 #outcome uncertainty
 
 # calc forecast error---------------------------------------------------------------------
@@ -81,13 +81,6 @@ R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 fwd.states <- array(NA, dim = c(n.sims, length(states), sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
 
-if(FALSE){ #turn off so it doesn't render in doc
-  #prior checks
-  median(model.pars$lnalpha_c) - median(model.pars$lnalpha)
-  hist(model.pars$lnalpha)
-  hist(model.pars$lnalpha_c)
-  hist(model.pars$sigma_R_corr)
-}
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
@@ -131,11 +124,10 @@ for(i in 1:length(HCRs)){
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
       if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV), Umsy=Umsy)}
-      if(grepl("BB", HCR)){post_HCR <- BB_HCR(R, OU=1+rnorm(1, 0, OU.CV),
+      if(grepl("WSP", HCR)){post_HCR <- WSP_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                               Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
 
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
-      ref.pts[j, ,k-1,i] <- c(post_HCR[1]/Smsy.8, post_HCR[1]/Sgen)
     }
   }
 }
@@ -144,7 +136,8 @@ for(i in 1:length(HCRs)){
 #t(fwd.states[j, ,,i])
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR]
-fwd.states.summary <- NULL
+#need this one for plotting...
+fwd.sim <- NULL
 yrs <- as.character(seq(from = last.yr,
                         to = last.yr+((sim.gens-1)*2), by=2)) #final yr of sim + fwd sims
 
@@ -155,79 +148,68 @@ for(i in 1:length(HCRs)){
     sub_sub <- as.data.frame(sub[,,j]) |>
       reframe(across(1:5, quantile_df, .unpack = TRUE)) |> #could use a better fun.?
       mutate(quant = c("lwr", "lwr_med", "med", "upr_med", "upr")) |>
-      pivot_wider(values_from = 1:5, names_from = quant)
-    fwd.states.summary <- rbind(fwd.states.summary, sub_sub)
+      pivot_wider(values_from = 1:5, names_from = quant) |>
+      mutate(HCR = HCRs[i],
+             year = as.numeric(yrs[j])) |>
+      relocate(c(year, HCR), 1)
+    fwd.sim <- rbind(fwd.sim, sub_sub)
   }
 }
 
-fwd.states.summary <- fwd.states.summary |>
-  mutate(sim = c(rep(HCRs, each = sim.gens)),
-         year = rep(yrs, length(HCRs))) |>
-  relocate(c(year, sim), 1) |>
-  arrange(year, sim)
+fwd.sim <- fwd.sim |>
+  mutate(prod = factor(ifelse(grepl("low", HCR), "low productivity", "normal"),
+                       levels = c("normal", "low productivity")),
+         HCR = gsub("low_a_", "", HCR)) |>
+  relocate(prod, .after=2)
 
-colnames(fwd.states.summary) <- c("year", "sim", "R_lwr", "R_mid_lwr", "R", "R_mid_upr",
-                                  "R_upr", "S_lwr", "S_mid_lwr", "S", "S_mid_upr", "S_upr",
-                                  "C_lwr", "C_mid_lwr", "C", "C_mid_upr", "C_upr", "U_lwr",
-                                  "U_mid_lwr", "U", "U_mid_upr", "U_upr", "lnresid_lwr",
-                                  "lnresid_mid_lwr", "lnresid", "lnresid_mid_upr", "lnresid_upr")
+colnames(fwd.sim) <- c("year", "HCR", "prod", "R_lwr", "R_mid_lwr", "R", "R_mid_upr",
+                       "R_upr", "S_lwr", "S_mid_lwr", "S", "S_mid_upr", "S_upr", "C_lwr",
+                       "C_mid_lwr", "C", "C_mid_upr", "C_upr", "U_lwr", "U_mid_lwr", "U",
+                       "U_mid_upr", "U_upr", "lnresid_lwr","lnresid_mid_lwr", "lnresid",
+                       "lnresid_mid_upr", "lnresid_upr")
 
-# summarise some performance metrics------------------------------------------------------
-perf.summary <- NULL #perf by years
-perf.total <- NULL #total perf across sim
-OCP.total <- NULL #?
+# summarise performance metrics------------------------------------------------------
+yr.breaks <- c(3, 10)
+if(max(yr.breaks)> (sim.gens -1)){stop("performmance metrics: sim.gens less than breaks")}
+perf.metrics <- NULL
+
 for(i in 1:length(HCRs)){
-  sub.refs <- ref.pts[,,,i]
-  sub.data <- fwd.states[,,,i]
-  #THIS IS ALL FUCKED - need to make new ones, and make sure I use S & R where appropriate
-  below.Smsy.all <- nrow(filter(as.data.frame(sub.refs[,1,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,1,])*100
-  below.Sgen.all <- nrow(filter(as.data.frame(sub.refs[,2,]), V1<1&V2<1&V3<1))/nrow(sub.refs[,2,])*100
-  HCR <- HCRs[i]
+  for(j in yr.breaks){
+    sub.data <- fwd.states[,,2:(j+1),i] #index to NOT include final year of observed data.
+    Ss <- sub.data[,2,] #spawner sims across years
+    Cs <- sub.data[,3,] #catch sims
 
-  perf.total <- rbind(perf.total, data.frame(sim = HCR,
-                                             below.Smsy.all = below.Smsy.all,
-                                             below.Sgen.all = below.Sgen.all))
+    below.Sgen <- 1:j |>
+      map_dbl(\(x) length(which(Ss[,x]<Sgen))/length(Ss[,x])) |>
+      median()
 
-  lwr.OCP <- round(length(which(sub.data[,1,2:4] <= 7.059))/length(sub.data[,1,2:4]), 4)*100 #all yrs of R (except start)
-  mid.OCP <- round(length(which(sub.data[,1,2:4] >= 7.059 & sub.data[,1,2:4] <= 20))/
-                     length(sub.data[,1,2:4]), 4)*100
-  upr.OCP <- round(length(which(sub.data[,1,2:4] >= 20))/length(sub.data[,1,2:4]), 4)*100
+    above.Smsy.8 <- 1:j |>
+      map_dbl(\(x) length(which(Ss[,x]>Smsy.8))/length(Ss[,x])) |>
+      median()
 
-  OCP.total <- rbind(OCP.total, data.frame(sim = HCR, lwr.OCP, mid.OCP, upr.OCP))
+    catch <- 1:j |>
+      map_dbl(\(x) median(Cs[,x])) |>
+      sum()
 
-  for(j in 1:(sim.gens-1)){
-    below.Smsy <- (length(which(sub.refs[,1,j]<1))/nrow(sub.refs))*100
-    below.Sgen <- (length(which(sub.refs[,2,j]<1))/nrow(sub.refs))*100
+    catch.stability <- 1:j |>
+      map_dbl(\(x) mean(Cs[,x])/sd(Cs[,x])) |>
+      median()
 
-    perf.summary <- rbind(perf.summary,
-                          data.frame(sim = HCR, year = yrs[j+1], below.Smsy,below.Sgen))
+    perf.metrics <- rbind(perf.metrics, data.frame(yrs = rep(j, 4), HCR = rep(HCRs[i],4),
+                                                   value = c(below.Sgen, above.Smsy.8,
+                                                             catch, catch.stability),
+                                     metric = c("below.Sgen", "above.Smsy.8", "catch",
+                                                "catch.stability")))
   }
 }
 
-#add catch to performance summaries
-#could add stability too but need to think about how to do by year
-perf.summary <- fwd.states.summary |>
-  filter(year != last.yr) |>
-  select(year, sim, C) |>
-  mutate(catch = round(C, 2)) |>
-  select(-C) |>
-  left_join(perf.summary, by = c("year", "sim")) |>
-  arrange(sim, year)
-colnames(perf.summary) <- c("Year", "Simulaiton", "Median catch (millions)", "Below Smsy (%)",
-                            "Below Sgen (%)")
+perf.metrics <- perf.metrics |>
+  mutate(prod = ifelse(grepl("low", HCR), "low productivity", "normal"),
+         HCR = gsub("low_a_", "", HCR)) |>
+  pivot_wider(names_from = HCR, values_from = value) |>
+  arrange(metric, yrs)
 
-perf.total <- fwd.states.summary |>
-  filter(year != last.yr) |>
-  group_by(sim) |>
-  summarise(total.catch = round(sum(C), 2)) |>
-  left_join(perf.total, by = "sim") #could add catch stability
-colnames(perf.total) <- c("Simulaiton", "Total median catch (millions)", "All yrs. below Smsy (%)",
-                          "All yrs. below Sgen (%)")
-colnames(OCP.total) <- c("Simulation", "% below lower OCP", "% between OCPs",
-                         "% above upper OCP")
-
-rm(beta, bench, bench.quant, C, fwd.states, HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr,
-   lnalpha_c, lwr.OCP,mid.OCP, upr.OCP, sub.data, sub.refs, low_a_rows, n.sims, phi,
-   post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   below.Sgen.all, below.Smsy,below.Smsy.all, ref.pts, Sgen, Umsy, sub, sub.pars,
-   yrs, U, last.yr.ind)
+rm(beta, bench, bench.quant, C, Cs, Ss, catch, catch.stability, yr.breaks, fwd.states,
+   HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, sub.data, low_a_rows, n.sims,
+   phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
+   ref.pts, Sgen, Umsy, sub, sub.pars,yrs, U, last.yr.ind)
