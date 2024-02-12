@@ -30,13 +30,13 @@ current_HCR <- function(R, OU){
   return(c(S,C,U))
 }
 
-BB_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
+WSP_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
   if(R <= Sgen){C <- 0
-  S <- R} #might need to add protection here if forecast error makes R<0
-  if(R > Sgen & R < R.Smsy){ C <- (R*(Umsy/Sgen))*R
+  S <- R}
+  if(R > Sgen & R < R.Smsy){C <- (R*(Umsy/Sgen))*OU
   C <- ifelse(C>R, R-.0001, C) #leave 100 spawners if catch OU makes C>R
   S <- R-C}
-  if(R > R.Smsy){C <- R*Umsy
+  if(R > R.Smsy){C <- R*Umsy*OU
   C <- ifelse(C>R, R-.0001, C) #leave 100 spawners if catch OU makes C>R
   S <- R-C}
 
