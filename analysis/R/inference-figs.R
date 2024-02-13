@@ -69,10 +69,10 @@ kobe_df <- data.frame(S = spwn_df$mid,
          S_Smsy = round(S/(benchmarks[1,1]*1.25), 2), #correct from 80%Smsy to Smsy
          S_Smsy_LCI = round(S_LCI/(benchmarks[1,1]*1.25), 2),
          S_Smsy_UCI = round(S_UCI/(benchmarks[1,1]*1.25), 2))
-
+if(FALSE){
 #wrangle fwd sim spawners
 fwd.sim.S <- fwd.states.summary |>
-  select(year, sim, grep("S", colnames(fwd.states.summary))) |>
+  select(year, HCR, grep("S", colnames(fwd.states.summary))) |>
   rename(lwr = S_lwr,
          mid_lwr = S_mid_lwr,
          mid = S,
@@ -103,8 +103,8 @@ fwd.sim.R <- fwd.states.summary |>
   mutate(year = as.numeric(year)) |>
   bind_rows(R_df) |>
   arrange(year)
-
-rm(er_df, er.quant, rec.quant, spwn_df, spwn.quant, max_samples, percentiles, a,b, spw)
+}
+rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
 
 # INFERENCE ------------------------------------------------------------------------------
 #get DATA (not latent state) of avg run sizes for context/background section
@@ -220,97 +220,161 @@ my.ggsave(here("figure/rec-resid.png"))
 d_start <- 2017
 d_end <- 2023
 
-ggplot(data = filter(fwd.sim.S, year >= d_start & year <= d_end), aes(x=year)) +
-  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.S$year),
-                  ymin = benchmarks$`lower CI`[1], ymax = benchmarks$`upper CI`[1]),
-            fill = "forestgreen", alpha = 0.02) +
+#spawners
+ggplot(data = fwd.sim) +
+  #draw the fwd.sim
+  geom_line(aes(x = year, y = S, color = HCR), lwd = 1, lty = 2) +
+  #geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr,  fill = HCR), alpha = 0.5) +
+  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR), alpha=0.2) +
+  #draw the exsiting data
+  geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
+  geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  #draw the benchmarks
+ # geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
+ #               ymin = benchmarks$`lower 95% CI`[1], ymax = benchmarks$`upper 95% CI`[1]),
+ #           fill = "forestgreen", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[1],
              color = "forestgreen") +
-  annotate("text", x = d_start + .5, y = 4.5,
+  annotate("text", x = d_start + 2, y = 5,
            label = "italic(S[MSY])", parse = TRUE, color = "forestgreen") +
-  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.S$year),
-                  ymin = benchmarks$`lower CI`[2], ymax = benchmarks$`upper CI`[2]),
-            fill = "darkred", alpha = 0.02) +
+#  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
+#                ymin = benchmarks$`lower 95% CI`[2], ymax = benchmarks$`upper 95% CI`[2]),
+#            fill = "darkred", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
-  annotate("text", x = d_start + .5, y = 2,
+  annotate("text", x = d_start + 2, y = 2,
            label = "italic(S[Gen])", parse = TRUE, color = "darkred") +
-  geom_line(aes(y = mid)) +
-  geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
-              aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
-              aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.S, year >= d_end, !is.na(sim)),
-            aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
-  coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "escapement") +
-  scale_fill_viridis_d(name = "simulation",
-                       breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                       labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                  "low prod. (alt. HCR)")) +
-  scale_color_viridis_d(name = "simulation",
-                        breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                        labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                   "low prod. (alt. HCR)")) +
   scale_x_continuous(breaks= pretty_breaks()) +
+  #coord_cartesian(expand = FALSE) +
+  labs(x = "return year", y = "escapement") +
+  scale_fill_viridis_d(name = "HCR",
+                       breaks = c("current", "alt", "WSP"),
+                       labels = c("current", "alternate", "WSP")) +
+  scale_color_viridis_d(name = "HCR",
+                        breaks = c("current", "alt", "WSP"),
+                        labels = c("current", "alternate", "WSP")) +
+  facet_grid(prod~.) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-S.png"))
 
 #and fwd sim harvest rate
-ggplot(data = filter(fwd.sim.U, year >= d_start & year <= d_end), aes(x=year)) +
-  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim.U$year),
-                ymin = benchmarks$`lower CI`[3], ymax = benchmarks$`upper CI`[3]),
-            fill = "forestgreen", alpha = 0.02) +
+ggplot(data = fwd.sim) +
+  #draw the fwd.sim
+  geom_line(aes(x = year, y = U, color = HCR), lwd = 1, lty = 2) +
+  #geom_ribbon(aes(x = year, ymin = U_lwr, ymax = U_upr,  fill = HCR), alpha = 0.5) +
+  geom_ribbon(aes(x = year, ymin = U_mid_lwr, ymax = U_mid_upr, fill = HCR), alpha=0.2) +
+  #draw the exsiting data
+  geom_line(data = filter(er_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_ribbon(data = filter(er_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
+  geom_ribbon(data = filter(er_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  #draw the benchmarks
+#  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
+#                ymin = benchmarks$`lower 95% CI`[3], ymax = benchmarks$`upper 95% CI`[3]),
+#            fill = "forestgreen", alpha = 0.02) +
   geom_hline(yintercept = benchmarks$median[3],
              color = "forestgreen") +
   annotate("text", x = d_start + 0.5, y = 0.55,
            label = "italic(U[MSY])", parse = TRUE, color = "forestgreen") +
-  geom_line(aes(y = mid)) +
-  geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
-              aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
-              aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.U, year >= d_end, !is.na(sim)),
-            aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
-  coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "exploitation rate") +
-  scale_fill_viridis_d(name = "simulation",
-                       breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                       labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                  "low prod. (alt. HCR)")) +
-  scale_color_viridis_d(name = "simulation",
-                        breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                        labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                   "low prod. (alt. HCR)")) +
   scale_x_continuous(breaks= pretty_breaks()) +
+  #coord_cartesian(expand = FALSE) +
+  labs(x = "return year", y = "harvest rate") +
+  scale_fill_viridis_d(name = "HCR",
+                       breaks = c("current", "alt", "WSP"),
+                       labels = c("current", "alternate", "WSP")) +
+  scale_color_viridis_d(name = "HCR",
+                        breaks = c("current", "alt", "WSP"),
+                        labels = c("current", "alternate", "WSP")) +
+  facet_grid(prod~.) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-U.png"))
 
-ggplot(data = filter(fwd.sim.R, year >= d_start & year <= d_end), aes(x=year)) +
-geom_line(aes(y = mid)) +
-  geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(aes(ymin = mid_lwr, ymax = mid_upr),  fill = "black", alpha=0.2) +
-  geom_ribbon(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
-              aes(x = year, ymin = lwr, ymax = upr, fill = sim), alpha = 0.2) +
-  geom_ribbon(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
-              aes(ymin = mid_lwr, ymax = mid_upr, fill = sim), alpha=0.3) +
-  geom_line(data = filter(fwd.sim.R, year >= d_end, !is.na(sim)),
-            aes(x = year, y = mid, color = sim), lwd = 1, lty = 2) +
-  coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "recruits") +
-  scale_fill_viridis_d(name = "simulation",
-                       breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                       labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                  "low prod. (alt. HCR)")) +
-  scale_color_viridis_d(name = "simulation",
-                        breaks = c("current", "proposed", "low_a_current", "low_a_proposed"),
-                        labels = c("current HCR", "alt HCR", "low prod. (current HCR)",
-                                   "low prod. (alt. HCR)")) +
+#and recruits
+ggplot(data = fwd.sim) +
+  #draw the fwd.sim
+  geom_line(aes(x = year, y = R, color = HCR), lwd = 1, lty = 2) +
+  #geom_ribbon(aes(x = year, ymin = R_lwr, ymax = R_upr,  fill = HCR), alpha = 0.5) +
+  geom_ribbon(aes(x = year, ymin = R_mid_lwr, ymax = R_mid_upr, fill = HCR), alpha=0.2) +
+  #draw the exsiting data
+  geom_line(data = filter(R_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_ribbon(data = filter(R_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
+  geom_ribbon(data = filter(R_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  #draw the benchmarks
+  #geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
+  #              ymin = benchmarks$`lower 95% CI`[2], ymax = benchmarks$`upper 95% CI`[2]),
+  #          fill = "darkred", alpha = 0.02) +
+  geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
+  annotate("text", x = d_start + 2, y = 4,
+           label = "italic(S[Gen])", parse = TRUE, color = "darkred") +
   scale_x_continuous(breaks= pretty_breaks()) +
+  #coord_cartesian(expand = FALSE) +
+  labs(x = "return year", y = "recruits") +
+  scale_fill_viridis_d(name = "HCR",
+                       breaks = c("current", "alt", "WSP"),
+                       labels = c("current", "alternate", "WSP")) +
+  scale_color_viridis_d(name = "HCR",
+                        breaks = c("current", "alt", "WSP"),
+                        labels = c("current", "alternate", "WSP")) +
+  facet_grid(prod~.) +
   theme(legend.position = "bottom")
+
 my.ggsave(here("figure/fwd-R.png"))
+
+# performance metrics---------------------------------------------------------------------
+perf.metrics <- perf.metrics |>
+  pivot_longer(-c(yrs, metric, prod), names_to = "HCR") |>
+  mutate(bin = case_when(value >= 0 & value <=.11 ~ "low",
+                         value > .11 & value <=.34 ~ "lowmed",
+                         value > .34 & value <= .65 ~ "med",
+                         value > .65 ~ "high"),
+         yrs = factor(paste(yrs, "generations"), levels = c("3 generations",
+                                                            "10 generations")))
+
+ggplot(data = filter(perf.metrics, metric == "above.Smsy.8"), aes(x=prod, y = HCR)) +
+  geom_raster(aes(fill= bin)) +
+  geom_text(aes(label = round(value,2))) +
+  scale_fill_manual(values = c("forestgreen", "white", "pink", "hotpink")) +
+  facet_grid(.~yrs) +
+  guides(fill = "none") +
+  labs(x = "productivity", title = bquote("Percent of years spawners is above S"[MSY]))
+
+my.ggsave(here("figure/perf-Smsy.png"))
+
+ggplot(data = filter(perf.metrics, metric == "below.Sgen"), aes(x=prod, y = HCR)) +
+  geom_raster(aes(fill= bin)) +
+  geom_text(aes(label = round(value,2))) +
+  scale_fill_manual(values = c("forestgreen", "white", "pink", "hotpink")) +
+  facet_grid(.~yrs) +
+  guides(fill = "none") +
+  labs(x = "productivity", title = bquote("Percent of years spawners is below S"[gen]))
+
+my.ggsave(here("figure/perf-Sgen.png"))
+
+ggplot(data = filter(perf.metrics, metric == "catch"), aes(x=prod, y = HCR)) +
+  geom_raster(aes(fill= value)) +
+  geom_text(aes(label = round(value,2))) +
+  scale_fill_viridis_c() +
+  facet_grid(.~yrs) +
+  labs(x = "productivity", title = "Catch (millions of fish) *bad scales but can fix*")+
+  theme(legend.position = "bottom")+
+  guides(fill=guide_legend(title="catch (M)"))
+
+my.ggsave(here("figure/perf-catch.png"))
+
+ggplot(data = filter(perf.metrics, metric == "catch.stability"), aes(x=prod, y = HCR)) +
+  geom_raster(aes(fill= value)) +
+  geom_text(aes(label = round(value,2))) +
+  scale_fill_viridis_c() +
+  facet_grid(.~yrs) +
+  labs(x = "productivity", title = "Catch stability (1/CV)") +
+  theme(legend.position = "bottom") +
+  guides(fill=guide_legend(title="stability"))
+
+my.ggsave(here("figure/perf-catch-stab.png"))
