@@ -2,14 +2,14 @@
 
 The Fraser River is a large free-flowing river draining 233 thousand square kilometers and supports all five species of Pacific Salmon native to North America (Figure \@ref(fig:map)) [@grantFraserRiverPink2014]. 
 This large basin has a wide diversity of habitats that are broken into seven freshwater adaptive zones including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008].  
-
+-*add dams, slides, floods?*
 
 ### Biology
 
-The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021]. 
+The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021; @heard1991]. 
 Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
 A recent COSEWIC report suggests splitting this DU in two based on run timing and suggests this run timing differences could be genetically based (COSEWIC *in prep - need permission to cite*).
-Observations in @rickerHistoryPresentState1989 further support the distinction between an upper and lower Fraser population by highlighting the prolonged period of impassibility at Hell's Gate (1913-1947) and noted differences in body size between these populations and impacts on migration, survival, and fecundity.  
+Observations in @rickerHistoryPresentState1989 further support the distinction between an upper and lower Fraser Pink population by highlighting the prolonged period of impassibility at Hell's Gate (1913-1947) and noted differences in body size between these populations and impacts on migration, survival, and fecundity.  
 
 Pinks salmon fry migrate to the ocean in the spring, adults spend 1 year at sea, then return to the river in early August to early October to spawn shortly after returning [@dfoSouthernSalmonIntegrated2023].  
 
@@ -19,34 +19,31 @@ Fraser Pink body mass has been declining in recent years.
 Average body mass appeared to be relatively stable at around 2.5kg until 1975 when it declined until the late 90's and has been fluctuating around 1.75kg (@pacificsalmoncommissionPSCBiologicalData2023).
 @ruggeroneNumbersBiomassNatural2018 noticed how this decline in body mass coincided with an increase of Pink and Chum salmon in the North Pacific Ocean.  
 
-Migration behavior of Pinks also appears to be changing. The percent of fish migrating north around Vancouver Island has been increasing [@hagueMovingTargetsAssessing2021]. This change in behavior not only affects how pinks are captured in test fisheries, but will also expose fish to different environmental conditions during the end of their ocean migration. 
+When Pinks migrate toward the Fraser from the North Pacific, some of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northen to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
+This diversion rate appears to be increasing, which has implications for survival [@hagueMovingTargetsAssessing2021]. 
 
 ### Climate change impacts  
--never stationary anyway!
-FW and Salt impacts will both affect pinks in future
--runoff, big bar (some other slide from ricker 89?) 
--warming affects on other sp
--change in body size
+
+Climate change is affecting salmon across all stages of life in marine and freshwater environments (**generic citation**). 
+Climate and hatchery practices have contributed to a warm, crowded ocean which impacts growth and survival (**cite**).
+Freshwater habitat continues to be affected by warmer weather, drought, wildfire, landslides and floods that are increasing in a more variable climate [@macdonaldStateCanadianPacific2023]. 
+Evidence of this in the Fraser is clear given the Big Bar landslide that blocked fish passage discovered in 2019 and with the recent flooding due to an atmospheric river in the November 2021.
+Existing trends in changing demography and behavior in Fraser Pinks (e.g. @hagueMovingTargetsAssessing2021; @pacificsalmoncommissionPSCBiologicalData2023; @ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018) paired with a warming climate allude to a precarious future for Fraser Pinks. 
 
 
 ## Motivations  
-
-The odd year Pink runs create harvest opportunities for first nations, commercial and recreational fisheries [@dfoSouthernSalmonIntegrated2023]. 
-Commercial fisheries are shared between the US and Canada and are managed by the Pacific Salmon Commission (PSC). Due to bycatch concerns, harvest targets of Pinks may be impeded by management objectives for Fraser Sockeye, Coho and Steelhead [@dfoSouthernSalmonIntegrated2023].
 
 The current harvest control rule has been in place since the mid 1980's and has not been updated.
 When the return is over 20 million the total allowable mortality (TAM) is 70%.
 IF the run size is between 7.059 and 20 million fish, the escapement target is 6 million fish and the rest is a harvestable surplus. 
 When the escapement is less than 7.059, the exploitation rate increases linearly from 0% at a run size of 0 to 15% at a run size of 7.059 [@fisheriesandoceanscanadaSouthernSalmonIntegrated2023].  
+This harvest control rule implies that the lower reference point (LRP) is 7.059 million and the upper stock reference (USR) is 20 million, with a TAM of 70%. The basis of the TAM appears to be based on @rickerHistoryPresentState1989, but must be based on some unpublished analysis before the 1989 paper.  
 
-This harvest control rule implies that the lower reference point (LRP) is 7.059 million and the upper stock reference (USR) is 20 million, with a TAM of 70%. 
-Note that the current reference points do not explicitly account for uncertainty, which is recommended in the Precautionary Approach [@dfoFisheryDecisionmakingFramework2009].
+Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. 
+Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest [@macdonaldStateCanadianPacific2023].   
 
 
 ## Objectives  
-The objectives of this report are to:  
-1. Compile available data on escapement, catch and biology of Fraser River Pink Salmon.  
-2. Describe the current management context.  
-3. Develop a state-space spawner-recruit model and fit it to data.  
-4. Estimate biological benchmarks based on the spawner-recruit model, then use these to recommend reference points.  
-5. Evaluate a potential harvest control rule that uses the above benchmarks to meet fishery and biological needs.
+DFO's Wild Salmon Policy states that these reference points should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009]. 
+Here we estimate benchmarks and test them with alternative HCRs. 
+Specifically we 1) compile available data on escapement, catch and biology of Fraser River Pink Salmon; 2) develop a state-space spawner-recruit model and fit it to data, 3) estimate biological benchmarks based on the spawner-recruit model, 4) evaluate a potential harvest control rule that uses the benchmarks to meet fishery and biological objectives.  

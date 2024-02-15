@@ -1,8 +1,8 @@
 ## Stock assessment  
-Escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
+Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
 Data before `r min(rec_prop$year)` was not available because commercial landings did not partition catch into specific stocks. 
-Escapement data was collected with a variety of methods. 
-In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present).  
+Due to changes in priorities, funding and technology, escapement data was collected with a variety of methods. 
+In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present). 
 
 Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
 Contribution of Fraser stocks was based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
@@ -13,16 +13,15 @@ First Nations catch is reported using similar methods of estimating commercial c
 See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape, with detailed methodologies for estimating escapement, catch, and biological data. 
 
 
-Due to concerns over different sampling regimes, changing demography, behavior and recognition of non-stationarity we model the spawner-recruit data in a state-space framework with auto correlated recruitment residuals. 
-First, the spawner-recruit model is developed and fit to data to estimate biological benchmarks (i.e. $S_{MSY}$, $U_{MSY}$ and $S_{Gen}$). 
-Then forward simulations are used to evaluate potential harvest control rules.
-
 ## Data compilation  
 
-***where from, picking observation error***
-
+We used the description of these methods provided in @grantFraserRiverPink2014 and knowledge from area staff to assign relative estimates of accuracy of these sampling stanzas. 
 
 ## Modelling  
+
+Due to concerns over different sampling methodologies (*that's it? - should NOT mention non-stationarity?*), we modeled the spawner-recruit data in a state-space framework with auto correlated recruitment residuals. 
+First, the spawner-recruit model is developed and fit to data to estimate biological benchmarks (i.e. $S_{MSY}$, $U_{MSY}$ and $S_{Gen}$). 
+Then forward simulations are used to evaluate potential harvest control rules.
 
 A state-space Ricker spawner-recruit model was fit to Fraser Pink catch and escapement data. State-space models are useful for modelling because they explicitly partition variation in natural processes from observation error [@auger-metheGuideStateSpace2021]. 
 @grantFraserRiverPink2014 noted that differences in assessment methodologies make it difficult to compare escapement among years. Here, state-space modelling is especially useful because we assign observation specific error to different estimation methods.  
