@@ -67,12 +67,12 @@ kobe_df <- data.frame(S = spwn_df$mid,
                       U_UCI = er_df$upr,
                       year = spwn_df$year) |>
   #index benchmarks table
-  mutate(U_Umsy = round(U/benchmarks[3,1] ,2), ## index these as names!
-         U_Umsy_LCI = round(U_LCI/benchmarks[3,1] ,2),
-         U_Umsy_UCI = round(U_UCI/benchmarks[3,1] ,2),
-         S_Smsy = round(S/(benchmarks[1,1]*1.25), 2), #correct from 80%Smsy to Smsy
-         S_Smsy_LCI = round(S_LCI/(benchmarks[1,1]*1.25), 2),
-         S_Smsy_UCI = round(S_UCI/(benchmarks[1,1]*1.25), 2))
+  mutate(U_Umsy = round(U/Umsy ,2),
+         U_Umsy_LCI = round(U_LCI/Umsy ,2),
+         U_Umsy_UCI = round(U_UCI/Umsy ,2),
+         S_Smsy = round(S/(Smsy.8*1.25), 2), #correct from 80%Smsy to Smsy
+         S_Smsy_LCI = round(S_LCI/(Smsy.8*1.25), 2),
+         S_Smsy_UCI = round(S_UCI/(Smsy.8*1.25), 2))
 
 rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
 
@@ -106,19 +106,17 @@ ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
 my.ggsave(here("figure/catch-esc.png"))
 
 #plot avg mass through time
-ggplot(avg_mass, aes(year, scale(avg.weight))) +
+ggplot(avg_mass, aes(year, avg.weight)) +
+  geom_col(data = compitetors, aes(x = Year, y = value/200), fill = "pink", color = "pink") +
   geom_line() +
   geom_point() +
-  geom_point(data = compitetors, aes(x = Year, y = scale(value)), color = "red") +
-  stat_smooth(data = compitetors, aes(x = Year, y = scale(value)), color = "red",
-              se = FALSE) +
-  scale_y_continuous(sec.axis = sec_axis(~., name = "N. Pacific Pink abundance (scaled)")) +
-  labs(x = "Year", y = "Average body mass (scaled)")
+  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "N. Pacific Pink abundance (millions)")) +
+  labs(x = "Year", y = "Average body mass (kg)")
 
 my.ggsave(here("figure/avg-mass.png"))
 
 # plot current HCR -----------------------------------------------------------------------
-  # does it make sense to slap ref pts on here? AMH say no - they're OCPs
+  #NEED TO ADD THE OTHER HCRs!
 p1 <- ggplot(current.hcr, aes(x=run_size, y=esc)) +
   geom_line(size=1.1) +
   geom_vline(xintercept = 7.059, lty = 2)+
@@ -187,45 +185,32 @@ my.ggsave(here("figure/rec-resid.png"))
 
 #plot fwd sim of escapement --------------------------------------------------------------
 #how much of the old data do you want to show?
-d_start <- 2017
+d_start <- 2013
 d_end <- 2023
 
 #spawners
 ggplot(data = fwd.sim) +
   #draw the fwd.sim
-  geom_line(aes(x = year, y = S, color = HCR), lwd = 1, lty = 2) +
-  #geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr,  fill = HCR), alpha = 0.5) +
-  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR), alpha=0.2) +
+  geom_line(aes(x = year, y = S, color = prod), lwd = 1, lty = 2) +
+  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = prod), alpha=0.2) +
   #draw the exsiting data
   geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  #draw the benchmarks
- # geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
- #               ymin = benchmarks$`lower 95% CI`[1], ymax = benchmarks$`upper 95% CI`[1]),
- #           fill = "forestgreen", alpha = 0.02) +
-  geom_hline(yintercept = benchmarks$median[1],
-             color = "forestgreen") +
+  geom_hline(yintercept = benchmarks$median[1]) +
   annotate("text", x = d_start + 2, y = 5,
-           label = "italic(S[MSY])", parse = TRUE, color = "forestgreen") +
-#  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
-#                ymin = benchmarks$`lower 95% CI`[2], ymax = benchmarks$`upper 95% CI`[2]),
-#            fill = "darkred", alpha = 0.02) +
-  geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
+           label = "italic(S[MSY])", parse = TRUE) +
+  geom_hline(yintercept = benchmarks$median[2]) +
   annotate("text", x = d_start + 2, y = 2,
-           label = "italic(S[gen])", parse = TRUE, color = "darkred") +
-  scale_x_continuous(breaks= pretty_breaks()) +
-  #coord_cartesian(expand = FALSE) +
+           label = "italic(S[gen])", parse = TRUE) +
+  scale_x_continuous(breaks= pretty_breaks(),
+                     expand = expansion(mult = c(0, .01))) +
   labs(x = "return year", y = "escapement") +
-  scale_fill_viridis_d(name = "HCR",
-                       breaks = c("current", "alt", "WSP"),
-                       labels = c("current", "alternate", "WSP")) +
-  scale_color_viridis_d(name = "HCR",
-                        breaks = c("current", "alt", "WSP"),
-                        labels = c("current", "alternate", "WSP")) +
-  facet_grid(prod~.) +
+  scale_fill_viridis_d(name = "productivity") +
+  scale_color_viridis_d(name = "productivity") +
+  facet_grid(HCR~.) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-S.png"))
@@ -322,56 +307,3 @@ ggplot(data = fwd.sim) +
   theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-C.png"))
-
-# performance metrics---------------------------------------------------------------------
-
-perf.metrics <- perf.metrics |>
-  pivot_longer(-c(yrs, metric, prod), names_to = "HCR") |>
-  mutate(bin = case_when(value >= 0 & value <=.11 ~ "low",
-                         value > .11 & value <=.34 ~ "lowmed",
-                         value > .34 & value <= .65 ~ "med",
-                         value > .65 ~ "high"),
-         yrs = factor(paste(yrs, "generations"), levels = c("3 generations",
-                                                            "10 generations")))
-
-ggplot(data = filter(perf.metrics, metric == "above.Smsy.8"), aes(x=prod, y = HCR)) +
-  geom_raster(aes(fill= bin)) +
-  geom_text(aes(label = round(value,2))) +
-  scale_fill_manual(values = c("forestgreen", "white", "pink", "hotpink")) +
-  facet_grid(.~yrs) +
-  guides(fill = "none") +
-  labs(x = "productivity", title = bquote("Percent of years spawners is above S"[MSY]))
-
-my.ggsave(here("figure/perf-Smsy.png"))
-
-ggplot(data = filter(perf.metrics, metric == "below.Sgen"), aes(x=prod, y = HCR)) +
-  geom_raster(aes(fill= bin)) +
-  geom_text(aes(label = round(value,2))) +
-  scale_fill_manual(values = c("forestgreen", "white", "pink", "hotpink")) +
-  facet_grid(.~yrs) +
-  guides(fill = "none") +
-  labs(x = "productivity", title = bquote("Percent of years spawners is below S"[gen]))
-
-my.ggsave(here("figure/perf-Sgen.png"))
-
-ggplot(data = filter(perf.metrics, metric == "catch"), aes(x=prod, y = HCR)) +
-  geom_raster(aes(fill= value)) +
-  geom_text(aes(label = round(value,2))) +
-  scale_fill_viridis_c() +
-  facet_grid(.~yrs) +
-  labs(x = "productivity", title = "Catch (millions of fish) *bad scales but can fix*")+
-  theme(legend.position = "bottom") +
-  guides(fill=guide_legend(title="catch (M)"))
-
-my.ggsave(here("figure/perf-catch.png"))
-
-ggplot(data = filter(perf.metrics, metric == "catch.stability"), aes(x=prod, y = HCR)) +
-  geom_raster(aes(fill= value)) +
-  geom_text(aes(label = round(value,2))) +
-  scale_fill_viridis_c() +
-  facet_grid(.~yrs) +
-  labs(x = "productivity", title = "Catch stability (1/CV)") +
-  theme(legend.position = "bottom") +
-  guides(fill=guide_legend(title="stability"))
-
-my.ggsave(here("figure/perf-catch-stab.png"))

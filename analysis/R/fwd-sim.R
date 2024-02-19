@@ -16,7 +16,7 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
 
 # get the last yr of rec & parameter posteriors -------------------------------------
 last.yr <- max(data$year) #final yr of model fit
-sim.gens <- 1+10 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
+sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
@@ -157,8 +157,8 @@ for(i in 1:length(HCRs)){
 }
 
 fwd.sim <- fwd.sim |>
-  mutate(prod = factor(ifelse(grepl("low", HCR), "low productivity", "normal"),
-                       levels = c("normal", "low productivity")),
+  mutate(prod = factor(ifelse(grepl("low", HCR), "low productivity", "baseline"),
+                       levels = c("baseline", "low productivity")),
          HCR = gsub("low_a_", "", HCR)) |>
   relocate(prod, .after=2)
 
@@ -212,4 +212,4 @@ perf.metrics <- perf.metrics |>
 rm(beta, bench, bench.quant, C, Cs, Ss, catch, catch.stability, yr.breaks, fwd.states,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   ref.pts, Sgen, Umsy, sub, sub.pars,yrs, U, last.yr.ind)
+   ref.pts, Sgen, sub, sub.pars,yrs, U, last.yr.ind)
