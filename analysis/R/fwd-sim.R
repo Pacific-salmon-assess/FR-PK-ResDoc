@@ -20,7 +20,7 @@ sim.gens <- 1+10 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt", "WSP", "low_a_current", "low_a_alt", "low_a_WSP")
+HCRs <- c("current", "alt", "PA", "low_a_current", "low_a_alt", "low_a_PA")
 OU.CV <- 0.1 #outcome uncertainty
 
 # calc forecast error---------------------------------------------------------------------
@@ -124,7 +124,7 @@ for(i in 1:length(HCRs)){
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
       if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV), Umsy=Umsy)}
-      if(grepl("WSP", HCR)){post_HCR <- WSP_HCR(R, OU=1+rnorm(1, 0, OU.CV),
+      if(grepl("PA", HCR)){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                               Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
 
       fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
@@ -169,7 +169,7 @@ colnames(fwd.sim) <- c("year", "HCR", "prod", "R_lwr", "R_mid_lwr", "R", "R_mid_
                        "lnresid_mid_upr", "lnresid_upr")
 
 # summarise performance metrics------------------------------------------------------
-yr.breaks <- c(3, 10)
+yr.breaks <- 5 #c(3, 10)
 if(max(yr.breaks)> (sim.gens -1)){stop("performmance metrics: sim.gens less than breaks")}
 perf.metrics <- NULL
 
@@ -204,7 +204,7 @@ for(i in 1:length(HCRs)){
 }
 
 perf.metrics <- perf.metrics |>
-  mutate(prod = ifelse(grepl("low", HCR), "low productivity", "normal"),
+  mutate(prod = ifelse(grepl("low", HCR), "low productivity", "baseline"),
          HCR = gsub("low_a_", "", HCR)) |>
   pivot_wider(names_from = HCR, values_from = value) |>
   arrange(metric, yrs)

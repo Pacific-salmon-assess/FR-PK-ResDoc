@@ -30,7 +30,7 @@ current_HCR <- function(R, OU){
   return(c(S,C,U))
 }
 
-WSP_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
+PA_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
   if(R <= Sgen){C <- 0
   S <- R}
   if(R > Sgen & R < R.Smsy){C <- (R*(Umsy/Sgen))*OU
