@@ -14,45 +14,17 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
   mutate(harvest = round(harvest/1000000, 2),
          spawn = round(spawn/1000000, 2))
 
-# get the last yr of rec & parameter posteriors -------------------------------------
-last.yr <- max(data$year) #final yr of model fit
-sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
-n.sims <- 1000
-states <- c("R", "S", "C", "U", "lnresid")
-last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt", "PA", "low_a_current", "low_a_alt", "low_a_PA")
-OU.CV <- 0.1 #outcome uncertainty
-
-# calc forecast error---------------------------------------------------------------------
-  #using mean absolute percent error approach (MAPE)
-for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)
-
-if(FALSE){ #check trends and distribution of error
-  ggplot(for.error, aes(YearX, error)) +
-    geom_point() +
-    stat_smooth(method = "lm") +
-    labs(y="forecast error (CV)", x = "year")
-  ggplot(lm(error~YearX, data = for.error), aes(x = .fitted, y = .resid)) +
-    geom_point() +
-    stat_smooth()
-}
-
-for.error <- for.error |>
-  pull(error) |>
-  mean()
-
-# get benchmarks (needed for fwd sim) ----------------------------------------------------
+# get benchmarks
 bench <- matrix(NA,1000,3,
                 dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy")))
 
 for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
-  a <- model.pars$lnalpha[r]
+  ln_a <- model.pars$lnalpha[r] #Shit. should this be corrected alpha?
   b <- model.pars$beta[r]
-  bench[i,2] <- get_Smsy(a,b) #Smsy
-  bench[i,1] <- get_Sgen(exp(a),b,-1,1/b*2,bench[i,2]) #Sgen
-  bench[i,3] <- (1 - lambert_W0(exp(1 - a))) #Umsy
+  bench[i,2] <- get_Smsy(ln_a,b) #Smsy
+  bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #Sgen
+  bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #Umsy
 }
 
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
@@ -71,16 +43,43 @@ rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
                           "50th percentile (spawners)")
 colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
 
-#pull some values to apply HCRs below
+#pull some values to use later
 Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 
-# do fwd sim -----------------------------------------------------------------------------
-fwd.states <- array(NA, dim = c(n.sims, length(states), sim.gens, length(HCRs)))
-ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
+# initialize the sim ---------------------------------------------------------------------
+last.yr <- max(data$year) #final yr of model fit
+sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
+n.sims <- 1000
+states <- c("R", "S", "C", "U", "lnresid")
+last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
+HCRs <- c("current", "alt", "PA", "low_a_current", "low_a_alt", "low_a_PA")
+OU.CV <- 0.1 #outcome uncertainty
 
+# calc forecast error
+  #using mean absolute percent error approach (MAPE)
+for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
+  mutate(error = abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)
+
+if(FALSE){ #check trends and distribution of error
+  ggplot(for.error, aes(YearX, error)) +
+    geom_point() +
+    stat_smooth(method = "lm") +
+    labs(y="forecast error (CV)", x = "year")
+  ggplot(lm(error~YearX, data = for.error), aes(x = .fitted, y = .resid)) +
+    geom_point() +
+    stat_smooth()
+}
+
+for.error <- for.error |>
+  pull(error) |>
+  mean()
+
+# do fwd sim -----------------------------------------------------------------------------
+fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
+ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
@@ -105,13 +104,16 @@ for(i in 1:length(HCRs)){
     beta <- sub.pars$beta[r]
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
+    #estimate draw-specific benchmarks for performance measures later
+    sub.Smsy.8 <- get_Smsy(lnalpha_c, beta)
+    sub.Sgen <- get_Sgen(exp(lnalpha_c), beta, -1, 1/beta*2, sub.Smsy.8)
     #draw final states from model to start fwd sim from
     R <- sub.pars$R[r, last.yr.ind]
     S <- sub.pars$S[r, last.yr.ind]
     C <- sub.pars$C[r, last.yr.ind]
     U <- sub.pars$U[r, last.yr.ind]
     last.lnresid <- sub.pars$lnresid[r, last.yr.ind]
-    fwd.states[j,,1,i] <- c(R,S,C,U,last.lnresid) #write final state from model to array
+    fwd.states[j,,1,i] <- c(R,S,C,U,last.lnresid, NA, NA) #write final state from model to array
     for(k in 2:sim.gens){
       #get previous state
       last.S <- fwd.states[j,2,k-1,i]
@@ -123,20 +125,20 @@ for(i in 1:length(HCRs)){
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
-      if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV), Umsy=Umsy)}
+      if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV),
+                                                Sgen=Sgen, Umsy=Umsy)}
       if(grepl("PA", HCR)){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                               Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
+      #make binary obs for some summaries later
+      under.Sgen <- post_HCR[1] < sub.Sgen
+      over.Smsy.8 <- post_HCR[1] > sub.Smsy.8
 
-      fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid) #populate the next year based on the HCR
+      fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid, under.Sgen, over.Smsy.8) #write it
     }
   }
 }
 
-#debug fwd sim dims = fwd.states[j=sim, states = c(R, S, C, U, last.lnresid), k=sim.gen, i=HCR]
-#t(fwd.states[j, ,,i])
-
-#wrangle fwd.sim into summary array of [yr, states(+CIs), HCR]
-#need this one for plotting...
+#wrangle fwd.sim into summary array of [yr, states(+CIs), HCR] for plotting...
 fwd.sim <- NULL
 yrs <- as.character(seq(from = last.yr,
                         to = last.yr+((sim.gens-1)*2), by=2)) #final yr of sim + fwd sims
@@ -169,23 +171,18 @@ colnames(fwd.sim) <- c("year", "HCR", "prod", "R_lwr", "R_mid_lwr", "R", "R_mid_
                        "lnresid_mid_upr", "lnresid_upr")
 
 # summarise performance metrics------------------------------------------------------
-yr.breaks <- 5 #c(3, 10)
+yr.breaks <- 5 #c(3, 10) #option to summarise across multiple years here
 if(max(yr.breaks)> (sim.gens -1)){stop("performmance metrics: sim.gens less than breaks")}
 perf.metrics <- NULL
 
 for(i in 1:length(HCRs)){
   for(j in yr.breaks){
     sub.data <- fwd.states[,,2:(j+1),i] #index to NOT include final year of observed data.
-    Ss <- sub.data[,2,] #spawner sims across years
     Cs <- sub.data[,3,] #catch sims
 
-    below.Sgen <- 1:j |>
-      map_dbl(\(x) length(which(Ss[,x]<Sgen))/length(Ss[,x])) |>
-      median()
+    below.Sgen <- (length(which(sub.data[,6,]==1))/length(sub.data[,6,]))*100
 
-    above.Smsy.8 <- 1:j |>
-      map_dbl(\(x) length(which(Ss[,x]>Smsy.8))/length(Ss[,x])) |>
-      median()
+    above.Smsy.8 <- (length(which(sub.data[,7,]==1))/length(sub.data[,7,]))*100
 
     catch <- 1:j |>
       map_dbl(\(x) median(Cs[,x])) |>
@@ -206,10 +203,10 @@ for(i in 1:length(HCRs)){
 perf.metrics <- perf.metrics |>
   mutate(prod = ifelse(grepl("low", HCR), "low productivity", "baseline"),
          HCR = gsub("low_a_", "", HCR)) |>
-  pivot_wider(names_from = HCR, values_from = value) |>
-  arrange(metric, yrs)
+  pivot_wider(names_from = metric, values_from = value)
 
-rm(beta, bench, bench.quant, C, Cs, Ss, catch, catch.stability, yr.breaks, fwd.states,
+rm(beta, C, Cs, catch, catch.stability, yr.breaks, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   ref.pts, Sgen, sub, sub.pars,yrs, U, last.yr.ind)
+   ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
+   sub.Sgen, under.Sgen)
