@@ -46,7 +46,7 @@ PA_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
 }
 
 #3.48 upper OCP comes from AMH's HCR formula
-alt_HCR <- function(R, OU, Umsy){
+alt_HCR <- function(R, OU, Sgen, Umsy){
   if(R <= Sgen){C <- 0
   S <- R}
   if(R > Sgen & R <= 3.48){C <- (R-Sgen)*OU
