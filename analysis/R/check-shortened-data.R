@@ -77,4 +77,5 @@ rownames(both.benchmarks) <- NULL
 ggplot(both.benchmarks, aes(x = par, y = median)) +
   geom_pointrange(aes(ymin = `lower 95% CI`, ymax = `upper 95% CI`, color = data),
                   position = "jitter") +
-  labs(x = "benchmark", y = "value")
+  labs(title = "Comparing estimates from the full data vs. post '93",
+       x = "benchmark", y = "value")
