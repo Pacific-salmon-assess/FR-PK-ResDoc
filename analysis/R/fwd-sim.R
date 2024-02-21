@@ -55,7 +55,7 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt", "PA", "low_a_current", "low_a_alt", "low_a_PA")
+HCRs <- c("current", "alt_TAM", "PA_hump", "low_a_current", "low_a_alt_TAM", "low_a_PA_hump")
 OU.CV <- 0.1 #outcome uncertainty
 
 # calc forecast error
@@ -189,7 +189,7 @@ for(i in 1:length(HCRs)){
       sum()
 
     catch.stability <- 1:j |>
-      map_dbl(\(x) mean(Cs[,x])/sd(Cs[,x])) |>
+      map_dbl(\(x) median(Cs[,x])/sd(Cs[,x])) |>
       median()
 
     perf.metrics <- rbind(perf.metrics, data.frame(yrs = rep(j, 4), HCR = rep(HCRs[i],4),
