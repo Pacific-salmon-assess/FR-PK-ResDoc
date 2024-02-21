@@ -45,7 +45,7 @@ PA_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
   return(c(S,C,U))
 }
 
-#3.48 upper OCP comes from AMH's HCR formula
+#3.48 upper OCP comes from AMH's TAM.fixlower formula
 alt_HCR <- function(R, OU, Sgen, Umsy){
   if(R <= Sgen){C <- 0
   S <- R}
