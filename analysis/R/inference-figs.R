@@ -7,7 +7,7 @@ source(here("analysis/R/functions.R"))
 source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
-current.hcr <- read.csv(here("analysis/data/raw/current_hcr.csv"))
+HCRs <- read.csv(here("analysis/data/raw/HCRs.csv"))
 
 avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.csv"))
 colnames(avg_mass) <- c("year", "avg.weight", "reference")
@@ -15,8 +15,7 @@ colnames(avg_mass) <- c("year", "avg.weight", "reference")
 compitetors <- read.csv(here("analysis/data/raw/bio/competitor_density_long.csv")) |>
   filter(species == "pink", area == "np")
 
-benchmarks <- as.data.frame(benchmarks) |>
-  round(2)
+benchmarks <- round(benchmarks, 2)
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -115,26 +114,28 @@ ggplot(avg_mass, aes(year, avg.weight)) +
 
 my.ggsave(here("figure/avg-mass.png"))
 
-# plot current HCR -----------------------------------------------------------------------
-  #NEED TO ADD THE OTHER HCRs!
-p1 <- ggplot(current.hcr, aes(x=run_size, y=esc)) +
-  geom_line(size=1.1) +
-  geom_vline(xintercept = 7.059, lty = 2)+
-  geom_vline(xintercept = 20, lty = 2)+
-  labs(x = "Run size (millions)",
-       y = "Target escapement")
+# plot HCRs ------------------------------------------------------------------------------
+p1 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
+  geom_line(size=1.1, alpha = 0.8) +
+  scale_color_viridis_d() +
+  geom_vline(xintercept = R.Smsy.8) +
+  geom_vline(xintercept = Sgen) +
+  #geom_vline(xintercept = Smsy.8) +
+  labs(x = NULL,
+       y = "Target escapement") +
+  guides(color = "none")
 
-p2 <- ggplot(current.hcr, aes(x=run_size, y=er)) +
-  geom_line(size=1.1) +
-  geom_vline(xintercept = 7.059, lty = 2)+
-  geom_vline(xintercept = 20, lty = 2)+
+p2 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
+  geom_line(size=1.1, alpha = 0.8) +
+  scale_color_viridis_d() +
   ylim(c(0,1)) +
   labs(x = "Run size (millions)",
-       y = "Target exploitation rate")
+       y = "Target ER") +
+  theme(legend.position = "bottom")
 
 p1/p2
 
-my.ggsave(here("figure/current-HCR.png"))
+my.ggsave(here("figure/HCRs.png"))
 
 # plot SR relationship -------------------------------------------------------------------
 ggplot() +
@@ -189,7 +190,7 @@ d_start <- 2013
 d_end <- 2023
 
 #spawners
-ggplot(data = fwd.sim) +
+p1 <- ggplot(data = fwd.sim) +
   #draw the fwd.sim
   geom_line(aes(x = year, y = S, color = prod), lwd = 1, lty = 2) +
   geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = prod), alpha=0.2) +
@@ -215,11 +216,40 @@ ggplot(data = fwd.sim) +
 
 my.ggsave(here("figure/fwd-S.png"))
 
+#and fwd sim catch
+#get average catch
+past_gens <- 5
+C_avg <- mean(filter(C_df, year<=max(C_df$year), year> max(C_df$year)-(past_gens*2))$mid)
+
+p2 <- ggplot(data = fwd.sim) +
+  #draw the fwd.sim
+  geom_line(aes(x = year, y = C, color = prod), lwd = 1, lty = 2) +
+  geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = prod), alpha=0.2) +
+  #draw the exsiting data
+  geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
+  geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  geom_hline(yintercept = C_avg, lty = 2) +
+  annotate("text", x = d_start + 4, y = C_avg+2,
+           label = "5 gen avg.") +
+  scale_x_continuous(breaks= pretty_breaks(),
+                     expand = expansion(mult = c(0, .01))) +
+  labs(x = "return year", y = "catch (M)") +
+  scale_fill_viridis_d(name = "productivity") +
+  scale_color_viridis_d(name = "productivity") +
+  facet_grid(HCR~.) +
+  theme(legend.position = "bottom")
+
+my.ggsave(here("figure/fwd-C.png"))
+
+p1|p2 #  +  plot_layout (guides = "collect")
+
 #and fwd sim harvest rate
 ggplot(data = fwd.sim) +
   #draw the fwd.sim
   geom_line(aes(x = year, y = U, color = HCR), lwd = 1, lty = 2) +
-  #geom_ribbon(aes(x = year, ymin = U_lwr, ymax = U_upr,  fill = HCR), alpha = 0.5) +
   geom_ribbon(aes(x = year, ymin = U_mid_lwr, ymax = U_mid_upr, fill = HCR), alpha=0.2) +
   #draw the exsiting data
   geom_line(data = filter(er_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
@@ -228,13 +258,9 @@ ggplot(data = fwd.sim) +
   geom_ribbon(data = filter(er_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   #draw the benchmarks
-#  geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
-#                ymin = benchmarks$`lower 95% CI`[3], ymax = benchmarks$`upper 95% CI`[3]),
-#            fill = "forestgreen", alpha = 0.02) +
-  geom_hline(yintercept = benchmarks$median[3],
-             color = "forestgreen") +
+  geom_hline(yintercept = benchmarks$median[3]) +
   annotate("text", x = d_start + 0.5, y = 0.55,
-           label = "italic(U[MSY])", parse = TRUE, color = "forestgreen") +
+           label = "italic(U[MSY])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks()) +
   #coord_cartesian(expand = FALSE) +
   labs(x = "return year", y = "harvest rate") +
@@ -282,28 +308,3 @@ ggplot(data = fwd.sim) +
 
 my.ggsave(here("figure/fwd-R.png"))
 
-#and fwd sim catch
-ggplot(data = fwd.sim) +
-  #draw the fwd.sim
-  geom_line(aes(x = year, y = C, color = HCR), lwd = 1, lty = 2) +
-  #geom_ribbon(aes(x = year, ymin = U_lwr, ymax = U_upr,  fill = HCR), alpha = 0.5) +
-  geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = HCR), alpha=0.2) +
-  #draw the exsiting data
-  geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
-  geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  scale_x_continuous(breaks= pretty_breaks()) +
-  #coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "catch (M)") +
-  scale_fill_viridis_d(name = "HCR",
-                       breaks = c("current", "alt", "WSP"),
-                       labels = c("current", "alternate", "WSP")) +
-  scale_color_viridis_d(name = "HCR",
-                        breaks = c("current", "alt", "WSP"),
-                        labels = c("current", "alternate", "WSP")) +
-  facet_grid(prod~.) +
-  theme(legend.position = "bottom")
-
-my.ggsave(here("figure/fwd-C.png"))
