@@ -1,10 +1,10 @@
 -📁`generated` data generated from analyses  
-  -just the stan fit
--📁`raw` data used in the analysis or to show the HCR 
-  -`current_hcr.csv` is just a helper .csv generated to show the HCR
-  -`fr_pk_spw_har.csv` is the spawn and harvest data with their CVs from ***who again?***
-  -`fr_pk_spw_har_even_CVs.csv` is the same data but with all CVs equal for experimenting
-  -📁`bio`
-    -`HistoricalPinkWeightDownload.csv` is average body mass downloaded from the [PSC's app](https://psc1.shinyapps.io/BioDataApp/)
-    -`sp-len-fecundity-Grant-etal-2014.csv` is the length fecundity relationship (Table 12) from Grant et al (2014)
-    -`competitor_density_long.csv` is numbers and biomass of salmon in the north pacific originally reported in [Ruggerone & Irvine (2018)](https://afspubs.onlinelibrary.wiley.com/doi/full/10.1002/mcf2.10023) and manipulated in [this GitHub repo](https://github.com/Pacific-salmon-assess/Salmon-warming-crowded-oceans/tree/main/data)
+  -just the stan fit  
+-📁`raw` data used in the analysis or to show the HCR  
+  -`current_hcr.csv` is just a helper .csv generated to show the HCR  
+  -`fr_pk_spw_har.csv` is the spawn and harvest data with their CVs from ***who again?***  
+  -`fr_pk_spw_har_even_CVs.csv` is the same data but with all CVs equal for experimenting  
+  -📁`bio`  
+    -`HistoricalPinkWeightDownload.csv` is average body mass downloaded from the [PSC's app](https://psc1.shinyapps.io/BioDataApp/)  
+    -`sp-len-fecundity-Grant-etal-2014.csv` is the length fecundity relationship (Table 12) from Grant et al (2014)  
+    -`competitor_density_long.csv` is numbers of pink salmon in the north pacific 1925-2015 reported in Table 21 in the supplement of [Ruggerone & Irvine (2018)](https://afspubs.onlinelibrary.wiley.com/doi/full/10.1002/mcf2.10023)  
