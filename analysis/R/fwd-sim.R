@@ -32,22 +32,21 @@ bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
 
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 
-benchmarks <- matrix(NA,5,3)
+benchmarks <- matrix(NA,3,3)
 benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
 benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
 benchmarks[3,] <- c(bench.quant[2,3],bench.quant[1,3],bench.quant[3,3])
-benchmarks[4,1] <- percentiles[1]
-benchmarks[5,1] <- percentiles[2]
-
-rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy","25th percentile (spawners)",
-                          "50th percentile (spawners)")
+rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy")
 colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
 
-#pull some values to use later
+#pull some values to use later and in text
 Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
+lower.25th.Sp <- percentiles[1]
+lower.50th.Sp <- percentiles[2]
+
 
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit

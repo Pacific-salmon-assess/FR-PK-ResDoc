@@ -52,5 +52,6 @@ max(model.summary$Rhat, na.rm = T)
 mcmc_combo(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi", "lnresid_0"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
+
 # how do correlations in lnalpha and beta posteriors look?
 pairs(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi"))

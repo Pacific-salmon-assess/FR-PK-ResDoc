@@ -1,21 +1,23 @@
 library(tidyverse)
 library(here)
 library(gsl)
-library(patchwork)
+#library(patchwork)
+library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
 source(here("analysis/R/functions.R"))
 source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
-HCRs <- read.csv(here("analysis/data/raw/HCRs.csv"))
+HCRs <- read.csv(here("analysis/data/raw/HCRs.csv")) |>
+  filter(HCR != "alt.TAM.upper")
 
 avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.csv"))
 colnames(avg_mass) <- c("year", "avg.weight", "reference")
 
-compitetors <- read.csv(here("analysis/data/raw/bio/competitor_density_long.csv")) |>
-  filter(species == "pink", area == "np")
+compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.csv"))
 
-benchmarks <- round(benchmarks, 2)
+benchmarks <- round(benchmarks, 2) |>
+  as.data.frame()
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -106,34 +108,37 @@ my.ggsave(here("figure/catch-esc.png"))
 
 #plot avg mass through time
 ggplot(avg_mass, aes(year, avg.weight)) +
-  geom_col(data = compitetors, aes(x = Year, y = value/200), fill = "pink", color = "pink") +
+  geom_col(data = compitetors, aes(x = return_yr, y = n_pink/150), fill = "pink", color = "pink") +
   geom_line() +
   geom_point() +
-  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "N. Pacific Pink abundance (millions)")) +
+  scale_y_continuous(sec.axis = sec_axis(~.*150, name = "N. Pacific Pink abundance (millions)")) +
   labs(x = "Year", y = "Average body mass (kg)")
 
 my.ggsave(here("figure/avg-mass.png"))
 
 # plot HCRs ------------------------------------------------------------------------------
-p1 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
+p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
+  geom_line(size=1.1, alpha = 0.8) +
+  geom_vline(xintercept = R.Smsy.8) +
+  geom_vline(xintercept = Sgen) +
+  scale_color_viridis_d() +
+  ylim(c(0,1)) +
+  labs(x = NULL,
+       y = "Target ER") +
+  guides(color = "none")
+
+
+p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(size=1.1, alpha = 0.8) +
   scale_color_viridis_d() +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
-  #geom_vline(xintercept = Smsy.8) +
-  labs(x = NULL,
-       y = "Target escapement") +
-  guides(color = "none")
-
-p2 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
-  geom_line(size=1.1, alpha = 0.8) +
-  scale_color_viridis_d() +
-  ylim(c(0,1)) +
   labs(x = "Run size (millions)",
-       y = "Target ER") +
+       y = "Target escapement") +
   theme(legend.position = "bottom")
 
-p1/p2
+#p1/p2
+plot_grid(p1, p2, nrow = 2)
 
 my.ggsave(here("figure/HCRs.png"))
 
@@ -197,8 +202,6 @@ p1 <- ggplot(data = fwd.sim) +
   #draw the exsiting data
   geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks$median[1]) +
   annotate("text", x = d_start + 2, y = 5,
@@ -220,6 +223,11 @@ my.ggsave(here("figure/fwd-S.png"))
 #get average catch
 past_gens <- 5
 C_avg <- mean(filter(C_df, year<=max(C_df$year), year> max(C_df$year)-(past_gens*2))$mid)
+C_top3 <- filter(C_df, year >= 2000) |>
+  arrange(desc(mid)) |>
+  slice(1:3) |>
+  summarise(mean(mid)) |>
+  pull()
 
 p2 <- ggplot(data = fwd.sim) +
   #draw the fwd.sim
@@ -228,12 +236,10 @@ p2 <- ggplot(data = fwd.sim) +
   #draw the exsiting data
   geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  geom_hline(yintercept = C_avg, lty = 2) +
-  annotate("text", x = d_start + 4, y = C_avg+2,
-           label = "5 gen avg.") +
+  geom_hline(yintercept = C_top3, lty = 2) +
+  annotate("text", x = d_start + 4, y = C_top3+2,
+           label = "catch index") +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "return year", y = "catch (M)") +
@@ -244,7 +250,9 @@ p2 <- ggplot(data = fwd.sim) +
 
 my.ggsave(here("figure/fwd-C.png"))
 
-p1|p2 #  +  plot_layout (guides = "collect")
+#p1|p2 #  +  plot_layout (guides = "collect")
+plot_grid(p1, p2)
+my.ggsave(here("figure/fwd-CS.png"))
 
 #and fwd sim harvest rate
 ggplot(data = fwd.sim) +
