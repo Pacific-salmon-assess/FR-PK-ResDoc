@@ -1,3 +1,5 @@
+# Introduction  
+
 ## Background  
 
 The Fraser River is a large free-flowing river draining 233 thousand square kilometers and supports all five species of Pacific Salmon native to North America (Figure \@ref(fig:map)) [@grantFraserRiverPink2014]. 

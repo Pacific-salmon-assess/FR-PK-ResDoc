@@ -10,9 +10,9 @@ knitr::include_graphics(here::here("figure/map.png"))
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
-(ref:current-HCR) Current harvest control rule showing target escapement (top) and exploitation rate (bottom) for Fraser Pinks.  
-```{r current-HCR, fig.cap = "(ref:current-HCR)"}
-knitr::include_graphics(here::here("figure/current-HCR.png"))
+(ref:HCRs) Current harvest control rule showing target escapement (top) and exploitation rate (bottom) for Fraser Pinks.  
+```{r current-HCR, fig.cap = "(ref:HCRs)"}
+knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
 (ref:catch-esc) Catch and escapement for Fraser Pinks.  

@@ -1,36 +1,45 @@
+# Methods  
+
 ## Stock assessment  
+
 Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
-Data before `r min(rec_prop$year)` was not available because commercial landings did not partition catch into specific stocks. 
 Due to changes in priorities, funding and technology, escapement data was collected with a variety of methods. 
 In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present). 
 
 Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
-Contribution of Fraser stocks was based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
+Contribution of Fraser stocks was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
 Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
-The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon. 
+The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
+Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
 Recreational catch is estimated through agency creel surveys in both countries.
 First Nations catch is reported using similar methods of estimating commercial catch (i.e. fish sales slips). 
-See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape, with detailed methodologies for estimating escapement, catch, and biological data. 
+See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data.  
 
 
 ## Data compilation  
 
-We used the description of these methods provided in @grantFraserRiverPink2014 and knowledge from area staff to assign relative estimates of accuracy of these sampling stanzas. 
+Escapement and catch data was provided by **the Pacific Salmon Commisson (PSC - proper reference or no)?**. 
+There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; *Hague et al 2022*); and some analyses have discounted data prior to 1993 (**citation help?**).  
+We used the description of methods in @grantFraserRiverPink2014 and expert knowledge from area staff to estimate relative accuracy among sampling stanzas; neither argued estimates should be systemically biased low or high. 
+We gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from (*Ruggerone & Irvine 2018*) to look at some biological data.  
+
 
 ## Modelling  
 
-Due to concerns over different sampling methodologies (*that's it? - should NOT mention non-stationarity?*), we modeled the spawner-recruit data in a state-space framework with auto correlated recruitment residuals. 
+### Spawner-recruit model  
+
+Due to concerns over different sampling methodologies addressed above, we modeled the spawner-recruit data in a state-space framework with auto-correlated (AR1) recruitment residuals. 
 First, the spawner-recruit model is developed and fit to data to estimate biological benchmarks (i.e. $S_{MSY}$, $U_{MSY}$ and $S_{Gen}$). 
 Then forward simulations are used to evaluate potential harvest control rules.
 
-A state-space Ricker spawner-recruit model was fit to Fraser Pink catch and escapement data. State-space models are useful for modelling because they explicitly partition variation in natural processes from observation error [@auger-metheGuideStateSpace2021]. 
-@grantFraserRiverPink2014 noted that differences in assessment methodologies make it difficult to compare escapement among years. Here, state-space modelling is especially useful because we assign observation specific error to different estimation methods.  
-
-Observation error (coefficients of variation; CVs) was assigned to the different methodologies of assessing escapement after reviewing methods reported in @grantFraserRiverPink2014 (Table \@ref(tab:spawner-est-methods)). 
-These CVs were used as observation error in the state-space spawner-recruit model. 
+State-space models are useful for modelling because they explicitly partition variation in natural processes from observation error [@auger-metheGuideStateSpace2021]. 
+State-space models are widely used in spawner-recruit modelling (*Peterman et al 2020, Fleishman et al 2013, ...*), due to their ability to describe imperfect data (@auger-metheGuideStateSpace2021, *...*) as well as addressing time-series bias (*Myers 2002?, ...*).  
+We made **recruitment residuals auto-correlated in order to ...**. 
+Here, state-space modelling is especially useful because we can address concerns with the escapement data quality.  
+Observation error (CVs) for escapement are based on the relative accuracy described above (Table \@ref(tab:spawner-est-methods)). 
 Since catch was heavily monitored and methods had not changed much through the years, catch CV was assumed to be 0.05. 
 
-We fit a Ricker spawner-recruit model with autocorrelated (i.e. AR(1)) error on recruitment residuals:
+Our state-space spawner-recruit model with auto-correlated recruitment residuals took the form: 
 
 \begin{equation}
 log(R_{y}) = log(S_{y}) + log(\alpha) - \beta S_{y} + \phi log(R_{y-1}/\hat{R}_{y-1})+r_{y}
@@ -53,19 +62,57 @@ where $log(\overline{r}_{0})$ and $\sigma r_{0}$ are the mean and variance of th
 
 Analyses were conducted in R and Stan via the rstan package [@rcoreteamLanguageEnvironmentStastical2019; @standevelopmentteamRstanInterfaceStan2023].
 $\hat{R}$ were all less than 1.01, there were no divergent transitions and ESS was all greater than 400. 
+We visually checked recruitment residuals to determine if this model would benefit from time-varying parameters.  
 
-## Forward simulations  
 
-Closed loop forward simulations used the existing state-space spawner-recruit model (Equation \@ref(eq:SR)) and projected population dynamics 3 generations forward (i.e. 6 years). 
-Simulations were done with the current and alternate HCR (***add a table and expand on why we used these HCRs***) with population dynamics reflecting the modeled spawner-recruit relationship, and also included a robustness test where productivity (Ricker $\alpha$) is restricted to 10% of the estimated parameter (i.e. posterior distribution).
+### Benchmark estimation  
 
-We sampled posteriors and starting states 1000 times with replacement for each of the HCRs and projected forward while accounting for uncertainty in the previous time step, forecast error and outcome uncertainty. Forecast error was applied to recruits before the HCR was applied and assumed the CV of forecasts was `r for.error` (***edit with new method***). 
-Outcome uncertainty was applied to the total catch during the HCR and had a CV of `r OU.CV`. 
+We estimated $S_{MSY}$ (*Scheuerell 2016*):
 
-### HCR performance asessment
-***In general draft:***
-- x HCR allowed the most catch in x scenarios
-- y was less likely for pops to go below Smsy
-- similar inference on Sgen
-- Umsy too?
+$U_{MSY}$: 
 
+and $S_{Gen}$:
+**Just fire these in a table? someone said that before**
+
+which were used as biological benchmarks to inform HCRs and evaluate their performance.  
+We took 80% of $S_{MSY}$ as that is what is suggested and evaluated as a suitable upper benchmark for salmon (*DFO 2009 fishery decision making frmwrk, Holt et al 2009*). 
+
+
+## Assessment: forward simulations  
+
+Closed loop forward simulations used the existing state-space spawner-recruit model (Equation \@ref(eq:SR)) and projected population dynamics 5 generations forward (10 years). 
+Simulations were done with the current and alternate HCRs with population dynamics reflecting the modeled spawner-recruit relationship, and also included a robustness test where productivity was reduced to 10% of the estimated parameters.  
+
+
+### Harvest control rules tested  
+
+We tested one HCR that was based on the precautionary approach, where the exploitation rate (ER) is 0% when recruits are under $S_{gen}$; when recruits are between $S_{gen}$ and $U_{MSY}$ the ER increases linearly from 0% to $U_{MSY}$, then remains at $U_{MSY}$. 
+This HCR makes sense intuitively, but is impractical for fisheries management; (**Help me AMH!**). 
+A similar HCR that works with management anchors the lower operational control point (OCP) at $S_{gen}$ and the upper OCP is a function of $S_{gen}$ and $U_{MSY}$ where:  
+
+\begin{equation}
+OCP_{upper} = OCP_{lower} / (1 - U_{MSY})
+\label{eq:UpperOCP}
+\end{equation}  
+
+When the recruits are below $S_{gen}$ the ER is 0%; when recruits are between $S_{gen}$ and the upper OCP escapement is fixed at $S_{gen}$, and when recruits are greater than the upper OCP ER is fixed at $U_{MSY}$ (Figure \@ref(figure:HCRs)).  
+
+To address uncertainty in estimation of productivity, and to provide resilience to changing productivity forward in the simulation, we also conducted a robustness test that tested a low productivity scenario. 
+Each HCR was tested at its reference (i.e. baseline) and robustness (i.e. low productivity) level. 
+Baseline tests sampled the full posterior and robustness test sampled the lower 10th percentile of joint draws from the posterior of the productivity parameter (Ricker $\alpha$).  
+
+
+### Simulation methods  
+
+For each HCR and productivity scenario, we took joint draws of posteriors for parameters and starting states in `r max(data$year)` 1000 times with replacement then projected population dynamics and management scenarios forward 5 generations. 
+Uncertainty in management was accounted for by including forecast error and outcome uncertainty. 
+Forecast error was empirically calculated based on pre-season forecasts provided by the PSC (**edit this after discussions on March 8th about correcting for in-season adjustments**). 
+Lognormal forecast error was applied to recruits before applying the HCR, then outcome uncertainty applied to catch in the HCR functions.    
+Outcome uncertainty was normally distributed with a CV of `r OU.CV`, which has **justifications from** (**Holt & Peterman 2011**).  
+
+
+### Simulation performance  
+
+Simulations were evaluated for each HCR and productivity regime across five metrics that encompass aspects of conservation risk and fishery objectives. 
+Conservation risk was assessed by calculating 1) the percentage of years where escapement fell above $S_{MSY}$, and 2) the percentage of years where escapement fell below $S_{gen}$. 
+Fishery objectives were addressed by calculating 3) annual catch, 4) catch stability (1/CV), and 5) a relative catch index; or the percentage of years that fell below an ad hoc threshold, defined as the mean catch of the highest three catches since the year 2000.   
