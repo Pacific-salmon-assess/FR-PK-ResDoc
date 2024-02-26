@@ -4,7 +4,7 @@
 
 The Fraser River is a large free-flowing river draining 233 thousand square kilometers and supports all five species of Pacific Salmon native to North America (Figure \@ref(fig:map)) [@grantFraserRiverPink2014]. 
 This large basin has a wide diversity of habitats that are broken into seven freshwater adaptive zones including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008].  
--*add dams, slides, floods?*
+-*add marine overview, dams, slides, floods?*
 
 ### Biology
 
@@ -26,9 +26,9 @@ This diversion rate appears to be increasing, which has implications for surviva
 
 ### Climate change impacts  
 
-Climate change is affecting salmon across all stages of life in marine and freshwater environments (**generic citation**). 
-Climate and hatchery practices have contributed to a warm, crowded ocean which impacts growth and survival (**cite**).
-Freshwater habitat continues to be affected by warmer weather, drought, wildfire, landslides and floods that are increasing in a more variable climate [@macdonaldStateCanadianPacific2023]. 
+Climate change is affecting salmon across all stages of life in marine and freshwater environments (*cite*). 
+Climate and hatchery practices have contributed to a warm, crowded ocean which impacts growth and survival (*cite - Connors et al 2020, Ruggerone & COnnors 2015, Ruggerone & Irvine 2018*).
+Freshwater habitat continues to be affected by warmer weather, drought, wildfire, landslides and floods that are increasing in a more variable climate [@macdonaldStateCanadianPacific2023, *others*]. 
 Evidence of this in the Fraser is clear given the Big Bar landslide that blocked fish passage discovered in 2019 and with the recent flooding due to an atmospheric river in the November 2021.
 Existing trends in changing demography and behavior in Fraser Pinks (e.g. @hagueMovingTargetsAssessing2021; @pacificsalmoncommissionPSCBiologicalData2023; @ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018) paired with a warming climate allude to a precarious future for Fraser Pinks. 
 
@@ -37,12 +37,12 @@ Existing trends in changing demography and behavior in Fraser Pinks (e.g. @hague
 
 The current harvest control rule has been in place since the mid 1980's and has not been updated.
 When the return is over 20 million the total allowable mortality (TAM) is 70%.
-IF the run size is between 7.059 and 20 million fish, the escapement target is 6 million fish and the rest is a harvestable surplus. 
-When the escapement is less than 7.059, the exploitation rate increases linearly from 0% at a run size of 0 to 15% at a run size of 7.059 [@fisheriesandoceanscanadaSouthernSalmonIntegrated2023].  
+If the run size is between 7.059 and 20 million fish, the escapement target is 6 million fish and the rest is a harvestable surplus. 
+When the escapement is less than 7.059, the exploitation rate increases linearly from 0% at a run size of 0 to 15% at a run size of 7.059 [@fisheriesandoceanscanadaSouthernSalmonIntegrated2023]. 
 This harvest control rule implies that the lower reference point (LRP) is 7.059 million and the upper stock reference (USR) is 20 million, with a TAM of 70%. The basis of the TAM appears to be based on @rickerHistoryPresentState1989, but must be based on some unpublished analysis before the 1989 paper.  
 
 Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. 
-Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest [@macdonaldStateCanadianPacific2023].   
+Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest (*and something with FSP?*) [@macdonaldStateCanadianPacific2023].   
 
 
 ## Objectives  

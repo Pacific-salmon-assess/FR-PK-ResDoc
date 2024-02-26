@@ -41,19 +41,19 @@ df <- data.frame(run_sz = c("Less than 7.059M", "Between 7.059M & 20M", "Over 20
                               "The TAM is 70%. The escapement target increases as the run size moves beyond 20M."))
 
 #rows don't render with breaks when running this and table is too wide
-#csasdown::csas_table(df,
-#                     caption = "(ref:HCR-table)",
-#                     format = "pandoc",
-#                     landscape = FALSE,
-#                     font_size = 7,
-#                     repeat_header = TRUE)
+csasdown::csas_table(df,
+                     caption = "(ref:HCR-table)",
+                     format = "pandoc",
+                     landscape = FALSE,
+                     font_size = 7,
+                     repeat_header = TRUE)
 
 #this one doesn't work when knitting to word
-kbl(df, 
-    booktabs = TRUE,
-    col.names = c("Run Size", "Escapement Goal"), 
-    caption = "(ref:HCR-table)") |>
-  kableExtra::column_spec(2:3, width = "10 cm")
+#kbl(df, 
+#    booktabs = TRUE,
+#    col.names = c("Run Size", "Escapement Goal"), 
+#    caption = "(ref:HCR-table)") |>
+#  kableExtra::column_spec(2:3, width = "10 cm")
 ```
 
 (ref:spawner-est-methods) Methods of assessing spawner escapement and CVs. 

@@ -18,10 +18,10 @@ See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink d
 
 ## Data compilation  
 
-Escapement and catch data was provided by **the Pacific Salmon Commisson (PSC - proper reference or no)?**. 
-There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; *Hague et al 2022*); and some analyses have discounted data prior to 1993 (**citation help?**).  
+Escapement and catch data was provided by *the Pacific Salmon Commission (PSC - or no?)*. 
+There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; *Hague et al 2022*); and some analyses have discounted data prior to 1993 (***citation help?*** - I can't find it).  
 We used the description of methods in @grantFraserRiverPink2014 and expert knowledge from area staff to estimate relative accuracy among sampling stanzas; neither argued estimates should be systemically biased low or high. 
-We gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from (*Ruggerone & Irvine 2018*) to look at some biological data.  
+We also gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from (*Ruggerone & Irvine 2018*) for context.  
 
 
 ## Modelling  
@@ -106,9 +106,9 @@ Baseline tests sampled the full posterior and robustness test sampled the lower 
 
 For each HCR and productivity scenario, we took joint draws of posteriors for parameters and starting states in `r max(data$year)` 1000 times with replacement then projected population dynamics and management scenarios forward 5 generations. 
 Uncertainty in management was accounted for by including forecast error and outcome uncertainty. 
-Forecast error was empirically calculated based on pre-season forecasts provided by the PSC (**edit this after discussions on March 8th about correcting for in-season adjustments**). 
+Forecast error was empirically calculated based on pre-season forecasts provided by the PSC (*edit after March 8th about correcting for in-season adjustments*). 
 Lognormal forecast error was applied to recruits before applying the HCR, then outcome uncertainty applied to catch in the HCR functions.    
-Outcome uncertainty was normally distributed with a CV of `r OU.CV`, which has **justifications from** (**Holt & Peterman 2011**).  
+Outcome uncertainty was normally distributed with a CV of `r OU.CV`, which has **justifications from...** (*Holt & Peterman 2011*).  
 
 
 ### Simulation performance  
