@@ -55,3 +55,60 @@ mcmc_combo(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi", "lnresid_0"),
 
 # how do correlations in lnalpha and beta posteriors look?
 pairs(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi"))
+
+model.pars <- rstan::extract(stan.fit) #extract pars for later
+
+#-----------------------------------------------------------------------------------------
+# Now also fit it to shortened recent data------------------------------------------------
+data.93 <- filter(data, year >= 1993)
+
+stan.data.93 <- list("nyrs" = length(data.93$year),
+                  "nRyrs" = length(data.93$year) ,
+                  "S_obs" = data.93$spawn/1000000,
+                  "H_obs" = data.93$harvest/1000000,
+                  "S_cv" = data.93$spawn_cv,
+                  "H_cv" = data.93$harvest_cv)
+
+# fit model ------------------------------------------------------------------------------
+stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
+                           model_name = "SS-SR_AR1",
+                           data = stan.data.93,
+                           chains = 4,
+                           iter = 2000,
+                           seed = 1,
+                           thin = 1,
+                           control = list(adapt_delta = 0.99, max_treedepth = 20))
+#shinystan::launch_shinystan(stan.fit)
+saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
+
+# basic diagnostics ----------------------------------------------------------------------
+model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
+
+# Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
+# values at zero can be ignored as these are unsampled parameters.
+min(model.summary.93$n_eff, na.rm = TRUE)
+ggplot(model.summary.93, aes(n_eff/2000)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x = "ESS/iter") +
+  theme_minimal()
+
+# If chains have not mixed well (i.e., the between- and within-chain estimates don't agree),
+# R-hat is > 1. Only use the sample if R-hat is less than 1.05.
+ggplot(model.summary.93, aes(Rhat)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x =  expression(hat("R"))) +
+  theme_minimal()
+
+max(model.summary.93$Rhat, na.rm = T)
+
+# check the chains directly
+mcmc_combo(stan.fit.93, pars = c("lnalpha", "beta", "sigma_R", "phi", "lnresid_0"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
+
+# how do correlations in lnalpha and beta posteriors look?
+pairs(stan.fit.93, pars = c("lnalpha", "beta", "sigma_R", "phi"))
+
+model.pars.93 <- rstan::extract(stan.fit.93)
