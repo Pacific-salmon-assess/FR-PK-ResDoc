@@ -74,6 +74,14 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ``` 
 
+(ref:perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. 
+```{r perf-metrics-descriptions, results = "asis"}
+df <- data.frame(Metric = c("% sims < S_{gen}", "% sims > S_{MSY}"), 
+                 Description = )
+```
+
+#add prior table
+
 (ref:bench-table) Biological and historical benchmarks. 
 ```{r bench-table, results = "asis"}
 csas_table(benchmarks,
@@ -83,3 +91,6 @@ csas_table(benchmarks,
            font_size = 7,
            repeat_header = TRUE)
 ```
+
+#add posterior table
+
