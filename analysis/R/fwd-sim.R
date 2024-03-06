@@ -7,8 +7,10 @@ set.seed(123)
 
 # read in data ---------------------------------------------------------------------------
 stan.fit <- readRDS(here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
-
 model.pars <- rstan::extract(stan.fit)
+
+stan.fit.93 <- readRDS(here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
+model.pars.93 <- rstan::extract(stan.fit.93)
 
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
   mutate(harvest = round(harvest/1000000, 2),
@@ -30,8 +32,6 @@ for(i in 1:1000){
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
 bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
 
-percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
-
 benchmarks <- matrix(NA,3,3)
 benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
 benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
@@ -44,9 +44,9 @@ Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
+percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
-
 
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit
@@ -54,13 +54,16 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt_TAM", "PA_hump", "low_a_current", "low_a_alt_TAM", "low_a_PA_hump")
-OU.CV <- 0.1 #outcome uncertainty
+HCRs <- c("current", "alt_TAM", "PA_hump",
+          "low_a_current", "low_a_alt_TAM", "low_a_PA_hump",
+          "recent_current", "recent_alt_TAM", "recent_PA_hump")
+OU.CV <- 0.1 #assumed outcome uncertainty
 
 # calc forecast error
   #using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)
+  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize),
+         error.half = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)/2) #divided by 2 to account for in-season adjustment
 
 if(FALSE){ #check trends and distribution of error
   ggplot(for.error, aes(YearX, error)) +
@@ -73,20 +76,24 @@ if(FALSE){ #check trends and distribution of error
 }
 
 for.error <- for.error |>
-  pull(error) |>
+  pull(error.half) |>
   mean()
 
 # do fwd sim -----------------------------------------------------------------------------
 fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
+random <- NULL #helper to see where we are
+
+
+#helper sort(sub.pars$lnalpha_c, decreasing = TRUE)
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
   sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
   if(grepl("low_a", HCR)){ #overwrite posterior & final state to low productivity if "low_a"
-    low_a_rows <- which(sub.pars$lnalpha_c <= quantile(sub.pars$lnalpha_c, probs = 0.1))
+    low_a_rows <- which(sub.pars$lnalpha <= quantile(sub.pars$lnalpha, probs = 0.1))
     #subset posterior to only draw parms and states from low productivity draws
-    sub.pars$lnalpha_c <- sub.pars$lnalpha_c[low_a_rows]
+    sub.pars$lnalpha <- sub.pars$lnalpha[low_a_rows]
     sub.pars$beta <- sub.pars$beta[low_a_rows]
     sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
     sub.pars$phi <- sub.pars$phi[low_a_rows]
@@ -96,15 +103,19 @@ for(i in 1:length(HCRs)){
     sub.pars$C <- sub.pars$C[low_a_rows,]
     sub.pars$U <- sub.pars$U[low_a_rows,]
   }
+  if(grepl("recent", HCR)){sub.pars <- model.pars.93
+  last.yr.ind <- ncol(model.pars.93$lnR)
+  }
   for(j in 1:n.sims){
-    r <- sample(length(sub.pars$lnalpha_c), 1, replace = TRUE)
+    r <- sample(length(sub.pars$lnalpha), 1, replace = TRUE)
+    random <- c(random, r) ## storage for debugging - DELETE LATER
     #draw parms for the sim
-    lnalpha_c <- sub.pars$lnalpha_c[r]
+    lnalpha_c <- sub.pars$lnalpha[r]
     beta <- sub.pars$beta[r]
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
-    #estimate draw-specific benchmarks for performance measures later
-    sub.Smsy.8 <- get_Smsy(lnalpha_c, beta)
+    #estimate draw-specific benchmarks for relative performance measures later
+    sub.Smsy.8 <- get_Smsy(lnalpha_c, beta)*.8
     sub.Sgen <- get_Sgen(exp(lnalpha_c), beta, -1, 1/beta*2, sub.Smsy.8)
     #draw final states from model to start fwd sim from
     R <- sub.pars$R[r, last.yr.ind]
@@ -136,6 +147,8 @@ for(i in 1:length(HCRs)){
     }
   }
 }
+
+#t(fwd.states[j,,,i]) #see year where it potentially breaks
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR] for plotting...
 fwd.sim <- NULL
@@ -170,33 +183,45 @@ colnames(fwd.sim) <- c("year", "HCR", "prod", "R_lwr", "R_mid_lwr", "R", "R_mid_
                        "lnresid_mid_upr", "lnresid_upr")
 
 # summarise performance metrics------------------------------------------------------
-yr.breaks <- 5 #c(3, 10) #option to summarise across multiple years here
-if(max(yr.breaks)> (sim.gens -1)){stop("performmance metrics: sim.gens less than breaks")}
 perf.metrics <- NULL
 
+#get relative catch index
+rel.catch.index <- filter(data, year >= 2000) |>
+  arrange(desc(harvest)) |>
+  slice(1:3) |>
+  summarise(mean(harvest)) |>
+  pull()
+
 for(i in 1:length(HCRs)){
-  for(j in yr.breaks){
-    sub.data <- fwd.states[,,2:(j+1),i] #index to NOT include final year of observed data.
-    Cs <- sub.data[,3,] #catch sims
+  sub.data <- fwd.states[,,2:(sim.gens),i] #slice HCR to NOT include final year of observed data.
+  Cs <- sub.data[,3,] #catch sims
 
-    below.Sgen <- (length(which(sub.data[,6,]==1))/length(sub.data[,6,]))*100
+  #getting total count of points that dipped above/below lines
+  below.Sgen <- (length(which(sub.data[,6,]==1))/length(sub.data[,6,]))*100
+  above.Smsy.8 <- (length(which(sub.data[,7,]==1))/length(sub.data[,7,]))*100
 
-    above.Smsy.8 <- (length(which(sub.data[,7,]==1))/length(sub.data[,7,]))*100
+  #then treating catch more like a distribution and describing the distribution of medians
+    #by draw, kind of like describing the distribution of the intercepts...
+  catch <- 1:nrow(Cs) |>
+    map_dbl(\(x) median(Cs[x,])) |>
+    quantile(probs = c(.1, .5, .9)) |>
+    round(2)
+  catch <- as.character(paste0(catch[1], " (",catch[2], "-", catch[3], ")"))
 
-    catch <- 1:j |>
-      map_dbl(\(x) median(Cs[,x])) |>
-      sum()
+  catch.stability <- 1:nrow(Cs) |>
+    map_dbl(\(x) median(Cs[x,])/sd(Cs[x,])) |>
+    quantile(probs = c(.1, .5, .9)) |>
+    round(2)
+  catch.stability <- as.character(paste0(catch.stability[1], " (",catch.stability[2],
+                                         "-", catch.stability[3], ")"))
 
-    catch.stability <- 1:j |>
-      map_dbl(\(x) median(Cs[,x])/sd(Cs[,x])) |>
-      median()
+  catch.index <- length(which(Cs > rel.catch.index))/length(Cs) #total points that go above index
 
-    perf.metrics <- rbind(perf.metrics, data.frame(yrs = rep(j, 4), HCR = rep(HCRs[i],4),
-                                                   value = c(below.Sgen, above.Smsy.8,
-                                                             catch, catch.stability),
+  perf.metrics <- rbind(perf.metrics, data.frame(HCR = rep(HCRs[i],5),
+                                                 value = c(below.Sgen, above.Smsy.8,
+                                                           catch, catch.index, catch.stability),
                                      metric = c("below.Sgen", "above.Smsy.8", "catch",
-                                                "catch.stability")))
-  }
+                                                "catch index", "catch.stability")))
 }
 
 perf.metrics <- perf.metrics |>

@@ -6,12 +6,15 @@ set.seed(123)
 # load data ------------------------------------------------------------------------------
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv"))
 
+
 stan.data <- list("nyrs" = length(data$year),
                   "nRyrs" = length(data$year) ,
                   "S_obs" = data$spawn/1000000,
                   "H_obs" = data$harvest/1000000,
                   "S_cv" = data$spawn_cv,
-                  "H_cv" = data$harvest_cv)
+                  "H_cv" = data$harvest_cv,
+                  "pSmax_mean" = (max(data$spawn)/1000000)/2, #CHECK w/ DAN IF RIGHT
+                  "pSmax_sig" = (max(data$spawn)/1000000)/2)
 
 # fit model ------------------------------------------------------------------------------
 stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
@@ -24,7 +27,8 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(stan.fit)
-saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
+#DON'T SAVE DAN'S NEW ARAMETEROIZATION UNTIL ITS GOOD
+#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
@@ -49,12 +53,16 @@ ggplot(model.summary, aes(Rhat)) +
 max(model.summary$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi", "lnresid_0"),
+mcmc_combo(stan.fit, pars = c("ln_alpha", "beta", "sigma_R", "phi", "lnresid_0"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
+
+mcmc_combo(stan.fit, pars = c("lnalpha", "lnalpha_c"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit, pars = c("lnalpha", "beta", "sigma_R", "phi"))
+pairs(stan.fit, pars = c("ln_alpha", "beta", "sigma_R", "phi"))
 
 model.pars <- rstan::extract(stan.fit) #extract pars for later
 
