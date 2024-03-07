@@ -22,7 +22,7 @@ bench <- matrix(NA,1000,3,
 
 for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
-  ln_a <- model.pars$lnalpha[r] #Shit. should this be corrected alpha?
+  ln_a <- model.pars$ln_alpha_c[r]
   b <- model.pars$beta[r]
   bench[i,2] <- get_Smsy(ln_a,b) #Smsy
   bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #Sgen
@@ -91,9 +91,9 @@ for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
   sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
   if(grepl("low_a", HCR)){ #overwrite posterior & final state to low productivity if "low_a"
-    low_a_rows <- which(sub.pars$lnalpha <= quantile(sub.pars$lnalpha, probs = 0.1))
+    low_a_rows <- which(sub.pars$ln_alpha_c <= quantile(sub.pars$ln_alpha_c, probs = 0.1))
     #subset posterior to only draw parms and states from low productivity draws
-    sub.pars$lnalpha <- sub.pars$lnalpha[low_a_rows]
+    sub.pars$ln_alpha_c <- sub.pars$ln_alpha_c[low_a_rows]
     sub.pars$beta <- sub.pars$beta[low_a_rows]
     sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
     sub.pars$phi <- sub.pars$phi[low_a_rows]
@@ -107,16 +107,16 @@ for(i in 1:length(HCRs)){
   last.yr.ind <- ncol(model.pars.93$lnR)
   }
   for(j in 1:n.sims){
-    r <- sample(length(sub.pars$lnalpha), 1, replace = TRUE)
+    r <- sample(length(sub.pars$ln_alpha_c), 1, replace = TRUE)
     random <- c(random, r) ## storage for debugging - DELETE LATER
     #draw parms for the sim
-    lnalpha_c <- sub.pars$lnalpha[r]
+    ln_alpha_c <- sub.pars$ln_alpha_c[r]
     beta <- sub.pars$beta[r]
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
     #estimate draw-specific benchmarks for relative performance measures later
-    sub.Smsy.8 <- get_Smsy(lnalpha_c, beta)*.8
-    sub.Sgen <- get_Sgen(exp(lnalpha_c), beta, -1, 1/beta*2, sub.Smsy.8)
+    sub.Smsy.8 <- get_Smsy(ln_alpha_c, beta)*.8
+    sub.Sgen <- get_Sgen(exp(ln_alpha_c), beta, -1, 1/beta*2, sub.Smsy.8)
     #draw final states from model to start fwd sim from
     R <- sub.pars$R[r, last.yr.ind]
     S <- sub.pars$S[r, last.yr.ind]
@@ -129,9 +129,9 @@ for(i in 1:length(HCRs)){
       last.S <- fwd.states[j,2,k-1,i]
       last.lnresid <- fwd.states[j,5,k-1,i]
       #calc R and pred R
-      R <- exp(lnalpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
+      R <- exp(ln_alpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
       R <- R*rlnorm(1, 0, for.error) #add forecast error
-      pred.R <- exp(lnalpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid)
+      pred.R <- exp(ln_alpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid)
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
@@ -171,12 +171,13 @@ for(i in 1:length(HCRs)){
 }
 
 fwd.sim <- fwd.sim |>
-  mutate(prod = factor(ifelse(grepl("low", HCR), "low productivity", "baseline"),
-                       levels = c("baseline", "low productivity")),
-         HCR = gsub("low_a_", "", HCR)) |>
-  relocate(prod, .after=2)
+  mutate(scenario = case_when(grepl("low", HCR) ~ "low productivity",
+                              grepl("recent", HCR) ~ "recent, baseline",
+                              TRUE ~ "baseline"),
+         HCR = gsub("low_a_|recent_", "", HCR)) |>
+  relocate(scenario, .after=2)
 
-colnames(fwd.sim) <- c("year", "HCR", "prod", "R_lwr", "R_mid_lwr", "R", "R_mid_upr",
+colnames(fwd.sim) <- c("year", "HCR", "scenario", "R_lwr", "R_mid_lwr", "R", "R_mid_upr",
                        "R_upr", "S_lwr", "S_mid_lwr", "S", "S_mid_upr", "S_upr", "C_lwr",
                        "C_mid_lwr", "C", "C_mid_upr", "C_upr", "U_lwr", "U_mid_lwr", "U",
                        "U_mid_upr", "U_upr", "lnresid_lwr","lnresid_mid_lwr", "lnresid",
@@ -215,22 +216,27 @@ for(i in 1:length(HCRs)){
   catch.stability <- as.character(paste0(catch.stability[1], " (",catch.stability[2],
                                          "-", catch.stability[3], ")"))
 
-  catch.index <- length(which(Cs > rel.catch.index))/length(Cs) #total points that go above index
+  catch.index <- length(which(Cs > rel.catch.index))/length(Cs) |> #total points that go above index
+    round(2)
 
   perf.metrics <- rbind(perf.metrics, data.frame(HCR = rep(HCRs[i],5),
                                                  value = c(below.Sgen, above.Smsy.8,
-                                                           catch, catch.index, catch.stability),
+                                                           catch, catch.stability, catch.index),
                                      metric = c("below.Sgen", "above.Smsy.8", "catch",
-                                                "catch index", "catch.stability")))
+                                                "catch.stability", "catch index")))
 }
 
 perf.metrics <- perf.metrics |>
-  mutate(prod = ifelse(grepl("low", HCR), "low productivity", "baseline"),
-         HCR = gsub("low_a_", "", HCR)) |>
+  mutate(scenario = case_when(grepl("low", HCR) ~ "low productivity",
+                              grepl("recent", HCR) ~ "recent, baseline",
+                              TRUE ~ "baseline"),
+         HCR = gsub("low_a_|recent_", "", HCR)) |>
   pivot_wider(names_from = metric, values_from = value)
 
-rm(beta, C, Cs, catch, catch.stability, yr.breaks, fwd.states, bench, bench.quant,
-   HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, lnalpha_c, sub.data, low_a_rows, n.sims,
+write.csv(perf.metrics, "C:/Users/GLASERD/Desktop/perf.metrics.csv")
+
+rm(beta, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
+   HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
    ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
    sub.Sgen, under.Sgen)
