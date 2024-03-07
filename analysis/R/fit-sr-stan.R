@@ -27,7 +27,7 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(stan.fit)
-#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds")) #uncomment when good
+saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
@@ -56,14 +56,8 @@ mcmc_combo(stan.fit, pars = c("ln_alpha", "ln_beta", "beta", "sigma_R", "phi", "
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 
-mcmc_combo(stan.fit, pars = c("ln_alpha", "ln_alpha_c"),
-           combo = c("dens_overlay", "trace"),
-           gg_theme = legend_none())
-
 # how do correlations in lnalpha and beta posteriors look?
 pairs(stan.fit, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi"))
-
-model.pars <- rstan::extract(stan.fit) #extract pars for later
 
 #-----------------------------------------------------------------------------------------
 # Now also fit it to shortened recent data------------------------------------------------
@@ -88,7 +82,7 @@ stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                            thin = 1,
                            control = list(adapt_delta = 0.99, max_treedepth = 20))
 #shinystan::launch_shinystan(stan.fit)
-#saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds")) #uncomment when good
+saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
@@ -116,14 +110,6 @@ max(model.summary.93$Rhat, na.rm = T)
 mcmc_combo(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi", "lnresid_0"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
-mcmc_combo(stan.fit.93, pars = c("ln_alpha", "ln_alpha_c"),
-           combo = c("dens_overlay", "trace"),
-           gg_theme = legend_none())
+
 # how do correlations in lnalpha and beta posteriors look?
 pairs(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi"))
-
-model.pars.93 <- rstan::extract(stan.fit.93)
-
-#checking for extreme ln_alpha_c values that will break fwd sim.
-head(sort(model.pars.93$ln_alpha_c, decreasing = TRUE))
-head(sort(model.pars$ln_alpha_c, decreasing = TRUE))

@@ -22,7 +22,7 @@ bench <- matrix(NA,1000,3,
 
 for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
-  ln_a <- model.pars$ln_alpha_c[r]
+  ln_a <- model.pars$ln_alpha[r]
   b <- model.pars$beta[r]
   bench[i,2] <- get_Smsy(ln_a,b) #Smsy
   bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #Sgen
@@ -82,18 +82,14 @@ for.error <- for.error |>
 # do fwd sim -----------------------------------------------------------------------------
 fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
-random <- NULL #helper to see where we are
-
-
-#helper sort(sub.pars$lnalpha_c, decreasing = TRUE)
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
   sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
   if(grepl("low_a", HCR)){ #overwrite posterior & final state to low productivity if "low_a"
-    low_a_rows <- which(sub.pars$ln_alpha_c <= quantile(sub.pars$ln_alpha_c, probs = 0.1))
+    low_a_rows <- which(sub.pars$ln_alpha <= quantile(sub.pars$ln_alpha, probs = 0.1))
     #subset posterior to only draw parms and states from low productivity draws
-    sub.pars$ln_alpha_c <- sub.pars$ln_alpha_c[low_a_rows]
+    sub.pars$ln_alpha <- sub.pars$ln_alpha[low_a_rows]
     sub.pars$beta <- sub.pars$beta[low_a_rows]
     sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
     sub.pars$phi <- sub.pars$phi[low_a_rows]
@@ -107,16 +103,15 @@ for(i in 1:length(HCRs)){
   last.yr.ind <- ncol(model.pars.93$lnR)
   }
   for(j in 1:n.sims){
-    r <- sample(length(sub.pars$ln_alpha_c), 1, replace = TRUE)
-    random <- c(random, r) ## storage for debugging - DELETE LATER
+    r <- sample(length(sub.pars$ln_alpha), 1, replace = TRUE) #random draw
     #draw parms for the sim
-    ln_alpha_c <- sub.pars$ln_alpha_c[r]
+    ln_alpha <- sub.pars$ln_alpha[r]
     beta <- sub.pars$beta[r]
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
     #estimate draw-specific benchmarks for relative performance measures later
-    sub.Smsy.8 <- get_Smsy(ln_alpha_c, beta)*.8
-    sub.Sgen <- get_Sgen(exp(ln_alpha_c), beta, -1, 1/beta*2, sub.Smsy.8)
+    sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
+    sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
     #draw final states from model to start fwd sim from
     R <- sub.pars$R[r, last.yr.ind]
     S <- sub.pars$S[r, last.yr.ind]
@@ -129,9 +124,9 @@ for(i in 1:length(HCRs)){
       last.S <- fwd.states[j,2,k-1,i]
       last.lnresid <- fwd.states[j,5,k-1,i]
       #calc R and pred R
-      R <- exp(ln_alpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
+      R <- exp(ln_alpha)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
       R <- R*rlnorm(1, 0, for.error) #add forecast error
-      pred.R <- exp(ln_alpha_c)*last.S*exp(-beta*last.S+phi*last.lnresid)
+      pred.R <- exp(ln_alpha)*last.S*exp(-beta*last.S+phi*last.lnresid)
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
@@ -147,8 +142,7 @@ for(i in 1:length(HCRs)){
     }
   }
 }
-
-#t(fwd.states[j,,,i]) #see year where it potentially breaks
+#t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR] for plotting...
 fwd.sim <- NULL
