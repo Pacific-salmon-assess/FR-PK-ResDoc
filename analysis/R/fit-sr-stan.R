@@ -13,8 +13,8 @@ stan.data <- list("nyrs" = length(data$year),
                   "H_obs" = data$harvest/1000000,
                   "S_cv" = data$spawn_cv,
                   "H_cv" = data$harvest_cv,
-                  "pSmax_mean" = (max(data$spawn)/1000000)/2, #CHECK w/ DAN IF RIGHT
-                  "pSmax_sig" = (max(data$spawn)/1000000)/2)
+                  "pSmax_mean" = (max(data$spawn)/1000000)*.75, #Smax prior - 75% of max spawners
+                  "pSmax_sig" = (max(data$spawn)/1000000)*.75)
 
 # fit model ------------------------------------------------------------------------------
 stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
@@ -27,8 +27,7 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(stan.fit)
-#DON'T SAVE DAN'S NEW ARAMETEROIZATION UNTIL ITS GOOD
-#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
+#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds")) #uncomment when good
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
@@ -53,16 +52,16 @@ ggplot(model.summary, aes(Rhat)) +
 max(model.summary$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit, pars = c("ln_alpha", "beta", "sigma_R", "phi", "lnresid_0"),
+mcmc_combo(stan.fit, pars = c("ln_alpha", "ln_beta", "beta", "sigma_R", "phi", "lnresid_0"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 
-mcmc_combo(stan.fit, pars = c("lnalpha", "lnalpha_c"),
+mcmc_combo(stan.fit, pars = c("ln_alpha", "ln_alpha_c"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit, pars = c("ln_alpha", "beta", "sigma_R", "phi"))
+pairs(stan.fit, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi"))
 
 model.pars <- rstan::extract(stan.fit) #extract pars for later
 
@@ -75,7 +74,9 @@ stan.data.93 <- list("nyrs" = length(data.93$year),
                   "S_obs" = data.93$spawn/1000000,
                   "H_obs" = data.93$harvest/1000000,
                   "S_cv" = data.93$spawn_cv,
-                  "H_cv" = data.93$harvest_cv)
+                  "H_cv" = data.93$harvest_cv,
+                  "pSmax_mean" = (max(data.93$spawn)/1000000)*.75,
+                  "pSmax_sig" = ((max(data.93$spawn)/1000000)*.75))
 
 # fit model ------------------------------------------------------------------------------
 stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
@@ -87,7 +88,7 @@ stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                            thin = 1,
                            control = list(adapt_delta = 0.99, max_treedepth = 20))
 #shinystan::launch_shinystan(stan.fit)
-saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
+#saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds")) #uncomment when good
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
@@ -112,11 +113,17 @@ ggplot(model.summary.93, aes(Rhat)) +
 max(model.summary.93$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit.93, pars = c("lnalpha", "beta", "sigma_R", "phi", "lnresid_0"),
+mcmc_combo(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi", "lnresid_0"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
-
+mcmc_combo(stan.fit.93, pars = c("ln_alpha", "ln_alpha_c"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit.93, pars = c("lnalpha", "beta", "sigma_R", "phi"))
+pairs(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi"))
 
 model.pars.93 <- rstan::extract(stan.fit.93)
+
+#checking for extreme ln_alpha_c values that will break fwd sim.
+head(sort(model.pars.93$ln_alpha_c, decreasing = TRUE))
+head(sort(model.pars$ln_alpha_c, decreasing = TRUE))
