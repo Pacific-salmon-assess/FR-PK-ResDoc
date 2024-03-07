@@ -1,11 +1,13 @@
 book_filename: "resdoc"
 rmd_files: ["index.Rmd",
             "01-introduction.Rmd",
-            "02-methods.Rmd",
-            "03-results.Rmd",
-            "04-discussion.Rmd",
-            "05-acknowledgments.Rmd",
-            "06-figs-tables.Rmd",
-            "07-references.Rmd",
-            "08-appendix"]
+            "02-stock-structure-distribution.Rmd",
+            "03-ecosystem-climate.Rmd",
+            "04-methods.Rmd",
+            "05-results.Rmd",
+            "06-discussion.Rmd",
+            "07-acknowledgments.Rmd",
+            "08-figs-tables.Rmd",
+            "09-references.Rmd",
+            "10-appendix"]
 delete_merged_file: true
