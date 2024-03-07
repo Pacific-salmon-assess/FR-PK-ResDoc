@@ -98,9 +98,3 @@ model{
     S_obs[t] ~ lognormal(lnS[t], sqrt(log((S_cv[t]^2) + 1)));
   }
 }
-
-generated quantities{
-  real<lower=0> ln_alpha_c;
-  ln_alpha_c = ln_alpha + (sigma_R * sigma_R)/2/(1-phi * phi); //original
-  //ln_alpha_c = ln_alpha - ((0.5*(sigma_R*sigma_R))/(1-(phi*phi))); //another way?
-}
