@@ -7,8 +7,8 @@ data{
   vector[nyrs] H_obs; // observed harvest
   vector[nyrs] S_cv;  // spawner observation error CV
   vector[nyrs] H_cv;  // harvest observation error CV
-  real pSmax_mean;    //helpers for b
-  real pSmax_sig;
+  real pSmax_mean;    // mean on prior for Smax
+  real pSmax_sig;     // SD on prior for Smax
 }
 
 transformed data{
