@@ -1,5 +1,8 @@
 # Figures
 
+(ref:catch-esc-HCR)
+
+
 (ref:map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
 ```{r map, fig.cap = "(ref:map)"}
 knitr::include_graphics(here::here("figure/map.png"))
@@ -15,11 +18,6 @@ knitr::include_graphics(here::here("figure/avg-mass.png"))
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
-(ref:catch-esc) Catch and escapement for Fraser Pinks.  
-```{r catch-esc, fig.cap = "(ref:catch-esc)"}
-knitr::include_graphics(here::here("figure/catch-esc.png"))
-```
-
 (ref:SRR) State-space spawner-recruit relationship with autocorrelated residuals. Shaded bars are 95% confidence interval.   
 ```{r SRR, fig.cap = "(ref:SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
@@ -32,6 +30,23 @@ knitr::include_graphics(here::here("figure/rec-resid.png"))
 
 
 # Tables 
+(ref:spawner-est-methods) Methods of assessing spawner escapement and CVs. 
+```{r spawner-est-methods, results = "asis"}
+df <- data.frame(Years = c("1957-1985 ", "1987-1991", "1993-2001", "2003-2007", 
+                           "2009-2011", "2013-2021"), 
+                 Method = c("PSC mark-recapture (system specific)", 
+                            "DFO mark-recapture (system specific)", 
+                            "DFO mark-recapture (mainstem)", "Test fishery", 
+                            "Mission post-season", "Mission in-season"), 
+                 CV = c("20%", "20%", "20%", "50%", "35%", "35%"))
+
+csasdown::csas_table(df,
+                     caption = "(ref:spawner-est-methods)",
+                     format = "pandoc",
+                     landscape = FALSE,
+                     font_size = 7,
+                     repeat_header = TRUE)
+```
 
 (ref:HCR-table) Existing Harvest Control Rule for Fraser Pinks.
 ```{r HCR-table, results = "asis"} 
@@ -56,40 +71,24 @@ csasdown::csas_table(df,
 #  kableExtra::column_spec(2:3, width = "10 cm")
 ```
 
-(ref:spawner-est-methods) Methods of assessing spawner escapement and CVs. 
-```{r spawner-est-methods, results = "asis"}
-df <- data.frame(Years = c("1957-1985 ", "1987-1991", "1993-2001", "2003-2007", 
-                           "2009-2011", "2013-2021"), 
-                 Method = c("PSC mark-recapture (system specific)", 
-                            "DFO mark-recapture (system specific)", 
-                            "DFO mark-recapture (mainstem)", "Test fishery", 
-                            "Mission post-season", "Mission in-season"), 
-                 CV = c("20%", "20%", "20%", "50%", "35%", "35%"))
-
-csasdown::csas_table(df,
-                     caption = "(ref:spawner-est-methods)",
-                     format = "pandoc",
-                     landscape = FALSE,
-                     font_size = 7,
-                     repeat_header = TRUE)
-``` 
+ 
 
 (ref:perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. 
 ```{r perf-metrics-descriptions, results = "asis"}
-df <- data.frame(Metric = c("% sims < S_{gen}", "% sims > S_{MSY}"), 
-                 Description = )
+#df <- data.frame(Metric = c("% sims < S_{gen}", "% sims > S_{MSY}"), 
+#                 Description = )
 ```
 
 #add prior table
 
 (ref:bench-table) Biological and historical benchmarks. 
 ```{r bench-table, results = "asis"}
-csas_table(benchmarks,
-           caption = "(ref:bench-table)",
-           format = "pandoc",
-           landscape = FALSE,
-           font_size = 7,
-           repeat_header = TRUE)
+#csas_table(benchmarks,
+#           caption = "(ref:bench-table)",
+#           format = "pandoc",
+#           landscape = FALSE,
+#           font_size = 7,
+#           repeat_header = TRUE)
 ```
 
 #add posterior table

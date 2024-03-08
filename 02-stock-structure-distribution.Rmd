@@ -1,1 +1,8 @@
 # Stock Structure and Distribution  
+
+*text about distribution* (Figure \@ref(fig:map)).  
+
+The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021; @heard1991]. 
+Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
+A recent COSEWIC report suggests splitting this DU in two based on run timing and suggests this run timing differences could be genetically based (COSEWIC *in prep - need permission to cite*).
+Observations in @rickerHistoryPresentState1989 further support the distinction between an upper and lower Fraser Pink population by highlighting the prolonged period of impassibility at Hell's Gate (1913-1947) and noted differences in body size between these populations and impacts on migration, survival, and fecundity.  

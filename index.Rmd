@@ -1,18 +1,21 @@
 ---
 title: |
-    "Defining Biological Benchmarks for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*) and Options for Harvest Control Rules"
+    "Assessing biological and fishery consequences of alternative harvest control rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
 french_title: "Titre ici (*Nom latin de l'espèce*)"
 author: |
-  First. M. Last^1^ and
-  Alex B. Smith^2^
+  Dylan M. Glaser^1^
+  Brendan M. Connors^2^
+  Kaitlyn Dionne^3^ and
+  Ann-Marie Huang^4^
 author_list: "Last, F.M. and Smith, A.B."
 address: |
   ^1^Pacific Biological Station\
      Fisheries and Oceans Canada, 3190 Hammond Bay Road\
      Nanaimo, British Columbia, V9T 6N7, Canada\
   \smallskip
-  ^2^Far, far away\
-     Another Galaxy
+  ^2^Institute of Ocean Sciences\
+     Fisheries and Oceans Canada,   \
+     Victoria, British Columbia, Canada\
 french_address: |
   ^1^Station biologique du Pacifique\
      Pêches et Océans Canada, 3190 Hammond Bay Road\

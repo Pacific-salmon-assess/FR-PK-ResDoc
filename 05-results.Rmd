@@ -1,12 +1,7 @@
 # Results  
 
 ## Observed data  
-
-Recruitment has been variable across the timeseries with an average of `r mean(rec_prop$rec)` (SD `r sd(rec_prop$rec)`). Early in the timeseries, recruitment increased from  some of the lowest recorded abundances to `r filter(rec_prop, year==1991)$rec` million in 1991, then decreased to `r filter(rec_prop, year==1999)$rec` million in 1999, and rebounded to the highest abundance on record of `r filter(rec_prop, year==2003)$rec` million in 2003. 
-Since this peak in 2003, recruitment has been declining. 
-Across the timeseries, harvest ranged from `r min(rec_prop$harvest)` million in `r filter(rec_prop, harvest==min(rec_prop$harvest))$year` to `r max(rec_prop$harvest)` million in `r filter(rec_prop, harvest==max(rec_prop$harvest))$year`. Escapement ranged from `r min(rec_prop$spawn)` million in `r filter(rec_prop, spawn==min(rec_prop$spawn))$year` to `r max(rec_prop$spawn)` million in `r filter(rec_prop, spawn==max(rec_prop$spawn))$year` (Figure \@ref(fig:catch-esc)).  
-
-A marked decrease in the exploitation rate occurred during the low return in 1999. Since then the mean exploitation rate has remained low at `r round(mean(filter(rec_prop, year>1999)$ER), 2)`% (SD = `r round(sd(filter(rec_prop, year>1999)$ER), 2)`), compared to a mean exploitation rate of `r round(mean(filter(rec_prop, year<1999)$ER), 2)`% (SD = `r round(sd(filter(rec_prop, year<1999)$ER), 2)`) before 1999.  
+ 
 
 ## Modelling  
 

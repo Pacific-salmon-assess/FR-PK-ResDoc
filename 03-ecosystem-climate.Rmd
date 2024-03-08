@@ -1,1 +1,7 @@
 # Ecosystem and Climate Factors Affecting the Stock  
+
+Climate change is affecting salmon across all stages of life in marine and freshwater environments (*cite*). 
+Climate and hatchery practices have contributed to a warm, crowded ocean which impacts growth and survival (*cite - Connors et al 2020, Ruggerone & COnnors 2015, Ruggerone & Irvine 2018*).
+Freshwater habitat continues to be affected by warmer weather, drought, wildfire, landslides and floods that are increasing in a more variable climate [@macdonaldStateCanadianPacific2023, *others*]. 
+Evidence of this in the Fraser is clear given the Big Bar landslide that blocked fish passage discovered in 2019 and with the recent flooding due to an atmospheric river in the November 2021.
+Existing trends in changing demography and behavior in Fraser Pinks (e.g. @hagueMovingTargetsAssessing2021; @pacificsalmoncommissionPSCBiologicalData2023; @ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018) paired with a warming climate allude to a precarious future for Fraser Pinks. 

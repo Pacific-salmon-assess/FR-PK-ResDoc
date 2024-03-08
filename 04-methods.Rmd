@@ -1,43 +1,35 @@
 # Methods  
 
-## Stock assessment  
+We compiled available data on pink salmon spawner abundance estimates and harvest and then developed and fit a state-space spawner-recruitment model to it to characterize stock dynamics and population characteristics. 
+We then derived estimates of biological benchmarks to assess stock status and summarize trends. 
+Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and alternative harvest control rules for the Fraser River Pink salmon stock. 
+Each of these steps is described in more detail below. 
 
-Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
-Due to changes in priorities, funding and technology, escapement data was collected with a variety of methods. 
-In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present). 
-
-Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
-Contribution of Fraser stocks was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
-Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
-The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
-Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
-Recreational catch is estimated through agency creel surveys in both countries.
-First Nations catch is reported using similar methods of estimating commercial catch (i.e. fish sales slips). 
-See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data.  
-
-
-## Data compilation  
+## Data sources  
 
 Escapement and catch data was provided by *the Pacific Salmon Commission (PSC - or no?)*. 
-There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; *Hague et al 2022*); and some analyses have discounted data prior to 1993 (***citation help?*** - I can't find it).  
-We used the description of methods in @grantFraserRiverPink2014 and expert knowledge from area staff to estimate relative accuracy among sampling stanzas; neither argued estimates should be systemically biased low or high. 
-We also gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from (*Ruggerone & Irvine 2018*) for context.  
+There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; @hagueMovingTargetsAssessing2021); and some analyses have discounted data prior to 1993 (*cite salmon scanner, others?*).  
+We used the description of methods in @grantFraserRiverPink2014 and knowledge from local area staff to estimate relative accuracy among sampling stanzas; no evidence suggested estimates should be systematically biased low or high, but we assumed there was variable accuracy among methods (Table \@ref(ref:spawner-est-methods)). 
+We also gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from @ruggeroneNumbersBiomassNatural2018 for biological context.  
 
 
-## Modelling  
+## Spawner-recruit model  
 
-### Spawner-recruit model  
+We modeled the spawner-recruit data in a state-space framework with auto-correlated (AR1) recruitment residuals. 
+State-space models allow for the separation of observation (e.g. sampling error) and process (e.g. true variability) noise and have become popular in ecological modelling [@auger-metheGuideStateSpace2021]. 
+Incorporating an AR1 structure in recruitment residuals allowed us to examine if there were serially correlated process error from one generation to the next that could arise from large scale drivers like favorable ocean conditions or carryover effects (*cite*).  
+In spawner-recruit modelling this approach has been demonstrated to yield less biased estimates of biological parameters than traditional, static spawner-recruit models since it minimizes errors that can arise from errors-in-variables and time series bias [@adkisonReviewSalmonSpawnerRecruitment2021; @fleischmanAgestructuredStatespaceStock2013; @statonEvaluationMethodsSpawner2020; @suPerformanceBayesianStatespace2012].
 
-Due to concerns over different sampling methodologies addressed above, we modeled the spawner-recruit data in a state-space framework with auto-correlated (AR1) recruitment residuals. 
-First, the spawner-recruit model is developed and fit to data to estimate biological benchmarks (i.e. $S_{MSY}$, $U_{MSY}$ and $S_{Gen}$). 
-Then forward simulations are used to evaluate potential harvest control rules.
 
-State-space models are useful for modelling because they explicitly partition variation in natural processes from observation error [@auger-metheGuideStateSpace2021]. 
-State-space models are widely used in spawner-recruit modelling (*Peterman et al 2020, Fleishman et al 2013, ...*), due to their ability to describe imperfect data (@auger-metheGuideStateSpace2021, *...*) as well as addressing time-series bias (*Myers 2002?, ...*).  
-We made **recruitment residuals auto-correlated in order to ...**. 
-Here, state-space modelling is especially useful because we can address concerns with the escapement data quality.  
-Observation error (CVs) for escapement are based on the relative accuracy described above (Table \@ref(tab:spawner-est-methods)). 
-Since catch was heavily monitored and methods had not changed much through the years, catch CV was assumed to be 0.05. 
+## Process model  
+
+## Observation model  
+
+This approach was particularly useful for this data set since we expected observation error in escapement to vary among sampling regimes (Table \@ref(tab:spawner-est-methods)).  
+Since catch was heavily monitored and methods had not changed much through the years, catch CV was assumed to be 0.05.
+
+
+ 
 
 Our state-space spawner-recruit model with auto-correlated recruitment residuals took the form: 
 
