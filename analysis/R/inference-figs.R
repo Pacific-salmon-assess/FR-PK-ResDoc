@@ -124,13 +124,16 @@ ggplot(avg_mass, aes(year, avg.weight)) +
 p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   geom_line(size=1.1, alpha = 0.8) +
   geom_vline(xintercept = R.Smsy.8) +
+  annotate("text", x = R.Smsy.8+1, y = .7,
+           label = "italic(R[S[MSY]])", parse = TRUE) +
   geom_vline(xintercept = Sgen) +
+  annotate("text", x = Sgen+1, y = .7,
+           label = "italic(S[gen])", parse = TRUE) +
   scale_color_viridis_d() +
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target ER") +
   guides(color = "none")
-
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(size=1.1, alpha = 0.8) +
@@ -177,9 +180,7 @@ my.ggsave(here("figure/SRR.png"))
 # PLOT KOBE ------------------------------------------------------------------------------
 
 
-
-
-# then residuals
+# then residuals--------------------------------------------------------------------------
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:32]
 
 resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
