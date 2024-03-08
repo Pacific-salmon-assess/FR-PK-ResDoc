@@ -11,7 +11,7 @@ data{
 
 parameters{
   vector<lower=0>[nRyrs] lnR;             // log recruitment states
-  real<lower=0> lnalpha;                  // log Ricker a
+  real<lower=0> ln_alpha;                  // log Ricker a
   real<lower=0> beta;                     // Ricker b
   real<lower=0> sigma_R;                  // process error
   real<lower=0> sigma_R0;                 // process error for first a.max years with no spawner link
@@ -53,7 +53,7 @@ transformed parameters{
   }
 
   for (y in 2:nRyrs) {
-    lnRm_1[y] = lnS[y-1] + lnalpha - beta * S[y-1];
+    lnRm_1[y] = lnS[y-1] + ln_alpha - beta * S[y-1];
     lnresid[y] = lnR[y] - lnRm_1[y];
   }
 
@@ -66,7 +66,7 @@ transformed parameters{
 
 model{
   // Priors
-  lnalpha ~ normal(0,3);
+  ln_alpha ~ normal(0,3);
   beta ~ normal(0,1);
   sigma_R ~ normal(0,2);
   lnresid_0 ~ normal(0,20);
@@ -85,9 +85,4 @@ model{
     H_obs[t] ~ lognormal(lnC[t], sqrt(log((H_cv[t]^2) + 1)));
     S_obs[t] ~ lognormal(lnS[t], sqrt(log((S_cv[t]^2) + 1)));
   }
-}
-
-generated quantities{
-  real<lower=0> lnalpha_c;
-  lnalpha_c = lnalpha + (sigma_R * sigma_R)/2/(1-phi * phi);
 }

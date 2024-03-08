@@ -82,7 +82,7 @@ stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                            thin = 1,
                            control = list(adapt_delta = 0.99, max_treedepth = 20))
 #shinystan::launch_shinystan(stan.fit)
-saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
+#saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
@@ -107,9 +107,9 @@ ggplot(model.summary.93, aes(Rhat)) +
 max(model.summary.93$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi", "lnresid_0"),
+mcmc_combo(stan.fit.93, pars = c("ln_alpha", "beta", "sigma_R", "phi", "lnresid_0"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit.93, pars = c("ln_alpha", "ln_beta", "sigma_R", "phi"))
+pairs(stan.fit.93, pars = c("ln_alpha", "beta", "sigma_R", "phi"))

@@ -201,22 +201,23 @@ for(i in 1:length(HCRs)){
     map_dbl(\(x) median(Cs[x,])) |>
     quantile(probs = c(.1, .5, .9)) |>
     round(2)
-  catch <- as.character(paste0(catch[1], " (",catch[2], "-", catch[3], ")"))
+  catch <- as.character(paste0(catch[2], " (",catch[1], "-", catch[3], ")"))
 
   catch.stability <- 1:nrow(Cs) |>
     map_dbl(\(x) median(Cs[x,])/sd(Cs[x,])) |>
-    quantile(probs = c(.1, .5, .9)) |>
+    quantile(probs = c(.1, .5, .9), na.rm=T) |> #no NAs, but breaks without na.rm=T, maybe because many 0's?
     round(2)
-  catch.stability <- as.character(paste0(catch.stability[1], " (",catch.stability[2],
+
+  catch.stability <- as.character(paste0(catch.stability[2], " (",catch.stability[1],
                                          "-", catch.stability[3], ")"))
 
-  catch.index <- length(which(Cs > rel.catch.index))/length(Cs) |> #total points that go above index
+  catch.index <- length(which(Cs > rel.catch.index))/length(Cs)*100 |> #total points that go above index
     round(2)
 
   perf.metrics <- rbind(perf.metrics, data.frame(HCR = rep(HCRs[i],5),
                                                  value = c(below.Sgen, above.Smsy.8,
                                                            catch, catch.stability, catch.index),
-                                     metric = c("below.Sgen", "above.Smsy.8", "catch",
+                                     metric = c("below.Sgen", "above.Smsy.8", "median annual catch",
                                                 "catch.stability", "catch index")))
 }
 

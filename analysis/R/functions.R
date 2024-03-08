@@ -45,15 +45,15 @@ PA_HCR <- function(R, OU, Sgen, R.Smsy, Umsy){
   return(c(S,C,U))
 }
 
-#3.48 upper OCP comes from AMH's TAM.fixlower formula
+#4.0235 upper OCP comes from AMH's TAM.fixlower formula
 alt_HCR <- function(R, OU, Sgen, Umsy){
   if(R <= Sgen){C <- 0
   S <- R}
-  if(R > Sgen & R <= 3.48){C <- (R-Sgen)*OU
+  if(R > Sgen & R <= 4.0235){C <- (R-Sgen)*OU
   C <- ifelse(C>R, R-.0001, C) #leave 100 spawners if catch OU makes C>R
   S <- R-C
   }
-  if(R > 3.48){C <- (R*Umsy)*OU
+  if(R > 4.0235){C <- (R*Umsy)*OU
   C <- ifelse(C>R, R-.0001, C) #leave 100 spawners if catch OU makes C>R
   S <- R-C}
 

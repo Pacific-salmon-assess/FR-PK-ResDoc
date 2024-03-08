@@ -4,7 +4,6 @@ library(gsl)
 library(patchwork)
 library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
-source(here("analysis/R/functions.R"))
 source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
@@ -143,9 +142,9 @@ p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   theme(legend.position = "bottom")
 
 #p1/p2
-plot_grid(p1, p2, nrow = 2)
-
-#my.ggsave(here("figure/HCRs.png"))
+p <- plot_grid(p1, p2, nrow = 2)
+p
+my.ggsave(here("figure/HCRs.png"))
 
 # plot SR relationship -------------------------------------------------------------------
 ggplot() +
@@ -173,7 +172,7 @@ ggplot() +
     legend.text = element_text(size=8))+
   geom_abline(intercept = 0, slope = 1,col="dark grey")
 
-#my.ggsave(here("figure/SRR.png"))
+my.ggsave(here("figure/SRR.png"))
 
 # PLOT KOBE ------------------------------------------------------------------------------
 
@@ -207,7 +206,6 @@ d_end <- 2023
 #spawners
 p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_line(aes(x = year, y = S, color = HCR), lwd = 1, lty = 2) +
   geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR, color = HCR),
               alpha=0.2, lty = 2) +
   #draw the exsiting data
@@ -215,50 +213,48 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks$median[1]) +
-  annotate("text", x = d_start + 2, y = benchmarks$median[1]+1,
+  geom_line(aes(x = year, y = S, color = HCR), lwd = 1, lty = 2) +
+  annotate("text", x = 2020, y = benchmarks$median[1]+.4,
            label = "italic(S[MSY])", parse = TRUE) + #hard time putting "80%" here
   geom_hline(yintercept = benchmarks$median[2]) +
-  annotate("text", x = d_start + 2, y = 2,
+  annotate("text", x = 2020, y = 2.2,
            label = "italic(S[gen])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "return year", y = "escapement") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  theme(legend.position = "none")
+  theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-S.png"))
 
 #catch ---
 p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_line(aes(x = year, y = C, color = HCR), lwd = 1, lty = 2) +
   geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = HCR, color = HCR),
               lty = 2, alpha=0.2) +
   #draw the exsiting data
   geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  geom_line(aes(x = year, y = C, color = HCR), lwd = 1, lty = 1) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
-  annotate("text", x = d_start + 4, y = rel.catch.index+2,
+  annotate("text", x = d_start + 4, y = rel.catch.index+.2,
            label = "catch index") +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "return year", y = "catch (M)") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  theme(legend.position = "none")
+  theme(legend.position = "bottom")
 
 my.ggsave(here("figure/fwd-C.png"))
 
 
 #(p1|p2)   #+  plot_layout(guides = "collect") #patchwork doesnt even work ffs
-plot_grid(p1, p2) #+ draw_grob(legend)# NEED TO FIX LEGEND
-amy.ggsave(here("figure/fwd-CS.png"))
-
-
-
-
+p <- plot_grid(p1, p2) #+ draw_grob(legend)# NEED TO FIX LEGEND
+p
+my.ggsave(here("figure/fwd-CS.png"))
 
 
 
