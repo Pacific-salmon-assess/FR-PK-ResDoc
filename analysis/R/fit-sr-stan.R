@@ -6,7 +6,6 @@ set.seed(123)
 # load data ------------------------------------------------------------------------------
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv"))
 
-
 stan.data <- list("nyrs" = length(data$year),
                   "nRyrs" = length(data$year) ,
                   "S_obs" = data$spawn/1000000,
@@ -27,7 +26,7 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(stan.fit)
-saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
+#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
@@ -70,7 +69,7 @@ stan.data.93 <- list("nyrs" = length(data.93$year),
                   "S_cv" = data.93$spawn_cv,
                   "H_cv" = data.93$harvest_cv,
                   "pSmax_mean" = (max(data.93$spawn)/1000000)*.75,
-                  "pSmax_sig" = ((max(data.93$spawn)/1000000)*.75))
+                  "pSmax_sig" = (max(data.93$spawn)/1000000)*.75)
 
 # fit model ------------------------------------------------------------------------------
 stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
