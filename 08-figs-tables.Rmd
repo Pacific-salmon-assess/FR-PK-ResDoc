@@ -71,15 +71,17 @@ csasdown::csas_table(df,
 #  kableExtra::column_spec(2:3, width = "10 cm")
 ```
 
- 
-
 (ref:perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. 
 ```{r perf-metrics-descriptions, results = "asis"}
 #df <- data.frame(Metric = c("% sims < S_{gen}", "% sims > S_{MSY}"), 
 #                 Description = )
 ```
 
-#add prior table
+(ref:prior-posterior-table) Parameters, priors, descriptions, and posteriors from the spawner-recruit model. 
+```{r prior-posterior-table, results = "asis}
+
+#add
+```
 
 (ref:bench-table) Biological and historical benchmarks. 
 ```{r bench-table, results = "asis"}
@@ -90,6 +92,3 @@ csasdown::csas_table(df,
 #           font_size = 7,
 #           repeat_header = TRUE)
 ```
-
-#add posterior table
-
