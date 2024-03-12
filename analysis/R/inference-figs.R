@@ -131,7 +131,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   geom_line(size=1.1, alpha = 0.8) +
   geom_vline(xintercept = R.Smsy.8) +
   annotate("text", x = R.Smsy.8+1, y = .7,
-           label = "italic(R[S[MSY]])", parse = TRUE) +
+           label = expression(italic(R[paste("80%",S)[MSY]]))) +
   geom_vline(xintercept = Sgen) +
   annotate("text", x = Sgen+1, y = .7,
            label = "italic(S[gen])", parse = TRUE) +
@@ -190,8 +190,9 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   annotate("text", x = 0.8, y = .4, hjust = 1,
            #label = "80% S_MSY", parse = T) + #breaks
            #label = "italic(80S[MSY])", parse = T) + #breaks
-           #label = "italic(S[MSY])", parse = T) + #works. wtf.
-           label = "80%")+
+           #label = "italic(S[MSY])", parse = T) + #works but no 80%
+           #label = "80%")+
+  label = expression(italic(paste("80%",S)[MSY]))) +
   geom_hline(yintercept = 1, lty = 2) +
 #  geom_path() + #if you want to connect the dots
   geom_errorbar(data = filter(kobe_df, year == 2023),
@@ -243,7 +244,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_hline(yintercept = benchmarks$median[1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1) +
   annotate("text", x = 2020, y = benchmarks$median[1]+.4,
-           label = "italic(S[MSY])", parse = TRUE) + #hard time putting "80%" here
+           label = expression(italic(paste("80%",S)[MSY]))) +
   geom_hline(yintercept = benchmarks$median[2]) +
   annotate("text", x = 2020, y = 2.2,
            label = "italic(S[gen])", parse = TRUE) +
@@ -274,10 +275,9 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   scale_color_viridis_d(name = "HCR") +
   theme(legend.position = "bottom")
 
-#(p1|p2)   #+  plot_layout(guides = "collect") #patchwork doesn't even work ffs
-p <- plot_grid(p1, p2) #+ draw_grob(legend)# NEED TO FIX LEGEND
+p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
 p
-my.ggsave(here("figure/fwd-CS.png"))
+my.ggsave(here("figure/fwd-SC.png"))
 
 
 
