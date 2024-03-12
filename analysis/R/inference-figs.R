@@ -17,6 +17,7 @@ compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.c
 
 benchmarks <- round(benchmarks, 2) |>
   as.data.frame()
+write.csv(benchmarks, here("analysis/data/generated/benchmarks.csv"))
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -181,7 +182,7 @@ my.ggsave(here("figure/SRR.png"))
 
 
 # then residuals--------------------------------------------------------------------------
-resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:32]
+resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:33]
 
 resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
 colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
@@ -191,7 +192,7 @@ ggplot(resids, aes(x=year, y = mid)) +
   geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) +
   geom_line(lwd = 1.1) +
   coord_cartesian(ylim=c(-2,2)) +
-  labs(x = "Brood year",
+  labs(x = "Return year",
        y = "Recruitment residuals") +
   theme(legend.position = "none",
         panel.grid = element_blank()) +
@@ -214,7 +215,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks$median[1]) +
-  geom_line(aes(x = year, y = S, color = HCR), lwd = 1, lty = 2) +
+  geom_line(aes(x = year, y = S, color = HCR), lwd = 1) +
   annotate("text", x = 2020, y = benchmarks$median[1]+.4,
            label = "italic(S[MSY])", parse = TRUE) + #hard time putting "80%" here
   geom_hline(yintercept = benchmarks$median[2]) +
