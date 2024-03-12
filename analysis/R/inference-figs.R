@@ -17,7 +17,7 @@ compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.c
 
 benchmarks <- round(benchmarks, 2) |>
   as.data.frame()
-write.csv(benchmarks, here("analysis/data/generated/benchmarks.csv"))
+#write.csv(benchmarks, here("analysis/data/generated/benchmarks.csv"))
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -97,19 +97,24 @@ catch_esc <- data |>
   select(year, harvest, spawn) |>
   pivot_longer(!year, names_to = "type", values_to = "n")
 
-ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
+p1 <- ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
   geom_bar(position="stack", stat="identity") +
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
   theme(legend.position = "bottom") +
   labs(x = "Return year",
        y = "Total return (millions of fish)")
 
-my.ggsave(here("figure/catch-esc.png"))
-
-# HCR and realized harvest ---------------------------------------------------------------
-
-# SEE PINK FILE
-
+# HCR and realized harvest ---
+p2 <- ggplot(filter(HCRs, HCR=="current")) +
+  geom_line(aes(x=run_size, y = ER)) +
+  geom_point(data = filter(data, year >= 1987),
+             aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year)) +
+  scale_color_viridis_c() +
+  labs(x = "run size", y = "target exploitation rate") +
+  theme(legend.position = "bottom")
+p <- plot_grid(p1, p2, ncol = 1)
+p
+my.ggsave(here("figure/catch-esc-HCR.png"))
 
 #plot avg mass through time
 ggplot(avg_mass, aes(year, avg.weight)) +
@@ -145,7 +150,6 @@ p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
        y = "Target escapement") +
   theme(legend.position = "bottom")
 
-#p1/p2
 p <- plot_grid(p1, p2, nrow = 2)
 p
 my.ggsave(here("figure/HCRs.png"))
@@ -179,7 +183,29 @@ ggplot() +
 my.ggsave(here("figure/SRR.png"))
 
 # PLOT KOBE ------------------------------------------------------------------------------
+ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
+  geom_vline(xintercept = 1, lty = 2) +
+  geom_vline(xintercept = 0.8, lty = 3) +
+  #fix broken 80% Smsy label...
+  annotate("text", x = 0.8, y = .4, hjust = 1,
+           #label = "80% S_MSY", parse = T) + #breaks
+           #label = "italic(80S[MSY])", parse = T) + #breaks
+           #label = "italic(S[MSY])", parse = T) + #works. wtf.
+           label = "80%")+
+  geom_hline(yintercept = 1, lty = 2) +
+#  geom_path() + #if you want to connect the dots
+  geom_errorbar(data = filter(kobe_df, year == 2023),
+                aes(x = S_Smsy, ymin = U_Umsy_LCI, ymax = U_Umsy_UCI), width = 0) +
+  geom_errorbarh(data = filter(kobe_df, year == 2023),
+                 aes(y = U_Umsy, xmin = S_Smsy_LCI, xmax = S_Smsy_UCI), height = 0) +
+  geom_point(aes(color = year), size=3) +
+  geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
+            aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), hjust = 0-.2, vjust = 0-.2) +
+  scale_colour_viridis_c(name="Year") +
+  labs(y="U/Umsy", x= "S/Smsy") +
+  theme(legend.position = "bottom")
 
+my.ggsave(here("figure/kobe.png"))
 
 # then residuals--------------------------------------------------------------------------
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:33]
@@ -205,7 +231,7 @@ my.ggsave(here("figure/rec-resid.png"))
 d_start <- 2013
 d_end <- 2023
 
-#spawners
+#spawners---
 p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR, color = HCR),
@@ -228,8 +254,6 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   scale_color_viridis_d(name = "HCR") +
   theme(legend.position = "bottom")
 
-my.ggsave(here("figure/fwd-S.png"))
-
 #catch ---
 p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
@@ -250,10 +274,7 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   scale_color_viridis_d(name = "HCR") +
   theme(legend.position = "bottom")
 
-my.ggsave(here("figure/fwd-C.png"))
-
-
-#(p1|p2)   #+  plot_layout(guides = "collect") #patchwork doesnt even work ffs
+#(p1|p2)   #+  plot_layout(guides = "collect") #patchwork doesn't even work ffs
 p <- plot_grid(p1, p2) #+ draw_grob(legend)# NEED TO FIX LEGEND
 p
 my.ggsave(here("figure/fwd-CS.png"))
