@@ -32,6 +32,16 @@ for(i in 1:1000){
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
 bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
 
+if(FALSE){ #some benchmarks to pass Sue for salmon scanner
+  bench.quant <- t(apply(bench, 2, quantile, probs=c(0.025,0.05,0.1,0.25,0.5,0.75,0.9,0.95,0.975), na.rm=T))
+  rownames(bench.quant) <- c("80% Smsy","Sgen","Umsy")
+  mean <- apply(bench, 2, mean, na.rm=T)
+  sd <- apply(bench, 2, sd, na.rm=T)
+
+  bench.sue <- cbind(bench.quant,mean,sd)
+  write.csv(bench.sue, "C:/Users/GLASERD/Desktop/Sues.bench.csv")
+}
+
 benchmarks <- matrix(NA,3,3)
 benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
 benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
