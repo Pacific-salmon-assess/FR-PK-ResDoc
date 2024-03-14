@@ -345,3 +345,11 @@ ggplot(data = fwd.sim) +
 
 my.ggsave(here("figure/fwd-R.png"))
 }
+
+#make objs to read into text
+model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
+model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
+
+
+
+rm(p, p1, p2, C_df, C.quant, R_df, R.quant, resid.quant, resids)

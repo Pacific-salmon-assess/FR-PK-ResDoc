@@ -58,6 +58,11 @@ percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
 
+alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.025, .5, .975))
+beta.CI <- quantile(exp(model.pars$beta), probs = c(.025, .5, .975))
+sigma.CI <- quantile(exp(model.pars$sigma_R_corr), probs = c(.025, .5, .975))
+
+
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit
 sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
@@ -240,7 +245,7 @@ perf.metrics <- perf.metrics |>
 
 write.csv(perf.metrics, "C:/Users/GLASERD/Desktop/perf.metrics.csv")
 
-rm(beta, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
+rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
    ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,

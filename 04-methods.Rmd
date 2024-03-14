@@ -87,18 +87,8 @@ We assumed that harvest had a 5% CV and so harvest observations were log-normall
 ### Model fitting and diagnostics  
 
 We fit the spawner-recruit model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @stan_development_team_rstan_2020], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman_no-u-turn_2014] for Bayesian statistical inference to generate the joint posterior probability distribution of all unknowns in the model. 
-In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; @vehtari2021rank] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarised in Table \@(ref:prior-posterior-table). 
+In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; @vehtari2021rank] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarized in Table \@(ref:prior-posterior-table). 
 
-\begin{align*}
-log(\alpha) &\sim {\sf Norm}(1, 2)\\
-\beta &\sim {\sf Norm}(0, 1)\\ #FIX
-r &\sim {\sf Norm}(1, 2)\\
-log(r_{0}) &\sim {\sf Norm}(0,20)\\
-log(\overline{r}_{0}) &\sim {\sf Norm}(0,20)\\
-\sigma r_{0} &\sim {\sf InvGamma}(2,1)\\
-\end{align*}
-
-where $log(\overline{r}_{0})$ and $\sigma r_{0}$ are the mean and variance of the first recruitment state, and $log(r_{0})$ describes variance at the second recruitment state.
 
 ## Biological Benchmarks  
 
@@ -135,12 +125,10 @@ We took 80% of $S_{MSY}$ as that is what is suggested and evaluated as a suitabl
 
 The reference points above are germane to median yield and recruitment, but because of the assumption that recruitment is lognormally distributed this differs from expected (i.e., mean) yield and recruitment. Therefore, to provide inference about expected yield and recruitment we applied a lognormal bias correction by substituting $\alpha'$ for $\alpha$ in equations \@ref(eq:BMSmsy)-\@ref(eq:BMUmsy), where:
 
-```{=tex}
 \begin{equation}
       ln(\alpha')= ln(\alpha) + \frac{\sigma_{R}}{2(1-\phi^{2})}
       (\#eq:alphaCorr)
 \end{equation}
-```
 
 
 ## Closed-loop simulaiton model   
@@ -152,12 +140,15 @@ Simulations were done with the current and two alternative HCRs. We also include
 ### Biological sub-model  
 
 Simulations began by taking one joint draw of the posterior of parameters and and the most recent year's (i.e. `r min(data$year)`) hidden states of recruits, catch, spawners, and harvest rate. 
+Draws of model parameters for a given simulation were used to calculate biological benchmarks for that given draw, therefore reflecting uncertainty in the benchmarks themselves.  
  
 
 ### Fishery sub-model  
 
 We tested one HCR that was based on the precautionary approach, where the exploitation rate (ER) is 0% when recruits are under $S_{gen}$; when recruits are between $S_{gen}$ and $U_{MSY}$ the ER increases linearly from 0% to $U_{MSY}$, then remains at $U_{MSY}$. 
-This HCR makes sense intuitively, but is impractical for fisheries management; (*Help me AMH!*). 
+This HCR makes sense intuitively, but is impractical for fisheries management. 
+When looking at target escapement (Figure \@ref(figure:HCRs)) there is a slight hump where target escapment ascends from 0 to approximately 5 million spawners, but then slightly descends to $R_{S_{MSY}}$. 
+This means if the forecast gets downgraded when the run is near $R_{S_{MSY}}$, the target escapement will actually increase, which is clearly problematic for management! 
 A similar HCR that works with management anchors the lower operational control point (OCP) at $S_{gen}$ and the upper OCP is a function of $S_{gen}$ and $U_{MSY}$ where:  
 
 \begin{equation}
@@ -169,6 +160,7 @@ When the recruits are below $S_{gen}$ the ER is 0%; when recruits are between $S
 
 Uncertainty in management was accounted for by including forecast error and outcome uncertainty. 
 Forecast error was empirically calculated based on pre-season forecasts provided by the PSC for years 1987-2021. 
+We spoke with the PSC to see if we should apply and correction to account for in-season adjustments and they suggested comparing pre-season forecasts with end of season data directly. 
 Lognormal forecast error was applied to recruits before applying the HCR, then outcome uncertainty applied to catch targets in the HCR functions. 
 Outcome uncertainty was assumed to be normally distributed with a CV of `r OU.CV`%.  
 
@@ -176,15 +168,15 @@ Outcome uncertainty was assumed to be normally distributed with a CV of `r OU.CV
 ### Performance measures  
 
 Simulations were evaluated for each HCR and productivity regime across five metrics that encompass aspects of conservation risk and fishery objectives. 
-Conservation risk was assessed by calculating 1) the percentage of years where escapement fell above $S_{MSY}$, and 2) the percentage of years where escapement fell below $S_{gen}$. 
-Fishery objectives were addressed by calculating 3) median annual catch, 4) catch stability (1/CV), and 5) a relative catch index; or the percentage of years that fell below an ad hoc threshold, defined as the mean catch of the highest three catches since the year 2000.
+Conservation risk was assessed by calculating 1) the percentage of years where escapement fell below $S_{gen}$, and 2) the percentage of years where escapement fell above $S_{MSY}$. 
+When calculating these conservation objectives, we calculated benchmarks at the beginning of a given simulation in order to reflect underlying uncertainty in benchmark estimates; but HCRs did not change within a simulation.  
+Fishery objectives were addressed by calculating 3) median annual catch, 4) catch stability (1/CV), and 5) a relative catch index; or the percentage of years that fell below an ad hoc threshold, defined as the mean catch of the highest three catches since the year 2000.  
 
 
 ### Robustness test and sensitivity analysis  
 
-To address uncertainty in estimation of productivity, and to provide resilience to changing productivity forward in the simulation, we also conducted a robustness test that tested a low productivity scenario. 
-Each HCR was tested at its reference (i.e. baseline) and robustness (i.e. low productivity) level. 
+To address uncertainty in estimation of productivity, and to provide resilience to changing productivity forward in the simulation, we also conducted a robustness test that tested a low productivity scenario, where each HCR was tested at its reference (i.e. baseline) and robustness (i.e. low productivity) level. 
 Baseline tests sampled the full posterior and robustness test sampled the lower tenth percentile of joint draws from the posterior of the productivity parameter (Ricker $\alpha$). 
 
-Some analyses on Fraser Pinks have been cautious to use data that enumerated escapement with different methods. 
-To address this, we truncated the data to only be 1993 to present and refit the model, then used parameters estimated from that data in the forward simulation, under the same harvest control rules used in the other simulations.  
+Some analyses on Fraser Pinks have been cautious to use data that enumerated escapement with different methods [@pestalStateSalmonRapid2023]. 
+To address this, we truncated the data to only be 1993 to present and refit the model, then used population dynamics estimated from that data in the forward simulation, under the same harvest control rules used in the other simulations.  

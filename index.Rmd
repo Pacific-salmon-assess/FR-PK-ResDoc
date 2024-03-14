@@ -7,15 +7,23 @@ author: |
   Brendan M. Connors^2^
   Kaitlyn Dionne^3^ and
   Ann-Marie Huang^4^
-author_list: "Last, F.M. and Smith, A.B."
+author_list: "Glaser, D.M., Connors, B.M., Dionne, K., and Huang, A.M."
 address: |
   ^1^Pacific Biological Station\
      Fisheries and Oceans Canada, 3190 Hammond Bay Road\
      Nanaimo, British Columbia, V9T 6N7, Canada\
   \smallskip
   ^2^Institute of Ocean Sciences\
-     Fisheries and Oceans Canada,   \
-     Victoria, British Columbia, Canada\
+     Fisheries and Oceans Canada, 9860 W Saanich Road\
+     Sidney, British Columbia, V8L 5T5, Canada\
+  \smallskip
+  ^3^Kamloops Office\
+     Fisheries and Oceans Canada, 985 McGill Pl\
+     Kamloops, British Columbia, V2C 6X6, Canada\
+  \smallskip
+  ^4^Regional Headquarters (Pacific)\
+     Fisheries and Oceans Canada, 200-401 Burrard Street\
+     Vancouver, British Columbia, V6C 3S4, Canada\
 french_address: |
   ^1^Station biologique du Pacifique\
      Pêches et Océans Canada, 3190 Hammond Bay Road\
@@ -131,7 +139,7 @@ library(rosettafish)
 library(csasdown)
 library(kableExtra)
 
-options(scipen = 1, digits = 2)
+#options(scipen = 1, digits = 2)
 
 source(here("analysis/R/inference-figs.R")) #grab important objects from analysis
 ```

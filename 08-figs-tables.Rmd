@@ -1,94 +1,112 @@
-# Figures
+# Figures  
 
-(ref:catch-esc-HCR)
+(ref:fig-catch-esc-HCR) Full time series of escapament and catch (upper) and the current harvest control rule, and realized exploitation rates since the harvest control rule was adopted (1987-present).  
+```{r fig-catch-esc-HCR, fig.cap = "(ref:fig-catch-esc-HCR)"}
+knitr::include_graphics(here::here("figure/catch-esc-HCR.png"))
+```
 
-
-(ref:map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
-```{r map, fig.cap = "(ref:map)"}
+(ref:fig-map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
+```{r fig-map, fig.cap = "(ref:fig-map)"}
 knitr::include_graphics(here::here("figure/map.png"))
 ```
 
-(ref:avg-mass) Average body mass (kg) for Fraser Pinks.  
-```{r avg-mass, fig.cap = "(ref:avg-mass)"}
+(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks.  
+```{r fig-avg-mass, fig.cap = "(ref:fig-avg-mass)"}
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
-(ref:HCRs) Current harvest control rule showing target escapement (top) and exploitation rate (bottom) for Fraser Pinks.  
-```{r current-HCR, fig.cap = "(ref:HCRs)"}
+(ref:fig-HCRs) Current and alternative harvest control rules showing target escapement (top) and exploitation rate (bottom) with associated benchmarks for $S_{gen}$ and recruitment that will yield $S_{MSY}$.  
+```{r fig-current-HCR, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
-(ref:SRR) State-space spawner-recruit relationship with autocorrelated residuals. Shaded bars are 95% confidence interval.   
-```{r SRR, fig.cap = "(ref:SRR)"}
+(ref:fig-SRR) State-space spawner-recruit relationship with autocorrelated residuals. Shaded bars are 95% confidence interval.   
+```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
 ```
 
-(ref:rec-resid) Recruitment residuals from the spawner-recruit fit.   
-```{r rec-resid, fig.cap = "(ref:rec-resid)"}
+(ref:fig-rec-resid) Recruitment residuals from the spawner-recruit fit.   
+```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
+(ref:fig-kobe) 
+```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
+knitr::include_graphics(here::here("figure/kobe.png"))
+```
 
-# Tables 
-(ref:spawner-est-methods) Methods of assessing spawner escapement and CVs. 
-```{r spawner-est-methods, results = "asis"}
-df <- data.frame(Years = c("1957-1985 ", "1987-1991", "1993-2001", "2003-2007", 
-                           "2009-2011", "2013-2021"), 
-                 Method = c("PSC mark-recapture (system specific)", 
-                            "DFO mark-recapture (system specific)", 
-                            "DFO mark-recapture (mainstem)", "Test fishery", 
-                            "Mission post-season", "Mission in-season"), 
-                 CV = c("20%", "20%", "20%", "50%", "35%", "35%"))
+(ref:fig-fwd-SC)
+```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
+knitr::include_graphics(here::here("figure/fwd-SC.png"))
+```
+
+\clearpage
+
+# Tables  
+
+(ref:tab-spawner-est-methods) Methods of assessing spawner escapement and assumed CVs used as observation error. 
+```{r tab-spawner-est-methods, results = "asis"}
+df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
+                 'Assessment Method' = c("Early IPSFC system specific mark-recapture: low tagging effort", 
+                            "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: 
+                            high precesion methods in larger systems (90% of stock) and lower precesion in the remainder", 
+                            "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
+                            "PSC test fishery: escapement derived from seine boats in marine and catch data", 
+                            "PSC Mission sonar"), 
+                 CV = c("35%", "25%", "20%", "50%", "10%"))
 
 csasdown::csas_table(df,
-                     caption = "(ref:spawner-est-methods)",
+                     caption = "(ref:tab-spawner-est-methods)",
                      format = "pandoc",
                      landscape = FALSE,
                      font_size = 7,
                      repeat_header = TRUE)
 ```
 
-(ref:HCR-table) Existing Harvest Control Rule for Fraser Pinks.
-```{r HCR-table, results = "asis"} 
-df <- data.frame(run_sz = c("Less than 7.059M", "Between 7.059M & 20M", "Over 20M"),
-                 esc_plan = c("The exploitation rate (ER) increases linearly from zero percent at a run size of zero to 15% at a run size of 7.059M.", 
-                              "The escapement goal is 6M and the remainder is harvestable surplus; the allowable ER increases from 15% to 70%.", 
-                              "The TAM is 70%. The escapement target increases as the run size moves beyond 20M."))
-
-#rows don't render with breaks when running this and table is too wide
+(ref:tab-perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. Credible intervals are 80th percentiles where reported.
+```{r tab-perf-metrics-descriptions, results = "asis"}
+df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median annual catch", "catch stability (1/CV)", 
+                            "relative catch metric"), 
+                 Description = c("percent of simulations going below that simulations relative lower benchmark",
+                                 "percent of simulations going above that simulations relative upper benchmark",
+                                 "expected median annual catch (distribution of medians across years) 
+                                 if the harvest control rule is followed",
+                                 "expected stability (as above) if the harvest control rule is followed",
+                                 "percent of simulaitons where catch is greater than the average of the 
+                                 top 3 years of catch since 2000 - a semi-arbitray indicator of a 'good year'"))
 csasdown::csas_table(df,
-                     caption = "(ref:HCR-table)",
+                     caption = "(ref:tab-perf-metrics-descriptions)",
                      format = "pandoc",
                      landscape = FALSE,
                      font_size = 7,
                      repeat_header = TRUE)
-
-#this one doesn't work when knitting to word
-#kbl(df, 
-#    booktabs = TRUE,
-#    col.names = c("Run Size", "Escapement Goal"), 
-#    caption = "(ref:HCR-table)") |>
-#  kableExtra::column_spec(2:3, width = "10 cm")
 ```
 
-(ref:perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. 
-```{r perf-metrics-descriptions, results = "asis"}
-#df <- data.frame(Metric = c("% sims < S_{gen}", "% sims > S_{MSY}"), 
-#                 Description = )
-```
-
-(ref:prior-posterior-table) Parameters, priors, descriptions, and posteriors from the spawner-recruit model. 
-```{r prior-posterior-table, results = "asis}
+(ref:tab-prior-posterior) Parameters, priors, descriptions, and posteriors from the spawner-recruit model. 
+```{r tab-prior-posterior, results = "asis"}
 
 #add
 ```
 
-(ref:bench-table) Biological and historical benchmarks. 
-```{r bench-table, results = "asis"}
-#csas_table(benchmarks,
-#           caption = "(ref:bench-table)",
-#           format = "pandoc",
-#           landscape = FALSE,
-#           font_size = 7,
-#           repeat_header = TRUE)
+(ref:tab-bench) Biological benchmarks estimated in the spawner-recruit model.  
+```{r tab-bench, results = "asis"}
+csasdown::csas_table(benchmarks,
+           caption = "(ref:tab-bench)",
+           format = "pandoc",
+           landscape = FALSE,
+           font_size = 7,
+           repeat_header = TRUE, 
+           align = "lccc")
 ```
+
+(ref:tab-HCR-performance) Performance of HCRs in baseline, low productivity robustness test, and with a sensitivity analysis of recent data used as a cutoff in some previous reports. Note that it is more important to consider the relative performance of benchmarks (e.g. catch may not be realized due to influences from other fisheries and conservation measures in the system).  
+```{r tab-HCR-performance, results = "asis"}
+csasdown::csas_table(perf.metrics,
+           caption = "(ref:tab-HCR-performance)",
+           format = "pandoc",
+           landscape = FALSE,
+           font_size = 7,
+           repeat_header = TRUE, 
+           align = "llccccc")
+```
+
