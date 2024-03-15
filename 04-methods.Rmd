@@ -9,7 +9,7 @@ Each of these steps is described in more detail below.
 
 Escapement and catch data was provided by *the Pacific Salmon Commission (PSC - or no?)*. 
 There has been concern about the comparability of sampling regimes (@grantFraserRiverPink2014; @hagueMovingTargetsAssessing2021); and some analyses have discounted data prior to 1993 (*cite salmon scanner, others?*).  
-We used the description of methods in @grantFraserRiverPink2014 and knowledge from local area staff to estimate relative accuracy among sampling stanzas; no evidence suggested estimates should be systematically biased low or high, but we assumed there was variable accuracy among methods (Table \@ref(ref:spawner-est-methods)). 
+We used the description of methods in @grantFraserRiverPink2014 and knowledge from local area staff to estimate relative accuracy among sampling stanzas; no evidence suggested estimates should be systematically biased low or high, but we assumed there was variable accuracy among methods (Table \@ref(tab:tab-spawner-est-methods)). 
 We also gathered average Fraser Pink body mass data from @pacificsalmoncommissionPSCBiologicalData2023 and abundance of Pinks in the North Pacific from @ruggeroneNumbersBiomassNatural2018 for biological context.  
 
 
@@ -30,7 +30,7 @@ Recruitment abundances of adult Pinks ($R_y$) were treated as unobserved states 
 <a id="eq-ricker"></a>
 \begin{equation}
 \ln(R_y) = \ln(S_y) + \ln(\alpha) - \beta S_y + v_y
-\tag{Eqn. ?}
+\tag{Eqn. eq-ricker}
 \end{equation}
 
 where $\alpha$ is productivity (intrinsic rate of growth), $\beta$ is the magnitude of within brood year density-dependent effects, and $v_y$ reflects inter-annual variation in survival from egg to adulthood, which we term "recruitment anomalies".
@@ -39,14 +39,14 @@ This variation was assumed to follow a lag-1 autoregressive process (correlation
 <a id="eq-residuals"></a>
 \begin{equation}
 \begin{aligned}
-v_y &= \phi v_{y-1} + \varepsilon_y \\
+v_y &= \phi v_{y-1} + \varepsilon_y 
 \varepsilon_y &\sim \mathcal{N}(0, \sigma_R)
 \end{aligned}
-\tag{Eqn. ?}
+\tag{Eqn. eq-residuals}
 \end{equation}
 
 where $\varepsilon_y$ reflects the portion of the recruitment anomaly $v_y$ that is temporally independent (i.e., white noise).
-The first year of recruitment was not linked to observations of spawner abundance in the spawner-recruitment relationship (eqn. [S1](#eq-ricker)) and were modeled as random draws from a log-normal distribution with mean $\ln(R_0)$ and variance $\sigma_R^2$.
+The first year of recruitment was not linked to observations of spawner abundance in the spawner-recruitment relationship (eqn.?) and were modeled as random draws from a log-normal distribution with mean $\ln(R_0)$ and variance $\sigma_R^2$.
 Rather than estimating $\ln(R_0)$ as a free parameter as in @fleischman-etal-2013, we choose to follow @staton-etal-2020 and inform its value using the expected recruitment under equilibrium unfished conditions $\ln(\alpha)/\beta$.
 
 Harvest in a given year ($H_y$) was modeled as the product of total run size and the harvest rate ($U_y$) experienced that year:
@@ -54,7 +54,7 @@ Harvest in a given year ($H_y$) was modeled as the product of total run size and
 <a id="eq-harvest"></a>
 \begin{equation}
 H_y = N_y U_y
-\tag{Eqn. ?}
+\tag{Eqn. eq-harvest}
 \end{equation}
 
 and spawner abundance ($S_y$) was modeled as the portion of $N_y$ remaining after harvest $H_y$:
@@ -62,10 +62,10 @@ and spawner abundance ($S_y$) was modeled as the portion of $N_y$ remaining afte
 <a id="eq-get-S"></a>
 \begin{equation}
 S_y = N_y (1 - U_y)
-\tag{Eqn. ?}
+\tag{Eqn. eq-get-S}
 \end{equation}
 
-It is this spawner abundance $S_y$ that is used in eqn.[S1](#eq-ricker) to produce the recruitment abundance produced by spawning in brood year $y$.
+It is this spawner abundance $S_y$ that is used in *eqn ref* to produce the recruitment abundance produced by spawning in brood year $y$.
 
 
 ### Observation model  
@@ -77,17 +77,16 @@ Observed spawner abundance was therefore assumed to be log-normally distributed 
 <a id="eq-get-sigma"></a>
 \begin{equation}
 \sigma^2_{o,y} = \ln\left(\mathrm{CV}_y^2 + 1\right)
-\tag{Eqn. ?}
+\tag{Eqn. eq-get-sigma}
 \end{equation}
 
-We assumed that harvest had a 5% CV and so harvest observations were log-normally distributed with the CV converted to log-normal variance as per eqn.
-[S8](#eq-get-sigma).
+We assumed that harvest had a 5% CV and so harvest observations were log-normally distributed with the CV converted to log-normal variance as per eqn. \@ref(eq-get-sigma).
 
 
 ### Model fitting and diagnostics  
 
 We fit the spawner-recruit model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @stan_development_team_rstan_2020], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman_no-u-turn_2014] for Bayesian statistical inference to generate the joint posterior probability distribution of all unknowns in the model. 
-In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; @vehtari2021rank] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarized in Table \@(ref:prior-posterior-table). 
+In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; @vehtari2021rank] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarized in Table (*ref:tab-prior-posterior TO ADD*). 
 
 
 ## Biological Benchmarks  
@@ -97,7 +96,7 @@ We estimated $S_{MSY}$ via the @scheuerellExplicitSolutionCalculating2016:
 <a id="eq-get-Smsy"></a>
 \begin{equation}
 S_MSY = 1 - W(e^1-a)/b
-\tag{Eqn. ?}
+\tag{Eqn. eq-get-Smsy}
 \end{equation}
 
 where $W$ is the Lambert function [@scheuerell_explicit_2016], and $\alpha$ and $b$ are intrinsic productivity and the magnitude of within stock density dependence, respectively. 
@@ -106,10 +105,10 @@ We chose to apply this exact solution for $S_{MSY}$ instead of the commonly appl
 
 The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$) was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:
 
-<a id="eq-get-Smsy"></a>
+<a id="eq-get-Umsy"></a>
 \begin{equation}
 U_MSY = 1 - W(e^-log(a))
-\tag{Eqn. ?}
+\tag{Eqn. eq-get-Umsy}
 \end{equation}
 
 and $S_{gen}$ solved numerically in the equation:
@@ -117,17 +116,18 @@ and $S_{gen}$ solved numerically in the equation:
 <a id="eq-get-Sgen"></a>
 \begin{equation}
 S_MSY = S_gen * exp(a * (1-S_gen/b))
-\tag{Eqn.}
+\tag{Eqn. eq-get-Sgen}
 \end{equation}
 
 which were used as biological benchmarks to inform HCRs and evaluate their performance.  
 We took 80% of $S_{MSY}$ as that is what is suggested and evaluated as a suitable upper benchmark for salmon [@dfoSustainableFisheriesFramework2022; @holtEvaluationBenchmarksConservation2009].  
 
-The reference points above are germane to median yield and recruitment, but because of the assumption that recruitment is lognormally distributed this differs from expected (i.e., mean) yield and recruitment. Therefore, to provide inference about expected yield and recruitment we applied a lognormal bias correction by substituting $\alpha'$ for $\alpha$ in equations \@ref(eq:BMSmsy)-\@ref(eq:BMUmsy), where:
+The reference points above are germane to median yield and recruitment, but because of the assumption that recruitment is lognormally distributed this differs from expected (i.e., mean) yield and recruitment. Therefore, to provide inference about expected yield and recruitment we applied a lognormal bias correction by substituting $\alpha'$ for $\alpha$ in equations *\@ref(eq:BMSmsy)-\@ref(eq:BMUmsy)*, where:
 
+<a id="eq-alpha-corr"></a>
 \begin{equation}
-      ln(\alpha')= ln(\alpha) + \frac{\sigma_{R}}{2(1-\phi^{2})}
-      (\#eq:alphaCorr)
+ln(\alpha')= ln(\alpha) + \frac{\sigma_{R}}{2(1-\phi^{2})}
+\tag{Eqn. eq-alpha-corr}
 \end{equation}
 
 
@@ -139,7 +139,7 @@ Simulations were done with the current and two alternative HCRs. We also include
 
 ### Biological sub-model  
 
-Simulations began by taking one joint draw of the posterior of parameters and and the most recent year's (i.e. `r min(data$year)`) hidden states of recruits, catch, spawners, and harvest rate. 
+Simulations began by taking one joint draw of the posterior of parameters and and the most recent year's (i.e. `r max(data$year)`) hidden states of recruits, catch, spawners, and harvest rate. 
 Draws of model parameters for a given simulation were used to calculate biological benchmarks for that given draw, therefore reflecting uncertainty in the benchmarks themselves.  
  
 
@@ -147,16 +147,18 @@ Draws of model parameters for a given simulation were used to calculate biologic
 
 We tested one HCR that was based on the precautionary approach, where the exploitation rate (ER) is 0% when recruits are under $S_{gen}$; when recruits are between $S_{gen}$ and $U_{MSY}$ the ER increases linearly from 0% to $U_{MSY}$, then remains at $U_{MSY}$. 
 This HCR makes sense intuitively, but is impractical for fisheries management. 
-When looking at target escapement (Figure \@ref(figure:HCRs)) there is a slight hump where target escapment ascends from 0 to approximately 5 million spawners, but then slightly descends to $R_{S_{MSY}}$. 
+When looking at target escapement (Figure \@ref(fig:fig-HCRs)) there is a slight hump where target escapment ascends from 0 to approximately 5 million spawners, but then slightly descends to $R_{S_{MSY}}$. 
 This means if the forecast gets downgraded when the run is near $R_{S_{MSY}}$, the target escapement will actually increase, which is clearly problematic for management! 
 A similar HCR that works with management anchors the lower operational control point (OCP) at $S_{gen}$ and the upper OCP is a function of $S_{gen}$ and $U_{MSY}$ where:  
 
+<a id="eq-upr-OCP"></a>
 \begin{equation}
 OCP_{upper} = OCP_{lower} / (1 - U_{MSY})
 \label{eq:UpperOCP}
+\tag{Eqn. eq-upr-OCP}
 \end{equation}  
 
-When the recruits are below $S_{gen}$ the ER is 0%; when recruits are between $S_{gen}$ and the upper OCP escapement is fixed at $S_{gen}$, and when recruits are greater than the upper OCP ER is fixed at $U_{MSY}$ (Figure \@ref(figure:HCRs)). 
+When the recruits are below $S_{gen}$ the ER is 0%; when recruits are between $S_{gen}$ and the upper OCP escapement is fixed at $S_{gen}$, and when recruits are greater than the upper OCP ER is fixed at $U_{MSY}$ (Figure \@ref(fig:fig-HCRs)). 
 
 Uncertainty in management was accounted for by including forecast error and outcome uncertainty. 
 Forecast error was empirically calculated based on pre-season forecasts provided by the PSC for years 1987-2021. 
