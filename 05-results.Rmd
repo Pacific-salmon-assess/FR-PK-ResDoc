@@ -9,10 +9,10 @@ The relationship showed some evidence of compensation at low spawner abundances 
 
 ## Stock status and trends  
 
-Ricker $\alpha$ was estimated at `r alpha.CI[2]`(`r alpha.CI[1]`- `ralpha.CI[3]`), $\beta$ at `r beta.CI[2]`(`r beta.CI[1]`- `r beta.CI[3]`), and bias corrected $\sigma$ at  `sigma.CI[2]`(`r sigma.CI[1]`- `r sigma.CI[3]`; medians and 95th percentiles Table \@ref(tab:tab-prior-posterior)). 
+Ricker $\alpha$ was estimated at `r alpha.CI[2]`(`r alpha.CI[1]`-`ralpha.CI[3]`), $\beta$ at `r beta.CI[2]`(`r beta.CI[1]`-`r beta.CI[3]`), and bias corrected $\sigma$ at  `sigma.CI[2]`(`r sigma.CI[1]`-`r sigma.CI[3]`; medians and 95th percentiles Table \@ref(tab:tab-prior-posterior)). 
 AR1 recruitment residuals did not show a strong trend across the time series, but may be in a weak decline since around 2011 return year (Figure \@ref(fig:fig-rec-resid)).  
 
-Estimates from the state-space spawner-recruit model estimated benchmarks (median and 95% CIs) of 80% $S_{MSY}$ at `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`), $S_{Gen}$ at `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`) and $U_{MSY}$ at `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; Table \@ref(tab:bench-table)). 
+Estimates from the state-space spawner-recruit model estimated benchmarks (median and 95% CIs) of 80% $S_{MSY}$ at `r benchmarks[1,1]` (`r benchmarks[1,2]`-`r benchmarks[1,3]`), $S_{Gen}$ at `r benchmarks[2,1]` (`r benchmarks[2,2]`-`r benchmarks[2,3]`) and $U_{MSY}$ at `r benchmarks[3,1]` (`r benchmarks[3,2]`-`r benchmarks[3,3]`; Table \@ref(tab:tab-bench)). 
 With the current stock at `r filter(data, year==2023)$spawn`, it appears we are well above and over the 95th percentile of 80% $S_{MSY}$. 
 Total recruits are currently at `r filter(data, year==2023)$spawn + filter(data, year==2023)$harvest`, which is just slightly higher than 80% $R_{S{MSY}}$. *caveat about IF you applied the current HCR in here though?*. 
 
@@ -32,11 +32,11 @@ The naive PA approach (*is this what we're calling this?*) is intermediate betwe
 Figure \@ref(fig:fig-fwd-SC) shows this conservation and fishery trade off where the current HCR maintains a large escapement with less catch, the alternate TAM HCR is more risky but provides more catch (at least in the short term), and the naive PA approach is intermediate. 
 The current HCR stabilizes relatively fast, while the others are slower with wider CIs; which may not be suprising since it's based on a fixed escapement policy. 
 In the two alternative HCRs, catch starts to converge near the end of the five generation simulation, displaying some short term reward in the alternative TAM HCR at the expense of greater conservation risk.  
-When interpreting performance, it's crucial to look at both Table \@ref(tab:tab-HCR-performance) and Figure \@ref(fig:fig-fwd-SC)and to remember the table summarises performance across the five generations forward, while the trajectories (Figure \@ref(fig:fig-fwd-SC)) illustrate finer, year scale performance.  
+When interpreting performance, it's crucial to look at both Table \@ref(tab:tab-HCR-performance) and Figure \@ref(fig:fig-fwd-SC)and to remember the table summarizes performance across the five generations forward, while the trajectories (Figure \@ref(fig:fig-fwd-SC)) illustrate finer, year scale performance.  
 
 Performance in the robustness is relatively the same, where HCRs are similarly ranked as in the baseline conditions.  
 The only change in rank is the PA HCR is 38 percent more stable than the alternative TAM HCR.  
 
 The sensitivity check which compared 1993 onward to the full data set showed the same rankings with conservation metrics, but catch was relatively higher and more stable in the PA HCR. 
-Catch stability was the lowest of all simulations, which isn't suprising when remembering there are only 11 data points between 1993 and present data.    
+Catch stability was the lowest of all simulations, which isn't surprising when remembering there are only 11 data points between 1993 and present data.    
 (*not sure what to add without opening a can of worms to argue for time varying models, looks more conservation risky, a lot less catch*).

@@ -139,7 +139,7 @@ library(rosettafish)
 library(csasdown)
 library(kableExtra)
 
-#options(scipen = 1, digits = 2)
+options(scipen = 1, digits = 2)
 
 source(here("analysis/R/inference-figs.R")) #grab important objects from analysis
 ```
