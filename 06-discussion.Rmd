@@ -4,7 +4,7 @@
 
 We estimated several key biological benchmarks that were legislated to be evaluated (*help*) in the Fish Stocks Provisions of Canada's revised Fisheries Act. 
 $S_{gen}$, recruitment that yields 80% $S_{MSY}$ and $U_{MSY}$ estimated in our spawner-recruit analysis are all suitable candidates for the limit, upper stock, and removal reference points. 
-These were estimated at `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`), `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`) and `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; median and 95th percentiles) respectively (Table \@ref(tab:bench-table)).  
+These were estimated at `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`), `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`) and `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; median and 95th percentiles) respectively (Table \@ref(tab:tab-bench)).  
 
 The current HCR showed the least conservation risk, but had the least amount of harvest. 
 An alternative HCR based on a lower OCP at $S_{gen}$ and a TAM cap at $U_{MSY}$ was risky for conservation and provided some short term gain in harvest. 

@@ -4,7 +4,7 @@
 
 The spawner-recruit model successfully converged with a maximum R-hat of *1.003 - how do I override scipen in R?*`r round(max(model.summary$Rhat, na.rm = T), 3)`, traceplots that suggested MCMC chains were well mixed, and a minimum ESS of `r round(min(model.summary$n_eff, na.rm = TRUE), 0)`, and chains that appeared well mixed (See Supplement *B - make ref* for fully reproducible analysis and full diagnostics). 
 
-The relationship showed some evidence of compensation at low spawner abundances (below ~5M), overcompensation at high spawner abundances (over ~10M) and somewhat of a poor fit between 4-10 million (Figure \@ref(fig:SRR)).  
+The relationship showed some evidence of compensation at low spawner abundances (below ~5M), overcompensation at high spawner abundances (over ~10M) and somewhat of a poor fit between 4-10 million (Figure \@ref(fig:fig-SRR)).  
 
 
 ## Stock status and trends  
