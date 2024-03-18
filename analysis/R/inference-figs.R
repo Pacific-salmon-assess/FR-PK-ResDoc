@@ -128,7 +128,7 @@ ggplot(avg_mass, aes(year, avg.weight)) +
 
 # plot HCRs ------------------------------------------------------------------------------
 p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
-  geom_line(size=1.1, alpha = 0.8) +
+  geom_line(size=1.1, alpha = 0.7) +
   geom_vline(xintercept = R.Smsy.8) +
   annotate("text", x = R.Smsy.8+1, y = .7,
            label = expression(italic(R[paste("80%",S)[MSY]]))) +
@@ -142,7 +142,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   guides(color = "none")
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
-  geom_line(size=1.1, alpha = 0.8) +
+  geom_line(size=1.1, alpha = 0.7) +
   scale_color_viridis_d() +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
