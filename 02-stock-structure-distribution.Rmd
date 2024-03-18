@@ -1,8 +1,16 @@
 # Stock Structure and Distribution  
 
-*text about distribution* (Figure \@ref(fig:map)).  
+*text about distribution* (Figure \@ref(fig:fig-map)).  
+
+Fraser River Pink salmon predominantly spawn in the Lower Fraser watershed, below the Fraser Canyon and Hells Gate.  
+However, there is a large component of the stock that returns to the North Thompson River and the Seton-Anderson complex.  
+Before the slide at Hells Gate in 1913, most of the Fraser River Pink salmon run returned and spawned in the Upper Fraser River [@pessInfluencePopulationDynamics2012]. 
+Although there is a lack abundance data at the tributary level for Fraser Pink salmon, observations from other species stock assessment have persistently noted Pink salmon in the Quesnel, Chilcotin, and the Nechako Rivers. 
+In 2019, DFO was alerted to a landslide in the middle Fraser near Big Bar. 
+Pink salmon were noted as being among the species delayed in their upstream migration by the slide. 
+Slide mitigation efforts have largely been successful and Pink salmon were observed in the Nechako in 2023 (**pers comm. R. Martin DFO**).  
+The impact of Hell’s Gate and Big Bar on the distribution of Fraser Pink salmon throughout the watershed show the potential impacts that may occur when future landslides disrupt migration for adult Pink salmon.  
 
 The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021; @heard1991]. 
 Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
-A recent COSEWIC report suggests splitting this DU in two based on run timing and suggests this run timing differences could be genetically based (COSEWIC *in prep - need permission to cite*).
-Observations in @rickerHistoryPresentState1989 further support the distinction between an upper and lower Fraser Pink population by highlighting the prolonged period of impassibility at Hell's Gate (1913-1947) and noted differences in body size between these populations and impacts on migration, survival, and fecundity.  
+COSEWIC is currently reviewing this DU’s structure and may re-adjust it (**pers comm. B. Leaman COSEWIC**).   

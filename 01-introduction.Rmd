@@ -23,7 +23,7 @@ This diversion rate appears to be increasing, which has implications for surviva
 
 Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
 Escapement data were collected with a variety of methods over this period due to changes in priorities, and funding and technology. 
-Table \@ref(tab:spawner-est-methods) Describes the different enumeration stanzas through time. 
+Table \@ref(tab:tab-spawner-est-methods) Describes the different enumeration stanzas through time. 
 It should be noted that no calibration was done when switching between methods. 
 
 Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
@@ -50,7 +50,7 @@ These measures have included: time and area closures (e.g., Interior Fraser Coho
 In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3 million, the average escapement was 2.5 million, and the average ER was 69%. 
 In the 19 years of Fraser pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR ER was exceeded (1987 and 1997), the average run size was 12.9 million, the average escapement was 9.4 million and the average ER was 25%. 
 Longer term, Fraser Pink returns may be characterized as “variable, but stable”. 
-In the last three generations, the run size and escapement have been stable, with a slight increase, with an average run size of 9.2 million, average escapement of 8.6 million, and an average ER of 6%. 
+In the last three generations, the run size and escapement have been stable, with a slight increase, with an average run size of 9.2 million, average escapement of 8.6 million, and an average ER of 6% (Figure \@ref(fig:fig-catch-esc-HCR)). 
 
 
 *we omitting this P? I thought it was important... Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. *

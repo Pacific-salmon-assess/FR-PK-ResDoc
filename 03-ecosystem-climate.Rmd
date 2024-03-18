@@ -1,7 +1,21 @@
 # Ecosystem and Climate Factors Affecting the Stock  
 
-Climate change is affecting salmon across all stages of life in marine and freshwater environments (*cite*). 
-Climate and hatchery practices have contributed to a warm, crowded ocean which impacts growth and survival (*cite - Connors et al 2020, Ruggerone & COnnors 2015, Ruggerone & Irvine 2018*).
-Freshwater habitat continues to be affected by warmer weather, drought, wildfire, landslides and floods that are increasing in a more variable climate [@macdonaldStateCanadianPacific2023, *others*]. 
-Evidence of this in the Fraser is clear given the Big Bar landslide that blocked fish passage discovered in 2019 and with the recent flooding due to an atmospheric river in the November 2021.
-Existing trends in changing demography and behavior in Fraser Pinks (e.g. @hagueMovingTargetsAssessing2021; @pacificsalmoncommissionPSCBiologicalData2023; @ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018) paired with a warming climate allude to a precarious future for Fraser Pinks. 
+As a result of their extensive migrations that span both freshwater and marine environments, Fraser pink salmon interact with a broad range of ecosystem and climate conditions over the course of their life cycle. 
+The freshwater habitats that Fraser River pink salmon spawn and incubate in are broadly distributed through the river basin including habitats both below and above the major hydrologic pinch points of Hell’s Gate and Big Bar (Figure \@ref:(fig:fig-map)). 
+Most pink salmon production, however, occurs in the Lower Fraser from the Fraser Canyon downstream and habitats in this region are relatively highly impacted by anthropogenic activities.  
+
+Pink salmon have exceptional aerobic scope and cardiovascular performance which has been hypothesized to contribute to their resilience to warming freshwaters (**Clark et al. 2011**). 
+However, due to their relatively small body size they are especially vulnerable to flow related impacts during return freshwater migrations. 
+A major rockslide at Hell’s Gate in 1913, and subsequent slide in 1941, created a hydrologic barrier that severely limited upstream migration of pink salmon to spawning locations in the upper Fraser River until fish passage facilities were put in place in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser [@pessInfluencePopulationDynamics2012]. 
+In 2018 a rockslide occurred at Big Bar in the Fraser Canyon further upstream from Hell’s Gate. 
+This slide created another partial barrier to upstream migration, during periods of high flow, to headwater spawning locations though the majority of pink salmon spawning in the Fraser occur downstream of the slide.  
+
+In addition to flow related impacts on adult migration, extreme flows (e.g., from fall rain events) can cause high mortality in the egg to alevin stage of Pacific salmon as a result of scouring spawning redds where eggs incubate (**Montgomery et al. 1996**). 
+Though extreme flows and flooding have occurred in the Lower Fraser in recent years (e.g., fall 2021) there has been little examination of extreme flow related impacts on Fraser River pink salmon incubation success.  
+
+In the marine environment, Fraser Pink salmon survival is negatively associated with above average sea-surface temperatures during early marine life [@mueterOppositeEffectsOcean2002], earlier spring bloom timing (**Malick et al. 2015**), and a weak North Pacific Current as indexed the North Pacific Gyre Oscillation (NPGO) [@malickEffectsNorthPacific2017], all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
+In addition, increasing abundances of Pacific salmon abundances across the North pacific (dominated by pink, chum, and sockeye) are associated with declines in Fraser River pink salmon adult size (Figure \@ref:(fig:fig-avg-mass)) which may result from inter- and intra-specific competition among salmon for limited prey resources at sea [@ruggeroneDiatomsKillerWhales2023]. 
+These declines in spawner size in turn likely impact reproductive output as fecundity scales with female size (**Beacham and Murray 1993**).  
+
+The physical and biological oceanographic conditions that affect prey production and pink salmon survival are likely to continue to vary as the North Pacific warms as a result of climate change (**Litzow et al. 2024**). 
+These changes may include reduced production and availability of lipid rich zooplankton during early marine life and/or increasing mismatch between timing of ocean entry and timing of marine productivity (e.g., spring bloom) [@wilsonPhenologicalShiftsMismatch2023].   
