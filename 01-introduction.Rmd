@@ -2,26 +2,29 @@
 
 ## Background  
 
-The Fraser River is a large free-flowing river draining 233 thousand square kilometers and supports all five species of Pacific Salmon native to North America [@grantFraserRiverPink2014]. 
-This large basin has a wide diversity of habitats that are broken into seven freshwater adaptive zones including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008].  
--*more diescription of river? add dams, slides, floods? - or save for climate?*
+The Fraser River is a large free-flowing river that is 1375 km long and drains 233,000 square kilometers. 
+This large basin has a wide diversity of habitats that are broken into seven freshwater adaptive zones including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008]. 
+The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. 
+The environmental complexity of the Fraser River and the diversity of the salmon populations within it has likely contributed to the resilience of salmon populations to environmental disturbances through time (*cite? - Kaitlyn*).  
+Landslides in particular have occurred throughout the watershed causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell's Gate in 1913 and the most recent being the Big Bar Landslide in 2019. 
+Fraser River Pink salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. Currently, the largest aggregate of Pink Salmon spawns in the Lower Fraser watershed.
+However, prior to the slide at Hell’s Gate, Fraser River Pink salmon spawned at greater abundances in the Upper Fraser watershed with significant populations in the Thompson and Seton systems (Pess et al., 2012). 
+Pink salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from early August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
+This obligate 2 year life cycle exhibited by Pink salmon results in even and odd year cohorts that are reproductively isolated from each other. 
+Fraser River Pink Salmon return on odd years with a negligible return on even years. 
 
-Pinks salmon fry migrate to the ocean in the spring, adults spend 1 year at sea, then return to the river in early August to early October to spawn shortly after returning [@dfoSouthernSalmonIntegrated2023].  
+*Include the following? - Data collected between 1977 and 2001 reported sex ratios ranging from 0.9 to 1.4 female:male (mean 1.1) with no apparent trend in a changing ratio [@grantFraserRiverPink2014].*  
+*Fraser Pink body mass has been declining in recent years. *
+*Average body mass appeared to be relatively stable at around 2.5kg until 1975 when it declined until the late 90's and has been fluctuating around 1.75kg (@pacificsalmoncommissionPSCBiologicalData2023).*
+*@ruggeroneNumbersBiomassNatural2018 noticed how this decline in body mass coincided with an increase of Pink and Chum salmon in the North Pacific Ocean.*
 
-Data collected between 1977 and 2001 reported sex ratios ranging from 0.9 to 1.4 female:male (mean 1.1) with no apparent trend in a changing ratio [@grantFraserRiverPink2014].  
-
-Fraser Pink body mass has been declining in recent years. 
-Average body mass appeared to be relatively stable at around 2.5kg until 1975 when it declined until the late 90's and has been fluctuating around 1.75kg (@pacificsalmoncommissionPSCBiologicalData2023).
-@ruggeroneNumbersBiomassNatural2018 noticed how this decline in body mass coincided with an increase of Pink and Chum salmon in the North Pacific Ocean.  
-
-*marine distribution*
-
-When Pinks migrate toward the Fraser from the North Pacific, some of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northen to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
+When Pinks migrate toward the Fraser from the North Pacific, some of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
 This diversion rate appears to be increasing, which has implications for survival [@hagueMovingTargetsAssessing2021]. 
 
 Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
-Due to changes in priorities, funding and technology, escapement data was collected with a variety of methods. 
-In short: the PSC initially conducted system specific mark-recapture (1957-85) that was later carried on by DFO (1987-91), then DFO moved mark-recapture to the main stem (1993-01), after this escapement was estimated using PSC test fishery data (2003-07), then hydroacoustic methods were used to estimate escapement post-season (2009-11), and current estimates are made in-season with similar methods (2013-present) (Table \@ref(ref:spawner-est-methods)). 
+Escapement data were collected with a variety of methods over this period due to changes in priorities, and funding and technology. 
+Table \@ref(tab:spawner-est-methods) Describes the different enumeration stanzas through time. 
+It should be noted that no calibration was done when switching between methods. 
 
 Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
 Contribution of Fraser stocks was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
@@ -32,21 +35,26 @@ Recreational catch is estimated through agency creel surveys in both countries.
 First Nations catch is reported using similar methods of estimating commercial catch (i.e. fish sales slips). 
 See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data.  
 
-*fisheries history*  
-Recruitment has been variable across the timeseries with an average of `r mean(rec_prop$rec)` (SD `r sd(rec_prop$rec)`). Early in the timeseries, recruitment increased from  some of the lowest recorded abundances to `r filter(rec_prop, year==1991)$rec` million in 1991, then decreased to `r filter(rec_prop, year==1999)$rec` million in 1999, and rebounded to the highest abundance on record of `r filter(rec_prop, year==2003)$rec` million in 2003. 
-Since this peak in 2003, recruitment has been declining. 
-Across the timeseries, harvest ranged from `r min(rec_prop$harvest)` million in `r filter(rec_prop, harvest==min(rec_prop$harvest))$year` to `r max(rec_prop$harvest)` million in `r filter(rec_prop, harvest==max(rec_prop$harvest))$year`. Escapement ranged from `r min(rec_prop$spawn)` million in `r filter(rec_prop, spawn==min(rec_prop$spawn))$year` to `r max(rec_prop$spawn)` million in `r filter(rec_prop, spawn==max(rec_prop$spawn))$year` (Figure \@ref(fig:catch-esc)).  
 
-A marked decrease in the exploitation rate occurred during the low return in 1999. Since then the mean exploitation rate has remained low at `r round(mean(filter(rec_prop, year>1999)$ER), 2)`% (SD = `r round(sd(filter(rec_prop, year>1999)$ER), 2)`), compared to a mean exploitation rate of `r round(mean(filter(rec_prop, year<1999)$ER), 2)`% (SD = `r round(sd(filter(rec_prop, year<1999)$ER), 2)`) before 1999.  
+Canada’s Fisheries Act was amended in June 2019. 
+It included new requirements under the  Fish Stock Provisions (FSP), which states that In the management of fisheries, the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock. 
+Fraser Pink Salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference (USR) and the maximum Removal Reference (RR). 
 
-The current harvest control rule has been in place since the mid 1980's and has not been updated.
-When the return is over 20 million the total allowable mortality (TAM) is 70%.
-If the run size is between 7.059 and 20 million fish, the escapement target is 6 million fish and the rest is a harvestable surplus. 
-When the escapement is less than 7.059, the exploitation rate increases linearly from 0% at a run size of 0 to 15% at a run size of 7.059 [@fisheriesandoceanscanadaSouthernSalmonIntegrated2023]. 
-This harvest control rule implies that the lower reference point (LRP) is 7.059 million and the upper stock reference (USR) is 20 million, with a TAM of 70%. The basis of the TAM appears to be based on @rickerHistoryPresentState1989, but must be based on some unpublished analysis before the 1989 paper (Table *add*).  
+The current harvest control rule (HCR) for Fraser Pink Salmon was first implemented in 1987. 
+It consists of three management zones: 1) at run sizes below 7.059 million pinks, the ER increases from 0% when there are no pink salmon to 15% at 7.059 million pinks, 2) at run sizes between 7.059 and 20 million pinks, there is a fixed escapement goal of 6 million spawners, and 3) at run sizes greater than 20 million pinks, a maximum exploitation rate (ER) of 70% is applied. 
+The documentation of rationale behind the HCR has been difficult to locate, but it is generally believed that the 6 million spawners is based on an egg target. 
 
-Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. 
-Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest (*and something with FSP?*) [@macdonaldStateCanadianPacific2023].   
+Additional management measures are often taken during fisheries directed on Fraser Pink salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not.
+These measures have included: time and area closures (e.g., Interior Fraser Coho fishing window closure), gear requirements (e.g., use of beach seines or shallow seines instead of drift gill nets, bait ban for recreational fisheries), and operational changes (e.g., brailing requirements and maximum recommended set sizes for purse seines). 
+
+In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3 million, the average escapement was 2.5 million, and the average ER was 69%. 
+In the 19 years of Fraser pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR ER was exceeded (1987 and 1997), the average run size was 12.9 million, the average escapement was 9.4 million and the average ER was 25%. 
+Longer term, Fraser Pink returns may be characterized as “variable, but stable”. 
+In the last three generations, the run size and escapement have been stable, with a slight increase, with an average run size of 9.2 million, average escapement of 8.6 million, and an average ER of 6%. 
+
+
+*we omitting this P? I thought it was important... Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. *
+*Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest (and something with FSP?) [@macdonaldStateCanadianPacific2023]*.  
 
 
 ## Objectives  
