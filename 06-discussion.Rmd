@@ -2,40 +2,44 @@
 
 ## Summary of key findings  
 
-We estimated several key biological benchmarks that were legislated to be evaluated (*help*) in the Fish Stocks Provisions of Canada's revised Fisheries Act. 
+We estimated several key biological benchmarks that were legislated to be evaluated in the Fish Stocks Provisions of Canada's revised Fisheries Act (*cite*). 
 $S_{gen}$, recruitment that yields 80% $S_{MSY}$ and $U_{MSY}$ estimated in our spawner-recruit analysis are all suitable candidates for the limit, upper stock, and removal reference points. 
-These were estimated at `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`), `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`) and `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; median and 95th percentiles) respectively (Table \@ref(tab:tab-bench)).  
+These were estimated at `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`), `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`) and `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; median and 95th percentiles) respectively (Table \@ref(tab:tab-bench)).  
 
 The current HCR showed the least conservation risk, but had the least amount of harvest. 
 An alternative HCR based on a lower OCP at $S_{gen}$ and a TAM cap at $U_{MSY}$ was risky for conservation and provided some short term gain in harvest. 
-The third HCR tested was naively based in the precautionary approach where there is a linear increase in TAM from 0% at $S_{gen}$ to $U_{MSY}$ (`r benchmarks[3,1]*100`%) at the recruits that would yield $S_{MSY}$}. 
-This naive PA compliant HCR was indeterminate between the others tested; the spawning escapement typically fell in what would be the amber zone, and interestingly, catch appeared to converge with the riskier HCR near the end of the simulation, but escapements remained relatively higher. 
-This third HCR is impractical from a management perspective since the escapement goal is "humped" near the upper OCP meaning when the run gets just below recruits that would produce 80% $S_{MSY}$ managers need to figure out how to escape more fish until getting to the other side of the "hump"; which puts managers in an awkward place and can be risky for conservation if the run size continues to be reduced with in-season adjustments. 
+The third HCR tested was naively based in the precautionary approach where there is a linear increase in TAM from 0% at $S_{gen}$ to $U_{MSY}$ (median: `r benchmarks[3,1]*100`%) at the recruits that would yield $S_{MSY}$. 
+This naive PA compliant HCR was indeterminate between the others tested; the spawning escapement in the forward simulation typically fell in what would be the amber zone, and interestingly, catch appeared to converge with the riskier HCR near the end of the simulation, but escapements remained relatively higher. 
+This PA HCR is impractical from a management perspective since the escapement goal is "humped" near the upper OCP meaning when the run gets just below recruits that would produce 80% $S_{MSY}$ managers need to figure out how to escape more fish until getting to the other side of the "hump"; which puts managers in an awkward place and can be risky for conservation if the run size continues to be reduced with in-season adjustments. 
 Other than this caveat, performance from this naive PA HCR was promising and warrants further exploration.  
 
 Performance measures in table \@ref(tab:tab-HCR-performance) should be interpreted with caution for several reasons.
-First, the table summarizes performance across the five generation simulation and do not pick up on finer, shorter term performance as shown in the trajectories (Figure \@ref(fig:fig-fwd-SC)); the alternative TAM HCR may look good in the table, but when looking at the figure we see this large catch is due to a short term gain. 
-We also made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed through all run sizes. 
+First, the table summarizes performance across the five generation simulation and do not pick up on finer, shorter term performance as shown in the trajectories (Figure \@ref(fig:fig-fwd-SC)). 
+The alternative TAM HCR may look good in the table, but when looking at the figure we see this large catch is due to a short term gain. 
+We also made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes. 
 When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
-Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program (*revise after email back from Merran*) [@hagueMovingTargetsAssessing2021]. 
+Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
+Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent. 
 Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for piratical management reasons. 
 Management of other species like Fraser Sockeye may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) be right skewed, which could also be affected by the 4 year life cycle of Fraser Sockeye. 
 The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (*citations*). 
-Therefore, we view the results in table \@ref(tab:tab-HCR-performance) as relative measures and not absolutes; stakeholders should not expect to harvest the median annual catch reported here, but instead recognize in what metrics HCRs relatively outperform each other.  
+Therefore, we view the results in table \@ref(tab:tab-HCR-performance) as relative measures and not absolutes; stakeholders should not expect to harvest the median annual catch reported here, but instead recognize in which metrics HCRs relatively outperform each other.  
 
 Results from the robustness test yielded less harvest and escapement being in more risky zones for conservation, which is expected when a population with decreased productivity follows the same HCR defined in the full baseline data set. 
 HCRs maintained their relative rank to each other between baseline and low productivity scenarios (Table \@ref(tab:tab-HCR-performance)). 
+The sensitivity check on '93 to present data had very unstable catch, which isn't suprising considering it was only fit to 11 data points.  
 
 
 ## Excpetional cicumstances or assessment triggers for the stock  
 
-when *should* the next reassessment be done??
+*when should the next reassessment be done?? 3 gens? Would want to se recruitment residuals improving*  
 
-The next assessment of Fraser Pinks could be a more proper MSE that takes into consideration several scenarios and degrees of outcome uncertainty and forecast error described above, and explores more alternative HCRs. 
+
+The next assessment of Fraser Pinks could be a proper MSE that takes into consideration several scenarios and degrees of outcome uncertainty and forecast error described above, and explores more alternative HCRs. 
 The naive PA HCR could be refined and tested; one could simply flatten the "hump" near recruits that produce 80% $S_{MSY}$ and re-test in a formal MSE. 
-The current HCR removal reference was based on an estimate of $U_{MSY}$ at 70% made by @rickerHistoryPresentState1989; this could be refined to our new (median) estimate of `r benchmarks[3,1]*100`%, and further exploration of an optimal target escapement could be made. 
+The current HCR removal reference was based on an estimate of $U_{MSY}$ at 70% made by @rickerHistoryPresentState1989; this could be refined to our new median estimate of `r benchmarks[3,1]*100`%, and further exploration of an optimal target escapement could be made. 
 We found that the current HCR wasn't projected to harm the population, and refining the current HCR would mostly be to benefit increases in catch and catch stability. 
-However, due to the current market, lower recent recruitment residuals, changes in demography, and increased uncertainty in assessments, increasing harvest may be a low priority. 
+However, due to the current market, lower recent recruitment residuals, changes in demography, and increased uncertainty in assessments, increasing harvest may be a low priority and potentially risky for conservation.  
 
 
 ## Areas of potential future work  
@@ -45,13 +49,13 @@ We hope to incorporate changes in adult body size, fecundity data, and smolt tra
 Understanding these drivers may help better predict run size, which in turn could help more clearly define forecast error in forward simulations. 
 
 It is worthy to explore time varying parameters in newly developed models on Fraser Pinks. 
-The recolonization above the Hell's Gate slide that blocked passage between 1913-47 [@rickerHistoryPresentState1989] and recently observed intraspecific competition in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018] should make this system an ideal candidate for time varying Ricker parameters. 
+The recolonization above the Hell's Gate slide that blocked passage between 1913-47 [@rickerHistoryPresentState1989] and recently observed intraspecific competition in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018] make this system an ideal candidate to model with time varying parameters. 
 Our recruitment residuals didn't show a clear need for time varying parameters, but perhaps this will be unveiled when partitioning survival between freshwater and marine environments; initial analyses show marine survival is decreasing.  
 
 Taking a deeper look at spatial distribution of Pinks in the Fraser over time is also of interest. 
-Recolonization of the upper Fraser isn't well understood (but see @pessInfluencePopulationDynamics2012 and *COSEWIC in prep*), (*add some appropriate text about incoporating IK*). 
-A better understanding of metapopulation dynamics within the Fraser will help us better manage the stock, especially as COSEWIC calls to split the DU into two upper and lower DUs (*cite COSEWIC*). 
+Recolonization of the upper Fraser isn't well understood (but see @pessInfluencePopulationDynamics2012), (*add some appropriate text about incoporating IK*). 
+A better understanding of metapopulation dynamics within the Fraser will help us better manage the stock, especially as COSEWIC re-assesses this DU's structure (*pers comm. B. Leaman, COSEWIC*).  
 
-Addressing uncertainties in population dynamics (e.g. time varying parameters, life-stage specific survival), environmental drivers of population dynamics, a more rigorous look at scenarios and magnitude of outcome uncertainty and forecast error, and understanding distributional shifts and behaviors could combine into a detailed examination of current management practices. 
-After gaining a better understanding of the above, and re-evaluating other management considerations (e.g. market considerations, management of other species) alternative HCRs could be developed and re-tested in a similar framework we present here, but with more detailed, realistic parameters and scenarios. 
-It will be no small task and requires input from multiple rights holders (i.e. indigenous groups)/stakeholders/agencies, but we hope the general framework outlined here provides structure and a general methodology to build a detailed MSE for Fraser Pinks.  
+Addressing uncertainties in population dynamics (e.g. time varying parameters, life-stage specific survival), environmental drivers of population dynamics, a more rigorous look at scenarios and magnitude of outcome uncertainty and forecast error, and understanding distributional shifts and behaviors could combine into a detailed examination of current and alternative management practices. 
+After gaining a better understanding of the above, and re-evaluating other considerations (e.g. harvest objectives, management of other species) alternative HCRs could be developed and re-tested in a similar framework we present here, but with more detailed, realistic parameters and scenarios. 
+A formal MSE will be no small task and requires thoughtful input from multiple rights holders (i.e. indigenous groups), stakeholders, agencies, but we hope the general framework outlined here provides structure and a general methodology to build a detailed MSE for Fraser Pinks.  

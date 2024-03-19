@@ -1,16 +1,15 @@
-# Stock Structure and Distribution  
+# STOCK STRUCTURE AND DISTRIBUTION  
 
-*text about distribution* (Figure \@ref(fig:fig-map)).  
-
-Fraser River Pink salmon predominantly spawn in the Lower Fraser watershed, below the Fraser Canyon and Hells Gate.  
-However, there is a large component of the stock that returns to the North Thompson River and the Seton-Anderson complex.  
+Fraser River Pink salmon predominantly spawn in the Lower Fraser watershed, below the Fraser Canyon and Hells Gate (Figure \@ref(fig:fig-map)). 
+However, there is a large component of the stock that returns to the North Thompson River and the Seton-Anderson complex. 
 Before the slide at Hells Gate in 1913, most of the Fraser River Pink salmon run returned and spawned in the Upper Fraser River [@pessInfluencePopulationDynamics2012]. 
 Although there is a lack abundance data at the tributary level for Fraser Pink salmon, observations from other species stock assessment have persistently noted Pink salmon in the Quesnel, Chilcotin, and the Nechako Rivers. 
 In 2019, DFO was alerted to a landslide in the middle Fraser near Big Bar. 
 Pink salmon were noted as being among the species delayed in their upstream migration by the slide. 
-Slide mitigation efforts have largely been successful and Pink salmon were observed in the Nechako in 2023 (**pers comm. R. Martin DFO**).  
+Slide mitigation efforts have largely been successful and Pink salmon were observed in the Nechako in 2023 (*pers comm. R. Martin DFO*).  
 The impact of Hell’s Gate and Big Bar on the distribution of Fraser Pink salmon throughout the watershed show the potential impacts that may occur when future landslides disrupt migration for adult Pink salmon.  
 
 The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021; @heard1991]. 
 Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
-COSEWIC is currently reviewing this DU’s structure and may re-adjust it (**pers comm. B. Leaman COSEWIC**).   
+COSEWIC is currently reviewing this DU’s structure and may re-adjust it (*pers comm. B. Leaman COSEWIC*). 
+Differing body sizes and run timing supported by genetic analyses suggests differences between Pinks above and below Hells Gate (*pers comm. S. Latham, [@pessInfluencePopulationDynamics2012]).  

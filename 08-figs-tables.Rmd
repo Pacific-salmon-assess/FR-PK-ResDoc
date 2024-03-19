@@ -1,4 +1,4 @@
-# Figures  
+# FIGURES  
 
 (ref:fig-catch-esc-HCR) Full time series of escapament and catch (upper) and the current harvest control rule, and realized exploitation rates since the harvest control rule was adopted (1987-present).  
 ```{r fig-catch-esc-HCR, fig.cap = "(ref:fig-catch-esc-HCR)"}
@@ -16,7 +16,7 @@ knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
 (ref:fig-HCRs) Current and alternative harvest control rules showing target escapement (top) and exploitation rate (bottom) with associated benchmarks for $S_{gen}$ and recruitment that will yield $S_{MSY}$.  
-```{r fig-current-HCR, fig.cap = "(ref:fig-HCRs)"}
+```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
@@ -30,19 +30,19 @@ knitr::include_graphics(here::here("figure/SRR.png"))
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
-(ref:fig-kobe) 
+(ref:fig-kobe) Kobe plot of dynamics through time. Years represent the first and last year of data used in the spawner-recruit model. 95% credible intervals are located on the final year of assessment.  
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
 knitr::include_graphics(here::here("figure/kobe.png"))
 ```
 
-(ref:fig-fwd-SC)
+(ref:fig-fwd-SC) Past (grey) and forward simulation trajectories (colors) of escapement and catch for the currrent and 2 alternative HCRs. Shaded polygons and dashed lines are 50% credible intervals. The catch index is defined as the average of the top 3 years of catch from 2001 to present.   
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```
 
 \clearpage
 
-# Tables  
+# TABLES  
 
 (ref:tab-spawner-est-methods) Methods of assessing spawner escapement and assumed CVs used as observation error. 
 ```{r tab-spawner-est-methods, results = "asis"}
