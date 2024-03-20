@@ -83,12 +83,12 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ```
 
-(ref:tab-prior-posterior) Parameters, priors, descriptions, and posteriors from the spawner-recruit model. 
-```{r tab-prior-posterior, results='asis'}
+(ref:tab-prior-posterior) Parameters, priors, descriptions, and posteriors from the spawner-recruit model.
+```{r tab-prior-posterior, results = "asis"}
 priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
 
 csasdown::csas_table(priors,
-                     escape = TRUE, format = "latex", #have tried every combo of T/F, pandoc/latex...
+                     escape = TRUE, 
                      caption = "(ref:tab-prior-posterior)")
 ```
 
