@@ -1,0 +1,9 @@
+Parameter,Prior,Bounds,Description
+$ln(\alpha)$,"$\sim N(1,2)$","$[0,\inf]$",Natural log of intrinsic rate of growth
+$S_{MAX}$,"help, 75% of observed spawners with transformation",,Maximum spawners
+$\sigma_S_{MAX}$,error on above,,standard deviaiton on maximum spawners
+$\beta$,as above,,Magnitude of within brood-year density-dependence 
+$\phi$,"$\sim U(-1,1)$","$[-1,1]$",Lag-one correlation in interannual variation in survival
+$\sigma_R$,"$\sim N(1,2)$","$[0,\inf]$",White noise process standard deviation in survival.
+$ln(R_0)$,"$\sim N(0,20)$","$[0,\inf]$",Natural log of unobserved recruitment in the first seven years of process model.
+$\sigma_{R_0}$,"$\sim Inv-Gamma(2,1)$","$[0,\inf]$",Standard deviation in unobserved recruitment in the first year of process model. 

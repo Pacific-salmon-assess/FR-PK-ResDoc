@@ -66,7 +66,7 @@ It is this spawner abundance $S_y$ that is used in Eqn. \@ref(eq:ricker) to prod
 ### OBSERVATION MODEL  
 
 A state-space approach was particularly useful for this data set since we expected observation error in escapement to vary among sampling regimes (Table \@ref(tab:tab-spawner-est-methods)). 
-Observed spawner abundance was therefore assumed to be log-normally distributed with the CVs converted to log-normal variance following [@forbes-etal-2011]:  
+Observed spawner abundance was therefore assumed to be log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:  
 
 \begin{equation}
 \sigma^2_{o,y} = \ln\left(\mathrm{CV}_y^2 + 1\right)

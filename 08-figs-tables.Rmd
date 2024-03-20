@@ -49,7 +49,8 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
                  'Assessment Method' = c("Early IPSFC system specific mark-recapture: low tagging effort", 
                             "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: 
-                            high precesion methods in larger systems (90% of stock) and lower precesion in the remainder", 
+                            high precesion methods in larger systems (90% of stock) and lower 
+                            precesion in the remainder", 
                             "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
                             "PSC Mission sonar"), 
@@ -83,12 +84,15 @@ csasdown::csas_table(df,
 ```
 
 (ref:tab-prior-posterior) Parameters, priors, descriptions, and posteriors from the spawner-recruit model. 
-```{r tab-prior-posterior, results = "asis"}
+```{r tab-prior-posterior, results='asis'}
+priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
 
-#add
+csasdown::csas_table(priors,
+                     escape = TRUE, format = "latex", #have tried every combo of T/F, pandoc/latex...
+                     caption = "(ref:tab-prior-posterior)")
 ```
 
-(ref:tab-bench) Biological benchmarks estimated in the spawner-recruit model.  
+(ref:tab-bench) Biological benchmarks estimated in the spawner-recruit model.
 ```{r tab-bench, results = "asis"}
 csasdown::csas_table(benchmarks,
            caption = "(ref:tab-bench)",
@@ -101,6 +105,8 @@ csasdown::csas_table(benchmarks,
 
 (ref:tab-HCR-performance) Performance of HCRs in baseline, low productivity robustness test, and with a sensitivity analysis of recent data used as a cutoff in some previous reports. Note that it is more important to consider the relative performance of benchmarks (e.g. catch may not be realized due to influences from other fisheries and conservation measures in the system).  
 ```{r tab-HCR-performance, results = "asis"}
+colnames(perf.metrics) <- c("HCR", "Scenario", "% below $S_{gen}$", "% above $S_{MSY}$", 
+                            "Median annual catch", "Catch stability (1/CV)", "catch index")
 csasdown::csas_table(perf.metrics,
            caption = "(ref:tab-HCR-performance)",
            format = "pandoc",

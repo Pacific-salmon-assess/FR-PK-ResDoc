@@ -44,14 +44,13 @@ citation_other_language: "Last, F.M. et Smith, A.B. Title Here (*Latin Species N
 abstract: |
   stuff
   
-
 french_abstract: |
   Voici 
   
 header: "Draft working paper --- Do not cite or circulate" # or "" to omit
 show_continued_text: true #added b/c of render error
 output:
- csasdown::resdoc_word:
+ csasdown::resdoc_pdf:
    french: false
    # copy_sty is a toggle to copy the style file from the csasdown package every time you compile
    # the document. If false, any changes you have made to the style file in your project
@@ -139,7 +138,7 @@ library(rosettafish)
 library(csasdown)
 library(kableExtra)
 
-options(scipen = 1, digits = 2)
+options(scipen = 1, digits = 2) #tried tinytex.verbose = TRUE to make prior table work
 
 source(here("analysis/R/inference-figs.R")) #grab important objects from analysis
 ```
