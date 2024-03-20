@@ -8,7 +8,7 @@ The Fraser River is home to all five species of Pacific Salmon and most of their
 The environmental complexity of the Fraser River and the diversity of the salmon populations within it has likely contributed to the resilience of salmon populations to environmental disturbances through time (*cite? - Kaitlyn*). 
 Landslides in particular have occurred throughout the watershed causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell's Gate in 1913 and the most recent being the Big Bar Landslide in 2019. 
 Fraser River Pink salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. Currently, the largest aggregate of Pink Salmon spawns in the Lower Fraser watershed.
-However, prior to the slide at Hell’s Gate, Fraser River Pink salmon spawned at greater abundances in the Upper Fraser watershed with significant populations in the Thompson and Seton systems (Pess et al., 2012). 
+However, prior to the slide at Hells Gate, Fraser River Pink salmon spawned at greater abundances in the Upper Fraser watershed with significant populations in the Thompson and Seton systems (Pess et al., 2012). 
 Pink salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from early August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
 This obligate 2 year life cycle exhibited by Pink salmon results in even and odd year cohorts that are reproductively isolated from each other. 
 Fraser River Pink Salmon return on odd years with a negligible return on even years. 

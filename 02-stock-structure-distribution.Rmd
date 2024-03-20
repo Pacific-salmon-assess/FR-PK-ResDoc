@@ -12,4 +12,4 @@ The impact of Hell’s Gate and Big Bar on the distribution of Fraser Pink salmo
 The Pink salmon run in the Fraser is the largest in BC and occurs on two year cycles with dominant runs in odd years [@dfoPreseasonRunSize2021; @heard1991]. 
 Fraser River Pink salmon are currently managed as a single designatable unit (DU). 
 COSEWIC is currently reviewing this DU’s structure and may re-adjust it (*pers comm. B. Leaman COSEWIC*). 
-Differing body sizes and run timing supported by genetic analyses suggests differences between Pinks above and below Hells Gate (*pers comm. S. Latham, [@pessInfluencePopulationDynamics2012]).  
+Differing body sizes and run timing supported by genetic analyses suggests differences between Pinks above and below Hells Gate (*pers comm. S. Latham*, [@pessInfluencePopulationDynamics2012]).  
