@@ -78,8 +78,8 @@ We assumed that harvest had a 5% CV and so harvest observations were log-normall
 
 ### MODEL FITTING AND DIAGNOSTICS  
 
-We fit the spawner-recruit model in a Bayesian estimation framework with Stan [*@carpenter_stan_2017; @stan_development_team_rstan_2020*], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman_no-u-turn_2014] for Bayesian statistical inference to generate the joint posterior probability distribution of all unknowns in the model. 
-In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; *@vehtari2021rank*] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarized in Table (*ADD ref:tab-prior-posterior*).  
+We fit the spawner-recruit model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman_no-u-turn_2014] for Bayesian statistical inference to generate the joint posterior probability distribution of all unknowns in the model. 
+In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ [potential scale reduction factor; @vehtari2021rank] was less than 1.01 and that the effective sample size was greater than 400. Priors were weakly informative and summarized in Table (*ADD ref:tab-prior-posterior*).  
 
 
 ## BIOLOGICAL BENCHMARKS  
@@ -92,7 +92,7 @@ S_{MSY} = 1 - W(e^1-\alpha)/\beta
 \end{equation}
 
 where $W$ is the Lambert function [@scheuerellExplicitSolutionCalculating2016], and $\alpha$ and $b$ are intrinsic productivity and the magnitude of within stock density dependence, respectively. 
-We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied *@hilborn1985simplified* approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ and so infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$.
+We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied @hilborn1985simplified approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ and so infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$.
 
 
 The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$) was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
