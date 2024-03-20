@@ -3,31 +3,31 @@
 ## BACKGROUND  
 
 The Fraser River is a large free-flowing river that is 1375 km long and drains 233,000 square kilometers. 
-This large basin has a wide diversity of habitats that are broken into several freshwater adaptive zones including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008]. 
-The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. 
-The environmental complexity of the Fraser River and the diversity of the salmon populations within it has likely contributed to the resilience of salmon populations to environmental disturbances through time (*cite? - Kaitlyn*). 
-Landslides in particular have occurred throughout the watershed causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell's Gate in 1913 and the most recent being the Big Bar Landslide in 2019. 
+The basin has a wide diversity of habitats that have been into several distinct regions including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [See Freshwater adaptive zones in @holtbyConservationUnitsPacific2008]. 
+The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. The environmental complexity of the Fraser River and the diversity of the salmon populations within it has underpinned indigenous food security for millennia (*Nesbitt and Moore 2016*) and likely contributed to the resilience of salmon populations to environmental disturbances through time (*cite? - Kaitlyn*). Landslides in particular have occurred throughout the watershed causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1913 and more recently the Big Bar Landslide in 2019. 
+
+
 Fraser River Pink salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. Currently, the largest aggregate of Pink Salmon spawns in the Lower Fraser watershed.
 However, prior to the slide at Hells Gate, Fraser River Pink salmon spawned at greater abundances in the Upper Fraser watershed with significant populations in the Thompson and Seton systems [@pessInfluencePopulationDynamics2012]. 
 Pink salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from early August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
 This obligate 2 year life cycle exhibited by Pink salmon results in even and odd year cohorts that are reproductively isolated from each other. 
 Fraser River Pink Salmon return on odd years with a negligible return on even years. 
 
-*Including the following or put below ? - Data collected between 1977 and 2001 reported sex ratios ranging from 0.9 to 1.4 female:male (mean 1.1) with no apparent trend in a changing ratio [@grantFraserRiverPink2014].*  
-*Fraser Pink body mass has been declining in recent years. *
-*Average body mass appeared to be relatively stable at around 2.5kg until 1975 when it declined until the late 90's and has been fluctuating around 1.75kg (@pacificsalmoncommissionPSCBiologicalData2023).*
-*@ruggeroneNumbersBiomassNatural2018 noticed how this decline in body mass coincided with an increase of Pink and Chum salmon in the North Pacific Ocean.*
+
+### Marine Distribution  
 
 When Pinks migrate toward the Fraser from the North Pacific, some of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
-This diversion rate appears to be increasing, which has implications for survival [@hagueMovingTargetsAssessing2021]. 
+This diversion rate appears to be increasing (i.e., increasingly dominated by northern migration route), which could have implications for survival **add why**, and can affect accuracy of forecasts [@hagueMovingTargetsAssessing2021].  
 
-Reliable escapement and catch data are available for brood years `r min(rec_prop$year)` to `r max(rec_prop$year)`. 
-Escapement data were collected with a variety of methods over this period due to changes in priorities, and funding and technology. 
-Table \@ref(tab:tab-spawner-est-methods) Describes the different enumeration stanzas through time. 
+
+### Escapement and Catch  
+
+Data on catch and spawner abundance has been collected for well over a century, with indices of abundances recorded back to 1901 [@rickerHistoryPresentState1989], but reliable escapement and catch data are only available from `r min(rec_prop$year)` to present. 
+Escapement data have been collected with a variety of methods over this period due to changes in priorities, funding and technology (Table \@ref(tab:tab-spawner-est-methods)). 
 It should be noted that no calibration was done when switching between methods. 
 
-Catch was estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
-Contribution of Fraser stocks was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
+Catch has typically been estimated by multiplying the **total coastal (check)** Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch. 
+The contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
 Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
 The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
 Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
@@ -35,30 +35,40 @@ Recreational catch is estimated through agency creel surveys in both countries.
 First Nations catch is reported using similar methods of estimating commercial catch (i.e. fish sales slips). 
 See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data.  
 
+### Current Management and Trends  
 
-Canada’s Fisheries Act was amended in June 2019. 
-It included new requirements under the  Fish Stock Provisions (FSP), which states that In the management of fisheries, the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock (*cite*). 
-Fraser Pink Salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference (USR) and the maximum Removal Reference (RR). 
-
-The current harvest control rule (HCR) for Fraser Pink Salmon was first implemented in 1987. 
+The current harvest control rule (HCR) for Fraser Pink salmon was first implemented in 1987. 
 It consists of three management zones: 1) at run sizes below 7.059 million pinks, the ER increases from 0% when there are no pink salmon to 15% at 7.059 million pinks, 2) at run sizes between 7.059 and 20 million pinks, there is a fixed escapement goal of 6 million spawners, and 3) at run sizes greater than 20 million pinks, a maximum exploitation rate (ER) of 70% is applied. 
-The documentation of rationale behind the HCR has been difficult to locate, but it is generally believed that the 6 million spawners is based on an egg target (*Cite Staley/Latham - AMH*). 
+The documentation of rationale behind the current HCR has been difficult to locate, but a handwritten International Pacific Salmon Fisheries Commission memo from 1983 appears to calculate an egg deposition target that would generate desired production and associated adult escapement target, assuming an average weight, that would meet the egg deposition target (*Latham, PSC, pers comm*).  
 
 Additional management measures are often taken during fisheries directed on Fraser Pink salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not.
 These measures have included: time and area closures (e.g., Interior Fraser Coho fishing window closure), gear requirements (e.g., use of beach seines or shallow seines instead of drift gill nets, bait ban for recreational fisheries), and operational changes (e.g., brailing requirements and maximum recommended set sizes for purse seines) (*cite - AMH*). 
 
 In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3 million, the average escapement was 2.5 million, and the average ER was 69%. 
-In the 19 years of Fraser pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR ER was exceeded (1987 and 1997), the average run size was 12.9 million, the average escapement was 9.4 million and the average ER was 25%. 
+In the 19 years of Fraser Pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR ER was exceeded (1987 and 1997), the average run size was 12.9 million, the average escapement was 9.4 million and the average ER was 25%. 
 Overall, Fraser Pink returns may be characterized as “variable, but stable”. 
-In the last three generations, the run size and escapement have been stable, with a slight increase, with an average run size of 9.2 million, average escapement of 8.6 million, and an average ER of 6% (Figure \@ref(fig:fig-catch-esc-HCR)).  
+In the last five generations (10 years, 5 returns), the run size and escapement have been stable, with a slight increase, with an average run size of **check code** `r mean(filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn`7.4 million, average escapement of `r mean(filter(data, year >=2015)$spawn)`6.9 million, and an average ER of `r round(mean(filter(data, year >=2015)$harvest/ (filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn))*100, 0)` (Figure \@ref(fig:fig-catch-esc-HCR)).  
 
+### Fraser Pink Fisheries and Fish Stock Provisions  
 
-*we omitting this P? I thought it was important... Analysts have suggested re-analyzing this harvest control rule, but have been cautious to do so due to data concerns. *
-*Changing escapement assessment methodologies across the timeseries of data have made analysts wary to compare estimates in different sampling regimes. At the same time, a re-assessment is necessary as scientists and managers see threats from a changing climate, crowding in the ocean, and an increased interest in harvest (and something with FSP?) [@macdonaldStateCanadianPacific2023]*.  
+Canada’s *Fisheries Act* was amended in June 2019. 
+It included new requirements under the  Fish Stock Provisions (FSP), which states that In the management of fisheries, *the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock* [@DFO1985Act]. 
+Fraser Pink salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference (USR) and the maximum Removal Reference (RR). 
+
+Emerging threats from climate change (e.g. temperature, flooding events; *cite*), increasing inter- and inter-specific competition among Salmon in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018], and evidence of changing demographics [@pacificsalmoncommissionPSCBiologicalData2023] provide ecological reasons to re-assess Fraser Pinks. 
+From a management perspective, the relationship between Fraser Pink population dynamics and management haven't been reassessed  in over 30 years (last DFO assessment being @rickerHistoryPresentState1989), partly due to concerns about calibration among escapement assessment methodologies [@grantFraserRiverPink2014]
+An increased interest in Pink harvest [@macdonaldStateCanadianPacific2023], paired with the revised *Fisheries Act* [@DFO1985Act] make it necessary to carefully re-examine this population's dynamics and current management.  
 
 
 ## OBJECTIVES  
 
-DFO's Wild Salmon Policy states that these reference points should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009]. 
-Here we estimate benchmarks and test them with alternative HCRs. 
-Specifically, we 1) describe current understanding of (a) stock structure and distribution, (b) stock status and trends, and (c) ecosystem and climate factors affecting the stock; 2) provide estimates of (a) candidate reference points and (b) the expected biological and fishery performance of current and alternative harvest control rules; 3) propose exceptional circumstances or assessment triggers for the stock; and 4) identify areas requiring future work.  
+As the Fraser Pink Salmon stock management unit (SMU) is comprised of a single conservation unit (CU), we use DFO’s Wild Salmon Policy (WSP) benchmarks to identify candidate FSP reference points. 
+The WSP states that benchmarks should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009]. 
+Here we estimate benchmarks and test them with alternative HCRs.  
+
+
+The objectives of this working paper are to: 
+1. describe current understanding of (a) stock structure and distribution, (b) stock status and trends, and (c) ecosystem and climate factors affecting the stock;  
+2. provide estimates of (a) candidate reference points and (b) the expected biological and fishery performance of current and alternative harvest control rules;  
+3. propose exceptional circumstances or assessment triggers for the stock; and  
+4. identify areas requiring future work.  
