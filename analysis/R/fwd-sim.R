@@ -69,9 +69,9 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "alt_TAM", "PA_hump",
-          "low_a_current", "low_a_alt_TAM", "low_a_PA_hump",
-          "recent_current", "recent_alt_TAM", "recent_PA_hump")
+HCRs <- c("current", "PA_hump",
+          "low_a_current", "low_a_PA_hump",
+          "recent_current", "recent_PA_hump")
 OU.CV <- 0.1 #assumed outcome uncertainty
 
 # calc forecast error
@@ -145,8 +145,6 @@ for(i in 1:length(HCRs)){
       last.lnresid <- log(R)-log(pred.R)
       #apply HCR
       if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
-      if(grepl("alt", HCR)){post_HCR <- alt_HCR(R, OU=1+rnorm(1, 0, OU.CV),
-                                                Sgen=Sgen, Umsy=Umsy)}
       if(grepl("PA", HCR)){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                               Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
       #make binary obs for some summaries later
