@@ -1,6 +1,6 @@
 ---
 title: |
-    "Assessing biological and fishery consequences of alternative harvest control rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
+    "Quantifying Wild Salmon Policy benchmarks and assessing biological and fishery consequences of current harvest control rule for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
 french_title: "Titre ici (*Nom latin de l'espèce*)"
 author: |
   Dylan M. Glaser^1^

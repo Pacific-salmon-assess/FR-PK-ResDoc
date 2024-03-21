@@ -1,41 +1,50 @@
 # RESULTS  
 
 ## MODEL FIT AND DIAGNOSTICS  
+We estimated a total of seven model parameters. 
+Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), and all had effective sample sizes > 1,500 suggesting reasonable model convergence. 
+(See *Supplement B - make ref* for fully reproducible analysis and full diagnostics).  
 
-The spawner-recruit model successfully converged with a maximum R-hat of 1.003, traceplots that suggested MCMC chains were well mixed, and a minimum ESS of `r round(min(model.summary$n_eff, na.rm = TRUE), 0)`, and chains that appeared well mixed (See Supplement *B - make ref* for fully reproducible analysis and full diagnostics). 
 
-The spawner-recruit relationship showed evidence of compensation at low spawner abundances (below ~5M), overcompensation at high spawner abundances (over ~10M) and a relatively poor fit between 4-10 million (Figure \@ref(fig:fig-SRR)).  
+## BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS  
+
+Posterior means, medians and credible intervals for leading spawner-recruitment parameters and biological benchmarks are summarized in Table \@ref(tab:tab-prior-posterior). 
+We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be `r alpha.CI[2]`(`r alpha.CI[1]`-`r alpha.CI[3]` recruits per spawner) *and equilibrium stock size (Seg), which is a function of intrinsic productivity ($\alpha$) (CHECK)* and the strength of within stock density dependence ($\beta$), estimated to be `r beta.CI[2]`(`r beta.CI[1]`-`r beta.CI[3]`). 
+Recruitment anomalies were estimated to be moderately positively correlated through time (*insert rho (you mean Phi??) mean and Cis*) with no strong time trend though the most recent 4 brood years were all negative. (Figure \@ref(fig:fig-rec-resid)). 
+
+As a result of relatively weak density dependence, expected yield (i.e., “surplus” production above replacement) and recruitment was relatively flat across a wide range of spawner abundances (Figure \@ref(fig:fig-SRR)).
+Nonetheless, the spawner abundance expected to maximize long-term sustainable yield ($S_{MSY}$) was estimated to be `r benchmarks[1,1]*1.25`m and so the upper Wild Salmon Policy biological benchmark of 80% Smsy was `r benchmarks[1,1]`m (`r benchmarks[1,2]`m-`r benchmarks[1,3]`m). The harvest rate expected to lead to maximum sustainable yield (Eqn. \@ref(eq:get-Umsy)) was estimated to be `r benchmarks[3,1]` (`r benchmarks[3,2]`-`r benchmarks[3,3]`), and lastly, the lower Wild Salmon Policy biological benchmark $S_{gen}$ was estimated to be `r benchmarks[2,1]`m (`r benchmarks[2,2]`m -`r benchmarks[2,3]`m).  
 
 
-## STOCK STATUS AND TRENDS  
-
-Ricker $\alpha$ was estimated at `r alpha.CI[2]`(`r alpha.CI[1]`-`r alpha.CI[3]`), $\beta$ at `r beta.CI[2]`(`r beta.CI[1]`-`r beta.CI[3]`), and bias corrected $\sigma$ at  `r `sigma.CI[2]`(`r sigma.CI[1]`-`r sigma.CI[3]`; medians and 95th percentiles (Table *\@ref(tab:tab-prior-posterior) - to make*). 
-AR1 recruitment residuals did not show a strong trend across the time series, but may be in a weak decline since around 2011 return year (Figure \@ref(fig:fig-rec-resid)).  
-
-Estimates from the state-space spawner-recruit model estimated benchmarks (median and 95% CIs) of 80% $S_{MSY}$ at `r benchmarks[1,1]` (`r benchmarks[1,2]`-`r benchmarks[1,3]`), $S_{gen}$ at `r benchmarks[2,1]` (`r benchmarks[2,2]`-`r benchmarks[2,3]`) and $U_{MSY}$ at `r benchmarks[3,1]` (`r benchmarks[3,2]`-`r benchmarks[3,3]`; Table \@ref(tab:tab-bench)). 
-With the current stock at `r filter(data, year==2023)$spawn`, it appears we are well above and over the 95th percentile of 80% $S_{MSY}$. 
-Total recruits are currently at `r filter(data, year==2023)$spawn + filter(data, year==2023)$harvest`, which is just slightly higher than 80% $R_{S{MSY}}$.  
-
-Kobe plots are a common tool to visualize conservation and fisheries trade-offs through time (*cite*). In Figure \@ref(fig:fig-kobe) we see the an overfished stock still experiencing overfishing (i.e. harvest above $U_{MSY}$, with spawners below $S_{MSY}$) beginning in 1959 and continuing during the early part of the time series (note this was before current management was adopted in 1987). 
-Over fishing was in part due to the troll fishery learning to catch Pinks in outside waters; and this over fishing was recognized in 1957 when the IPSFC was put in charge to manage Fraser Pink fisheries shared by the US and Canada [@rickerHistoryPresentState1989]. 
-Since then, catch has reduced and the stock has rebounded to higher levels (Figure \@ref(fig:fig-catch-esc-HCR)), with some years being intermediate where the stock was over fished at high abundances (top right quadrant, Figure \@ref(fig:fig-kobe)),and under fished at low abundances bottom left quadrant, Figure \@ref(fig:fig-kobe)). 
+The history of the status of the Fraser Pink stock can be visualized as a “Kobe plot”, a common way to visualize stock status over time relative to biomass (or abundance) and exploitation based reference points. 
+The Kobe plot for Fraser Pinks (Figure \@ref(fig:fig-kobe)) highlights that the stock was overfished and experiencing overfishing (i.e. harvest above $U_{MSY}$, with spawners below $S_MSY}$) at the beginning of the time series in 1959 and that this generally continued until the current management regime was adopted in 1987. 
+Overfishing may have been due, at least in part, to the troll fishery learning to catch Pinks in outside waters; and this over fishing was recognized in 1957 when the IPSFC was put in charge to manage Fraser Pink fisheries shared by the US and Canada [@rickerHistoryPresentState1989:1]. 
+Since then, catch has reduced and the stock has rebounded to higher levels (Figure \@ref(fig:fig-catch-esc-HCR)), with some years being intermediate where the stock was over fished at high abundances (top right quadrant, Figure \@ref(fig:fig-kobe)), and under fished at low abundances bottom left quadrant, Figure \@ref(fig:fig-kobe)). 
 Overall, the Kobe plot suggests the stock is currently being under fished, but attaining the harvest in the HCR can be difficult due to other management considerations.  
 
-DFO's State of the Salmon Program has developed a rapid status evaluation algorithm to have a quantitative, repeatable method to assess status across stocks [@pestalStateSalmonRapid2023]. 
-After providing the program with our estimates of biological benchmarks, and justifications for using our time series of data, we were provided updated results that suggest this stock is in the ***add when we get*** (*pers comm - Sue?*). See appendix (*ref*) for a detailed output from the rapid status algorithm.  
-
+The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is `r filter(data, year==2023)$spawn`m which is well above the upper bound on the estimate of the upper Wild Salmon biological benchmark of 80% $S_{MSY}$ suggesting the stock is in a “healthy” state. 
+This is consistent with the formal Wild Salmon Policy status assessment that takes data quality and multiple metrics into account [@pestalStateSalmonRapid2023], and which has assessed the stock as in the green Wild Salmon Policy status zone with high confidence (*Appendix  X*). 
 
 ## HARVEST CONTROL RULE PERFORMANCE  
 
-When looking at the baseline productivity for the full data set, a general conclusion is the current HCR poses less conservation risk than the alternative TAM HCR, but catch is lower and more variable (Table \@ref(tab:tab-HCR-performance)). 
-The naive PA approach (***naming?***) is intermediate between the 2 and has comparable catch stability to the alternative TAM HCR (difference: -7%), and as an artifact of stability is approximately 4% more likely to have a "good catch year" when looking at the catch index metric. 
-Figure \@ref(fig:fig-fwd-SC) shows this conservation and fishery trade off where the current HCR maintains a large escapement with less catch, the alternate TAM HCR is more risky but provides more catch (at least in the short term), and the naive PA approach is intermediate. 
-The current HCR stabilizes relatively fast, while the others are slower with wider CIs; which may not be suprising since it's based on a fixed escapement policy. 
-In the two alternative HCRs, catch starts to converge near the end of the five generation simulation, displaying some short term reward in the alternative TAM HCR at the expense of greater conservation risk. 
-When interpreting performance, it's crucial to look at both Table \@ref(tab:tab-HCR-performance) and Figure \@ref(fig:fig-fwd-SC)and to remember the table summarizes performance across the five generations forward, while the trajectories (Figure \@ref(fig:fig-fwd-SC)) illustrate finer, year scale performance.  
+The existing HCR for Fraser Pinks has a very low probability of the stock falling below the lower biological benchmark ($S_{gen}$), and a relatively high probability of spawner abundance being above the upper biological benchmark (80% $S_MSY}$), over the next 10 years (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
+Assuming fisheries fully utilize allowable harvest, which may not be the case if the Pink fishery is constrained to limit impacts on non-target species, average annual harvest is projected to 1.51m over the same time period. 
+Approximately 10% of years are expected to result in harvests greater than the *average of the top 3 years of catch since 2000 -- just call it catch index, then define?* (`r catch.index`m; a semi-arbitrary indicator of a ‘good year’).  
 
+In contrast, the alternative, illustrative, Precautionary Approach compliant HCR had a slightly higher probability of the stock falling below the lower biological benchmark (0.054 vs 0.015) and a lower probability of spawner abundance being above the upper biological benchmark (0.456 vs 0.696) (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
+These increased biological risks came with the benefit of higher average annual harvest and greater catch stability from year to year, but also a slightly smaller number of years where harvests were expected to be greater than the average of the top 3 years of catch since 2000.  
 
-Performance in the robustness is relatively the same, where HCRs are similarly ranked as in the baseline conditions. 
-The only change in rank is the PA HCR is 38% more stable than the alternative TAM HCR. 
-The sensitivity check which compared 1993 onward to the full data set showed the same rankings with conservation metrics, but catch was relatively higher and more stable in the PA HCR. 
-Catch stability in the sensitivity check was the lowest of all simulations, which isn't surprising when remembering there are only 11 data points between 1993 and present data.  
+Performance of the HCRs under the two robustness tests predictably resulted in poorer biological and fishery performance because they were both associated with lower assumed intrinsic productivity (*insert median value for both tests*). 
+For example, the probability of the stock falling below the lower biological benchmark was 0.129 and 0.401 for the low productivity and truncated dataset robustness tests, respectively. 
+However, the relative biological and fishery performance of both the current and alternative illustrative HCR remained the same as in the base case closed loop simulations (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
+
+Performance measures in table \@ref(tab:tab-HCR-performance) should be interpreted with caution for several reasons. 
+First, the table summarizes performance across the five generation simulation and do not pick up on finer, shorter term performance as shown in the trajectories (Figure \@ref(fig:fig-fwd-SC)). 
+Second, we made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes, respectively. 
+When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
+Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
+Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent. 
+Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for practical management reasons. 
+Management of other species like Fraser Sockeye may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) right skewed, which could also be affected by the 4 year life cycle of Fraser Sockeye. 
+The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (citations). Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-performance) as relative measures and not absolutes.  (*should this P be in discussion?*)
+

@@ -1,14 +1,13 @@
 # ECOSYSTEM AND CLIMATE FACTORS AFFECTING THE STOCK  
 
-As a result of their extensive migrations that span both freshwater and marine environments, Fraser pink salmon interact with a broad range of ecosystem and climate conditions over the course of their life cycle. 
-The freshwater habitats that Fraser River Pink salmon spawn and incubate in are broadly distributed through the river basin including habitats both below and above the major hydrologic pinch points of Hells Gate and Big Bar (Figure \@ref(fig:fig-map)). 
-Most pink salmon production, however, occurs in the Lower Fraser from the Fraser Canyon downstream and habitats in this region are relatively highly impacted by anthropogenic activities.  
+As a result of their extensive migrations spanning both freshwater and marine environments, Fraser Pink salmon interact with a broad range of ecosystem and climate conditions over the course of their life cycle. 
+The freshwater habitats that Fraser River Pink salmon spawn and incubate in are broadly distributed through the river basin including habitats both below and above the Fraser Canyon (Figure \@ref(fig:fig-map)). 
+Most pink salmon production, however, occurs in the Lower Fraser from the canyon downstream and habitats in this region are relatively highly impacted by anthropogenic activities.  
 
 Pink salmon have exceptional aerobic scope and cardiovascular performance which has been hypothesized to contribute to their resilience to warming freshwaters [@clarkExceptionalAerobicScope2011]. 
 However, due to their relatively small body size they are especially vulnerable to flow related impacts during return freshwater migrations. 
-A major rockslide at Hells Gate in 1913, and subsequent slide in 1941, created a hydrologic barrier that severely limited upstream migration of pink salmon to spawning locations in the upper Fraser River until fish passage facilities were put in place in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser [@pessInfluencePopulationDynamics2012]. 
-In 2018 a rockslide occurred at Big Bar in the Fraser Canyon further upstream from Hells Gate. 
-This slide created another partial barrier to upstream migration, during periods of high flow, to headwater spawning locations though the majority of pink salmon spawning in the Fraser occur downstream of the slide.  
+The major rockslide at Hells Gate in 1913, and subsequent slide in 1941, created a hydrologic barrier that severely limited upstream migration of pink salmon to spawning locations in the upper Fraser River until fish passage facilities were put in place in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser [@pessInfluencePopulationDynamics2012]. 
+The 2018 rockslide at Big Bar in the Fraser Canyon further upstream from Hells Gate created another partial barrier to upstream migration, during periods of high flow, to headwater spawning locations.  
 
 In addition to flow related impacts on adult migration, extreme flows (e.g., from fall rain events) can cause high mortality in the egg to alevin stage of Pacific salmon as a result of scouring spawning redds where eggs incubate [@montgomeryStreambedScourEgg1996]. 
 Though extreme flows and flooding have occurred in the Lower Fraser in recent years (e.g., fall 2021) there has been little examination of extreme flow related impacts on Fraser River pink salmon incubation success.  

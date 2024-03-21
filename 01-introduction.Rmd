@@ -2,6 +2,8 @@
 
 ## BACKGROUND  
 
+### Fraser River Pink salmon  
+
 The Fraser River is a large free-flowing river that is 1375 km long and drains 233,000 square kilometers. 
 The basin has a wide diversity of habitats that have been into several distinct regions including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [See Freshwater adaptive zones in @holtbyConservationUnitsPacific2008]. 
 The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. The environmental complexity of the Fraser River and the diversity of the salmon populations within it has underpinned indigenous food security for millennia (*Nesbitt and Moore 2016*) and likely contributed to the resilience of salmon populations to environmental disturbances through time (*cite? - Kaitlyn*). Landslides in particular have occurred throughout the watershed causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1913 and more recently the Big Bar Landslide in 2019. 
@@ -56,7 +58,7 @@ It included new requirements under the  Fish Stock Provisions (FSP), which state
 Fraser Pink salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference (USR) and the maximum Removal Reference (RR). 
 
 Emerging threats from climate change (e.g. temperature, flooding events; *cite*), increasing inter- and inter-specific competition among Salmon in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018], and evidence of changing demographics [@pacificsalmoncommissionPSCBiologicalData2023] provide ecological reasons to re-assess Fraser Pinks. 
-From a management perspective, the relationship between Fraser Pink population dynamics and management haven't been reassessed  in over 30 years (last DFO assessment being @rickerHistoryPresentState1989), partly due to concerns about calibration among escapement assessment methodologies [@grantFraserRiverPink2014]
+From a management perspective, the relationship between Fraser Pink population dynamics and management haven't been reassessed  in over 30 years (last DFO assessment being @rickerHistoryPresentState1989), partly due to concerns about calibration among escapement assessment methodologies [@grantFraserRiverPink2014]. 
 An increased interest in Pink harvest [@macdonaldStateCanadianPacific2023], paired with the revised *Fisheries Act* [@DFO1985Act] make it necessary to carefully re-examine this population's dynamics and current management.  
 
 
