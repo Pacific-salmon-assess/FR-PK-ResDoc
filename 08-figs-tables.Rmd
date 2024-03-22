@@ -1,8 +1,8 @@
 # FIGURES  
 
-(ref:fig-catch-esc-HCR) Full time series of escapament and catch (upper) and the current harvest control rule, and realized exploitation rates since the harvest control rule was adopted (1987-present).  
-```{r fig-catch-esc-HCR, fig.cap = "(ref:fig-catch-esc-HCR)"}
-knitr::include_graphics(here::here("figure/catch-esc-HCR.png"))
+(ref:fig-catch-esc) Full time series of escapement and catch.
+```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
+knitr::include_graphics(here::here("figure/catch-esc.png"))
 ```
 
 (ref:fig-map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
@@ -10,32 +10,32 @@ knitr::include_graphics(here::here("figure/catch-esc-HCR.png"))
 knitr::include_graphics(here::here("figure/map.png"))
 ```
 
-(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks.  
+(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks over time and total returns of Pink salmon across the North Pacific, 1925-present. Body mass data were taken from @pacificsalmoncommissionPSCBiologicalData2023 and time series of North Pacific wide pink salmon abundance are from [@ruggeroneNumbersBiomassNatural2018] and updated through present.  
 ```{r fig-avg-mass, fig.cap = "(ref:fig-avg-mass)"}
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
-(ref:fig-HCRs) Current and alternative harvest control rules showing target escapement (top) and exploitation rate (bottom) with associated benchmarks for $S_{gen}$ and recruitment that will yield $S_{MSY}$.  
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules. The top panel is the harvest control rule relating target harvest rate to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote limit ($S_{gen}$) and upper stock (`r expression(italic(paste("80%",S)[MSY]))`) reference points, in run-size units.  
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
-(ref:fig-SRR) State-space spawner-recruit relationship with autocorrelated residuals. Shaded bars are 95% confidence interval.   
+(ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 95% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
 ```
 
-(ref:fig-rec-resid) Recruitment residuals from the spawner-recruit fit.   
+(ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is median estimates while shaded bands are 50th and 95th percentiles.
 ```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
-(ref:fig-kobe) Kobe plot of dynamics through time. Years represent the first and last year of data used in the spawner-recruit model. 95% credible intervals are located on the final year of assessment.  
+(ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 95% credible intervals are included for the last year of assessment. 
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
 knitr::include_graphics(here::here("figure/kobe.png"))
 ```
 
-(ref:fig-fwd-SC) Past (grey) and forward simulation trajectories (colors) of escapement and catch for the currrent and 2 alternative HCRs. Shaded polygons and dashed lines are 50% credible intervals. The catch index is defined as the average of the top 3 years of catch from 2001 to present.   
+(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch are included for reference. Shaded polygons and dashed lines are 50% credible intervals. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```
@@ -44,13 +44,15 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 
 # TABLES  
 
-(ref:tab-spawner-est-methods) Methods of assessing spawner escapement and assumed CVs used as observation error. 
+(ref:tab-spawner-est-methods) Summary of changes in methods used to assess spawning escapement over time and assumed coefficients of variation (CVs) for each period which were used to define magnitude of observation error in state-space spawner-recruitment model.  
 ```{r tab-spawner-est-methods, results = "asis"}
 df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
-                 'Assessment Method' = c("Early IPSFC system specific mark-recapture: low tagging effort", 
+                 'Assessment Method' = c("Early International Pacific Salmon Fishing Commission
+                                         (IPSFC, currently known as the Pacific Salmon Commission[PSC])
+                                         system specific mark-recapture: low tagging effort", 
                             "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: 
-                            high precesion methods in larger systems (90% of stock) and lower 
-                            precesion in the remainder", 
+                            high precision methods in larger systems (90% of stock) and lower 
+                            precision in the remainder", 
                             "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
                             "PSC Mission sonar"), 
@@ -64,7 +66,7 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ```
 
-(ref:tab-perf-metrics-descriptions) Descriptions of metrics assessed in the forward simulations of harvest control rules. Credible intervals are 80th percentiles where reported.
+(ref:tab-perf-metrics-descriptions) Biological and fishery performance measures used in the closed-loop simulations to assess HCR performance.
 ```{r tab-perf-metrics-descriptions, results = "asis"}
 df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median annual catch", "catch stability (1/CV)", 
                             "relative catch metric"), 
@@ -73,8 +75,8 @@ df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median 
                                  "expected median annual catch (distribution of medians across years) 
                                  if the harvest control rule is followed",
                                  "expected stability (as above) if the harvest control rule is followed",
-                                 "percent of simulaitons where catch is greater than the average of the 
-                                 top 3 years of catch since 2000 - a semi-arbitray indicator of a 'good year'"))
+                                 "percent of simulations where catch is greater than the average of the 
+                                 top 3 years of catch since 2000 - a semi-arbitrary indicator of a 'good year'"))
 csasdown::csas_table(df,
                      caption = "(ref:tab-perf-metrics-descriptions)",
                      format = "pandoc",
@@ -83,16 +85,16 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ```
 
-(ref:tab-prior-posterior) Parameters, priors, descriptions, and posteriors from the spawner-recruit model.
-```{r tab-prior-posterior, results = "asis"}
+(ref:tab-priors) Prior probability distributions for parameters.  
+```{r tab-priors, results = "asis"}
 priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
 
 csasdown::csas_table(priors,
                      escape = TRUE, 
-                     caption = "(ref:tab-prior-posterior)")
+                     caption = "(ref:tab-priors)")
 ```
 
-(ref:tab-bench) Biological benchmarks estimated in the spawner-recruit model.
+(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size (neff) and potential scale reduction factor (R-hat) for parameters estimated by the model.
 ```{r tab-bench, results = "asis"}
 csasdown::csas_table(benchmarks,
            caption = "(ref:tab-bench)",
@@ -103,7 +105,7 @@ csasdown::csas_table(benchmarks,
            align = "lccc")
 ```
 
-(ref:tab-HCR-performance) Performance of HCRs in baseline, low productivity robustness test, and with a sensitivity analysis of recent data used as a cutoff in some previous reports. Note that it is more important to consider the relative performance of benchmarks (e.g. catch may not be realized due to influences from other fisheries and conservation measures in the system).  
+(ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.  
 ```{r tab-HCR-performance, results = "asis"}
 colnames(perf.metrics) <- c("HCR", "Scenario", "% below $S_{gen}$", "% above $S_{MSY}$", 
                             "Median annual catch", "Catch stability (1/CV)", "catch index")

@@ -1,61 +1,49 @@
-# Discussion  
+# DISCUSSION  
 
-## Summary of key findings  
+## SUMMARY OF KEY FINDINGS  
 
-We estimated several key biological benchmarks that were legislated to be evaluated in the Fish Stocks Provisions of Canada's revised Fisheries Act (*cite*). 
-$S_{gen}$, recruitment that yields 80% $S_{MSY}$ and $U_{MSY}$ estimated in our spawner-recruit analysis are all suitable candidates for the limit, upper stock, and removal reference points. 
-These were estimated at `r benchmarks[2,1]` (`r benchmarks[2,2]` - `r benchmarks[2,3]`), `r benchmarks[1,1]` (`r benchmarks[1,2]` - `r benchmarks[1,3]`) and `r benchmarks[3,1]` (`r benchmarks[3,2]` - `r benchmarks[3,3]`; median and 95th percentiles) respectively (Table \@ref(tab:tab-bench)).  
+In this working paper we briefly review our current understanding of Fraser River Pink salmon stock structure and distribution, assessment history, and ecosystem and climate factors affecting the stock. 
+We then fit a state-space spawner-recruitment model to available to data to characterize stock dynamics, and derive estimates of biological benchmarks to assess stock status. 
+Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and an illustrative alternative harvest control rule.  
 
-The current HCR showed the least conservation risk, but had the least amount of harvest. 
-An alternative HCR based on a lower OCP at $S_{gen}$ and a TAM cap at $U_{MSY}$ was risky for conservation and provided some short term gain in harvest. 
-The third HCR tested was naively based in the precautionary approach where there is a linear increase in TAM from 0% at $S_{gen}$ to $U_{MSY}$ (median: `r benchmarks[3,1]*100`%) at the recruits that would yield $S_{MSY}$. 
-This naive PA compliant HCR was indeterminate between the others tested; the spawning escapement in the forward simulation typically fell in what would be the amber zone, and interestingly, catch appeared to converge with the riskier HCR near the end of the simulation, but escapements remained relatively higher. 
-This PA HCR is impractical from a management perspective since the escapement goal is "humped" near the upper OCP meaning when the run gets just below recruits that would produce 80% $S_{MSY}$ managers need to figure out how to escape more fish until getting to the other side of the "hump"; which puts managers in an awkward place and can be risky for conservation if the run size continues to be reduced with in-season adjustments. 
-Other than this caveat, performance from this naive PA HCR was promising and warrants further exploration.  
+Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hell’s Gate). 
+Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1913 and more recently the Big Bar Landslide in 2019. 
+Fraser Pink salmon survival is associated with sea-surface temperatures during early marine life, spring bloom timing and the North Pacific Current, all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
+Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size.  
 
-Performance measures in table \@ref(tab:tab-HCR-performance) should be interpreted with caution for several reasons.
-First, the table summarizes performance across the five generation simulation and do not pick up on finer, shorter term performance as shown in the trajectories (Figure \@ref(fig:fig-fwd-SC)). 
-The alternative TAM HCR may look good in the table, but when looking at the figure we see this large catch is due to a short term gain. 
-We also made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes. 
-When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
-Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
-Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent. 
-Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for piratical management reasons. 
-Management of other species like Fraser Sockeye may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) be right skewed, which could also be affected by the 4 year life cycle of Fraser Sockeye. 
-The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (*citations*). 
-Therefore, we view the results in table \@ref(tab:tab-HCR-performance) as relative measures and not absolutes; stakeholders should not expect to harvest the median annual catch reported here, but instead recognize in which metrics HCRs relatively outperform each other.  
+We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be 3.94 (2.56-5.84 recruits per spawner) and equilibrium stock size $S_{EQ}$ equal to `r benchmarks[4,1]`m (`r benchmarks[4,2]`m-`r benchmarks[4,3]`m). 
+We estimated the upper Wild Salmon Policy biological benchmark of 80% $S_{MSY}$ to be `r benchmarks[1,1]`m (`r benchmarks[1,2]`m - `r benchmarks[1,3]`m), and the biological benchmark $S_{gen}$ to be `r benchmarks[2,1]`m (`r benchmarks[2,2]`m-`r benchmarks[2,3]`m). 
+The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is 9.58m which is well above the upper bound on the estimate of the upper Wild Salmon biological benchmark suggesting the stock is in a “healthy” state. 
+This is consistent with a formal Wild Salmon Policy status assessment that has assessed the stock as in the “green” Wild Salmon Policy status zone with high confidence.  
 
-Results from the robustness test yielded less harvest and escapement being in more risky zones for conservation, which is expected when a population with decreased productivity follows the same HCR defined in the full baseline data set. 
-HCRs maintained their relative rank to each other between baseline and low productivity scenarios (Table \@ref(tab:tab-HCR-performance)). 
-The sensitivity check on '93 to present data had very unstable catch, which isn't suprising considering it was only fit to 11 data points.  
+We found that the existing HCR for Fraser Pinks has a very low probability (< 0.02) of the stock falling below the lower biological benchmark, and a relatively high probability (>0.70) of spawner abundance being above the upper biological benchmark, over the next 10 years. 
+Assuming fisheries fully utilize allowable harvest, which may not be the case if the Pink fishery is constrained, for example, to limit impacts on non-target species, average annual harvest is projected to 1.51m over the same time period. 
+Assessment of an illustrative alternative HCR which is more strictly compliant with DFO’s Precautionary Approach Framework had slightly better fishery performance but at the cost of poorer biological performance.     
+
+The two robustness tests of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR may have an unacceptably high probability of the stock falling below the lower biological benchmark and hence being at risk of serious and irreversible biological harm.  
 
 
-## Excpetional cicumstances or assessment triggers for the stock  
+## EXCEPTIONAL CIRCUMSTANCES OR ASSESSMENT TRIGGERS FOR THE STOCK  
 
-*when should the next reassessment be done?? 3 gens? Would want to se recruitment residuals improving*  
+Exceptional circumstances and assessment triggers are intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. We recommend a re-assessment be triggered if any of the following occur:  
+
+- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., 3 more generations of negative recruitment residuals such that there are 7 consecutive generations of them)  
+
+- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests 
+
+- New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics 
+
+- Fisheries Management considers changes to the existing HCR and/or revises the fishery objectives against which it needs to be evaluated   
 
 
-The next assessment of Fraser Pinks could be a proper MSE that takes into consideration several scenarios and degrees of outcome uncertainty and forecast error described above, and explores more alternative HCRs. 
-The naive PA HCR could be refined and tested; one could simply flatten the "hump" near recruits that produce 80% $S_{MSY}$ and re-test in a formal MSE. 
-The current HCR removal reference was based on an estimate of $U_{MSY}$ at 70% made by @rickerHistoryPresentState1989; this could be refined to our new median estimate of `r benchmarks[3,1]*100`%, and further exploration of an optimal target escapement could be made. 
-We found that the current HCR wasn't projected to harm the population, and refining the current HCR would mostly be to benefit increases in catch and catch stability. 
-However, due to the current market, lower recent recruitment residuals, changes in demography, and increased uncertainty in assessments, increasing harvest may be a low priority and potentially risky for conservation.  
+## AREAS OF POTENTIAL FUTURE WORK  
 
+***placeholder for now***
 
-## Areas of potential future work  
+- lifecycle models that can partition freshwater and marine dynamics and drivers of them and explicitly account for changing body mass in spawner-recruitment model and simulations   
 
-Work is underway to incorporate changing demography and climate to separate marine and freshwater drivers of survival. 
-We hope to incorporate changes in adult body size, fecundity data, and smolt trap data to develop a lifecycle model, then explore freshwater and marine environmental variables to correlate with observed trends. 
-Understanding these drivers may help better predict run size, which in turn could help more clearly define forecast error in forward simulations. 
+- evaluate evidence time varying spawner-recruitment dynamics (e.g., capacity due to recolonization post Hells Gate), and consequences for reference points and HCR performance   
 
-It is worthy to explore time varying parameters in newly developed models on Fraser Pinks. 
-The recolonization above the Hell's Gate slide that blocked passage between 1913-47 [@rickerHistoryPresentState1989] and recently observed intraspecific competition in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018] make this system an ideal candidate to model with time varying parameters. 
-Our recruitment residuals didn't show a clear need for time varying parameters, but perhaps this will be unveiled when partitioning survival between freshwater and marine environments; initial analyses show marine survival is decreasing.  
+- detailed understanding of changes in spatial distribution of adult spawners and implication for stock status and future production  
 
-Taking a deeper look at spatial distribution of Pinks in the Fraser over time is also of interest. 
-Recolonization of the upper Fraser isn't well understood (but see @pessInfluencePopulationDynamics2012), (*add some appropriate text about incoporating IK*). 
-A better understanding of metapopulation dynamics within the Fraser will help us better manage the stock, especially as COSEWIC re-assesses this DU's structure (*pers comm. B. Leaman, COSEWIC*).  
-
-Addressing uncertainties in population dynamics (e.g. time varying parameters, life-stage specific survival), environmental drivers of population dynamics, a more rigorous look at scenarios and magnitude of outcome uncertainty and forecast error, and understanding distributional shifts and behaviors could combine into a detailed examination of current and alternative management practices. 
-After gaining a better understanding of the above, and re-evaluating other considerations (e.g. harvest objectives, management of other species) alternative HCRs could be developed and re-tested in a similar framework we present here, but with more detailed, realistic parameters and scenarios. 
-A formal MSE will be no small task and requires thoughtful input from multiple rights holders (i.e. indigenous groups), stakeholders, agencies, but we hope the general framework outlined here provides structure and a general methodology to build a detailed MSE for Fraser Pinks.  
+- formal MSE (including multi-species and fisheries considerations/dynamics including a more rigorous examination of outcome uncertainty and forecast error)   

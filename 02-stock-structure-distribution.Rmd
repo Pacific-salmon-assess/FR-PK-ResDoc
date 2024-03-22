@@ -6,12 +6,12 @@ Before the slide at Hells Gate in 1913, most of the Fraser River Pink salmon run
 Although there is a lack abundance data at the tributary level in recent decades for Fraser Pink salmon, observations from other species stock assessment have persistently noted Pink salmon in the Quesnel, Chilcotin, and the Nechako Rivers. 
 In 2019, DFO was alerted to a landslide in the middle Fraser near Big Bar. 
 Pink salmon were noted as being among the species delayed in their upstream migration by the slide. 
-Slide mitigation efforts have largely been successful and Pink salmon were observed in the Nechako in 2023 (*pers comm. R. Martin DFO*).  
+Slide mitigation efforts have largely been successful and Pink salmon were in the Nechako River upstream of the slide in 2023 (R. Martin, DFO, pers comm.).  
 
 
 Fraser Pink salmon are thought to be a single Conservation Unit [@holtbyConservationUnitsPacific2008]. 
 However, there is some evidence for life history differences between Pinks that spawn above and below Hell’s Gate. 
-For example, Pink salmon from above Hell’s Gate are larger than their Lower Fraser River counterparts and have higher maximum swimming speeds, allowing them to negotiate the Hell’s Gate rapids (*Williams et al. 1986; Beacham et al. 1988*) [@rickerHistoryPresentState1989]. 
-In addition, Pink salmon returning to areas upstream and downstream of Hells Gate have slightly different return timing as evidenced through recent sampling for Genetic Stock Identification in lower Fraser test fisheries (*S. Latham, PSC, pers comm*). 
+For example, Pink salmon from above Hell’s Gate are larger than their Lower Fraser River counterparts and have higher maximum swimming speeds, allowing them to negotiate the Hell’s Gate rapids (*Williams et al. 1986*) [@beachamVariationBodySize1988, @rickerHistoryPresentState1989]. 
+In addition, Pink salmon returning to areas upstream and downstream of Hells Gate have slightly different return timing as evidenced through recent sampling for genetic stock identification in lower Fraser test fisheries (S. Latham, PSC, pers comm). 
 The differences support the hypothesis that there may be more genetic and life history differences between spawning populations above and below Hells gate that previously thought. 
-The Committee on the Status of Endangered Wildlife in Canada is currently reviewing Pink salmon population structure in Canada including in the Fraser River (*B. Leaman, COSEWIC, pers comm*).  
+The Committee on the Status of Endangered Wildlife in Canada is currently reviewing Pink salmon population structure in Canada including in the Fraser River (B. Leaman, COSEWIC, pers comm *should check this P w/ Bruce again before publishing*).  
