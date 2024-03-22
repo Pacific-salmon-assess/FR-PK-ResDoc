@@ -17,8 +17,8 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
          spawn = round(spawn/1000000, 2))
 
 # get benchmarks
-bench <- matrix(NA,1000,3,
-                dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy")))
+bench <- matrix(NA,1000,4,
+                dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy", "Seq")))
 
 for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
@@ -27,6 +27,8 @@ for(i in 1:1000){
   bench[i,2] <- get_Smsy(ln_a,b) #Smsy
   bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #Sgen
   bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #Umsy
+  bench[i,4] <- ln_a/b #S EQ
+
 }
 
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
@@ -42,17 +44,20 @@ if(FALSE){ #some benchmarks to pass Sue for salmon scanner
   write.csv(bench.sue, "C:/Users/GLASERD/Desktop/Sues.bench.csv")
 }
 
-benchmarks <- matrix(NA,3,3)
+benchmarks <- matrix(NA,4,3)
 benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
 benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
 benchmarks[3,] <- c(bench.quant[2,3],bench.quant[1,3],bench.quant[3,3])
-rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy")
+benchmarks[4,] <- c(bench.quant[2,4],bench.quant[1,4],bench.quant[3,4])
+
+rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy", "Seq")
 colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
 
 #pull some values to use later and in text
 Smsy.8 <- benchmarks[1,1]
 Sgen <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
+Seq <- benchmarks[4,1]
 R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
