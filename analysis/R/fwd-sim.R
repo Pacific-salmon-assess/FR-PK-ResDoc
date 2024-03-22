@@ -62,10 +62,12 @@ R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
+low.ln.a <- quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))], .5)[]
 
 alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.025, .5, .975))
 beta.CI <- quantile(exp(model.pars$beta), probs = c(.025, .5, .975))
 sigma.CI <- quantile(exp(model.pars$sigma_R_corr), probs = c(.025, .5, .975))
+phi.CI <- quantile(exp(model.pars$phi), probs = c(.025, .5, .975))
 
 
 # initialize the sim ---------------------------------------------------------------------

@@ -99,10 +99,14 @@ catch_esc <- data |>
 
 p1 <- ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
   geom_bar(position="stack", stat="identity") +
+  #ADD ER to plot
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
   theme(legend.position = "bottom") +
   labs(x = "Return year",
        y = "Total return (millions of fish)")
+
+p1
+my.ggsave(here("figure/catch-esc.png"))
 
 # HCR and realized harvest ---
 p2 <- ggplot(filter(HCRs, HCR=="current")) +
@@ -139,7 +143,9 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target ER") +
-  guides(color = "none")
+  guides(color = "none") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 
 p2 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(size=1.1, alpha = 0.7) +
@@ -194,10 +200,10 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #add "crosshairs"
   geom_vline(xintercept = 1, lty = 2) +
   geom_hline(yintercept = 1, lty = 2) +
-  geom_vline(xintercept = 0.8, lty = 3) +
+  #geom_vline(xintercept = 0.8, lty = 3) +
   #add labels to 80% Smsy, first and last year of data
-  annotate("text", x = 0.8, y = .4, hjust = 1,
-           label = expression(italic(paste("80%",S)[MSY]))) +
+  #annotate("text", x = 0.8, y = .4, hjust = 1,
+  #         label = expression(italic(paste("80%",S)[MSY]))) +
   geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
             aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
             hjust = 0-.2, vjust = 0-.2) +
@@ -205,7 +211,7 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   labs(y="U/Umsy", x= "S/Smsy") +
   theme(legend.position = "bottom")
 
-my.ggsave(here("figure/kobe.png"))
+ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
 # then residuals--------------------------------------------------------------------------
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:33]
