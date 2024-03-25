@@ -18,7 +18,9 @@ This obligate 2 year life cycle exhibited by Pink salmon results in even and odd
 
 ### Marine Distribution  
 
-When Pinks migrate toward the Fraser from the North Pacific, some of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
+Detailed studies of the marine distribution of Fraser River Pink salmon are currently lacking but fisheries data provide some insight. 
+Fraser River Pink salmon migrate to the Fraser River estuary shortly after emergence and spend several months feeding in the Strait of Georgia before migrating as far north as the Gulf of Alaska where they reside for approximately one year (DFO, 1998). 
+When Fraser Pinks return to the Fraser from the North Pacific, a portion of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
 This diversion rate appears to be increasing (i.e., increasingly dominated by northern migration route), which affects the accuracy of forecasts [@hagueMovingTargetsAssessing2021], and could have implications for survival via different encounters with predators, pathogens, and fisheries.  
 
 

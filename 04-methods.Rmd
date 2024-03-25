@@ -7,7 +7,7 @@ Each of these steps is described in more detail below.
 
 ## DATA SOURCES  
 
-Escapement and catch data from 1957 to present were provided by the Pacific Salmon Commission. 
+Escapement and catch data from 1957 to present were provided by the Pacific Salmon Commission (available at @pacificsalmoncommissionFraserRiverPanel2024). 
 Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table \@ref(tab:tab-spawner-est-methods)). 
 A detailed review of these assessment programs is provided in @grantFraserRiverPink2014. 
 These approaches varied in their precision but were assumed to not be systematically biased and to account for the vast majority of the spawning population in any given year.  
@@ -49,7 +49,7 @@ where $\varepsilon_y$ reflects the portion of the recruitment anomaly $v_y$ that
 The first year of recruitment was not linked to observations of spawner abundance in the spawner-recruitment relationship (Eqn. \@ref(eq:ricker)) and were modeled as random draws from a log-normal distribution with mean $\ln(R_0)$ and standard deviation $\sigma_{R}^2$.
 Rather than estimating $\ln(R_0)$ as a free parameter as in @fleischmanAgestructuredStatespaceStock2013, we choose to follow @statonEvaluationMethodsSpawner2020 and inform its value using the expected recruitment under equilibrium unfished conditions $\ln(\alpha)/\beta$.
 
-Harvest in a given year ($H_y$) was modeled as the product of total run size and the harvest rate ($U_y$) experienced that year test:
+Harvest in a given year ($H_y$) was modeled as the product of total run size and the harvest rate ($U_y$) experienced that year:
 
 \begin{equation}
  H_y = N_y U_y
