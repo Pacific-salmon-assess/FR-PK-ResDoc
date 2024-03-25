@@ -14,7 +14,8 @@ model.pars.93 <- rstan::extract(stan.fit.93)
 
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
   mutate(harvest = round(harvest/1000000, 2),
-         spawn = round(spawn/1000000, 2))
+         spawn = round(spawn/1000000, 2),
+         ER = harvest/(harvest+spawn))
 
 # get benchmarks
 bench <- matrix(NA,1000,4,
@@ -65,10 +66,25 @@ lower.50th.Sp <- percentiles[2]
 low.ln.a <- quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))], .5)[]
 
 alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.025, .5, .975))
-beta.CI <- quantile(exp(model.pars$beta), probs = c(.025, .5, .975))
-sigma.CI <- quantile(exp(model.pars$sigma_R_corr), probs = c(.025, .5, .975))
-phi.CI <- quantile(exp(model.pars$phi), probs = c(.025, .5, .975))
+beta.CI <- quantile(model.pars$beta, probs = c(.025, .5, .975))
+phi.CI <- quantile(model.pars$phi, probs = c(.025, .5, .975))
+sigma.CI <- quantile(model.pars$sigma_R_corr, probs = c(.025, .5, .975))
 
+#make big table of bench and pars
+par.summary <- as.data.frame(rstan::summary(stan.fit)$summary) |>
+  select('50%', '2.5%', '97.5%', mean, n_eff, Rhat)
+
+par.summary <- filter(par.summary, row.names(par.summary) %in% c('ln_alpha', 'beta', 'phi', 'sigma_R'))
+par.summary[1,1:4] <- exp(par.summary[1,1:4])
+
+colnames(par.summary) <- c("median","lower 95% CI","upper 95% CI", "mean", "N_eff", "Rhat")
+bench.par.table <- bind_rows(as.data.frame(benchmarks), par.summary) |>
+  mutate(mean = round(mean, 2),
+         N_eff = round(N_eff, 0),
+         Rhat = round(Rhat, 4))
+
+bench.par.table <- bench.par.table |>
+  replace(is.na(bench.par.table), "")
 
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit
@@ -76,16 +92,15 @@ sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
 states <- c("R", "S", "C", "U", "lnresid")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "PA_hump",
-          "low_a_current", "low_a_PA_hump",
-          "recent_current", "recent_PA_hump")
+HCRs <- c("current", "PA_alt",
+          "low_a_current", "low_a_PA_alt",
+          "recent_current", "recent_PA_alt")
 OU.CV <- 0.1 #assumed outcome uncertainty
 
 # calc forecast error
   #using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize),
-         error.half = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)/2) #divided by 2 to account for in-season adjustment
+  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)) #divided by 2 to account for in-season adjustment
 
 if(FALSE){ #check trends and distribution of error
   ggplot(for.error, aes(YearX, error)) +
@@ -98,7 +113,7 @@ if(FALSE){ #check trends and distribution of error
 }
 
 for.error <- for.error |>
-  pull(error.half) |>
+  pull(error) |>
   mean()
 
 # do fwd sim -----------------------------------------------------------------------------

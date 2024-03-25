@@ -15,9 +15,10 @@ colnames(avg_mass) <- c("year", "avg.weight", "reference")
 
 compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.csv"))
 
-benchmarks <- round(benchmarks, 2) |>
-  as.data.frame()
-#write.csv(benchmarks, here("analysis/data/generated/benchmarks.csv"))
+#bench.par.table <- round(bench.par.table, 2) |>
+#  as.data.frame()
+rownames(bench.par.table) <- c("80% $S_{MSY}$", "$S_{gen}$", "$U_{MSY}$", "$S_{eq}$",
+                               "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -99,9 +100,9 @@ catch_esc <- data |>
 
 p1 <- ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
   geom_bar(position="stack", stat="identity") +
-  #ADD ER to plot
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
   theme(legend.position = "bottom") +
+#  geom_line(data = data, aes(x=year, y = ER)) +   #ADD ER to plot
   labs(x = "Return year",
        y = "Total return (millions of fish)")
 
@@ -246,11 +247,11 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  geom_hline(yintercept = benchmarks$median[1]) +
+  geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1) +
-  annotate("text", x = 2020, y = benchmarks$median[1]+.4,
+  annotate("text", x = 2020, y = benchmarks[1,1]+.4,
            label = expression(italic(paste("80%",S)[MSY]))) +
-  geom_hline(yintercept = benchmarks$median[2]) +
+  geom_hline(yintercept = benchmarks[2,1]) +
   annotate("text", x = 2020, y = 2.2,
            label = "italic(S[gen])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks(),
