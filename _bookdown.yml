@@ -9,5 +9,5 @@ rmd_files: ["index.Rmd",
             "07-acknowledgments.Rmd",
             "08-figs-tables.Rmd",
             "09-references.Rmd",
-            "10-appendix"]
+            "10-appendix.Rmd"]
 delete_merged_file: true

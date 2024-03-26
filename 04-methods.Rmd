@@ -13,7 +13,7 @@ A detailed review of these assessment programs is provided in @grantFraserRiverP
 These approaches varied in their precision but were assumed to not be systematically biased and to account for the vast majority of the spawning population in any given year.  
 
 
-Estimates of total Pink salmon catch include harvest in fisheries occurring in both Canadian and U.S. waters.  Since 1987, PSC staff have applied genetic stock ID from samples taken from test or directed fisheries to estimate total catch of Pink salmon where appropriate. Prior to 1987, Fraser stocks were identified using run reconstruction methods (*White 1996*).The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
+Estimates of total Pink salmon catch include harvest in fisheries occurring in both Canadian and U.S. waters.  Since 1987, PSC staff have applied genetic stock ID from samples taken from test or directed fisheries to estimate total catch of Pink salmon where appropriate. Prior to 1987, Fraser stocks were identified using run reconstruction methods [@whiteGeneticStockIdentification1996].The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
 
 
 ## SPAWNER-RECRUIT MODEL  
@@ -92,7 +92,7 @@ S_{MSY} = 1 - W(e^1-\alpha)/\beta
 \end{equation}
 
 where $W$ is the Lambert function [@scheuerellExplicitSolutionCalculating2016], and $\alpha$ and $\beta$ are intrinsic productivity and the magnitude of within stock density dependence, respectively. 
-We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied @hilborn1985simplified approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ and so infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$. 
+We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied @hilborn1985simplified approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ such that infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$. 
 As an upper biological benchmark we used 80% of $S_{MSY}$ following @holtEvaluationBenchmarksConservation2009 and @dfoSustainableFisheriesFramework2022.  
 
 The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$) was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
@@ -110,7 +110,6 @@ S_{MSY} = S_{gen}e^\alpha(1-S_{gen}/\beta)
 \end{equation}
 
 which were used as biological benchmarks to inform HCRs and evaluate their performance.  
-We took 80% of $S_{MSY}$ as that is what is suggested and evaluated as a suitable upper benchmark for salmon [@dfoSustainableFisheriesFramework2022; @holtEvaluationBenchmarksConservation2009].  
 
 Equilibrium spawner abundance, where recruitment exactly replaces spawners, was estimated as:  
 
@@ -153,7 +152,7 @@ In addition to considering the current HCR we also considered an illustrative al
 Under this alternative (“PA alternate”) HCR the lower operational control point (OCP) is set to our median estimate of $S_{gen}$ below which the target harvest rate is zero, an upper OCP is set to run-size associated with our median estimate of 80% $S_{MSY}$ where the maximum target harvest rate (removal reference) is set to our median estimate of $U_{MSY}$. 
 At run-sizes between the lower and upper OCPs the target harvest rate was linearly interpolated. 
 An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic for management. 
-To avoid this slight variations on this type of HCR have been used for Fraser Sockeye (*Pestal et al. 2012*).  
+To avoid this slight variations on this type of HCR have been used for Fraser Sockeye (***Pestal et al. 2012***).  
 
 
 ### PERFORMANCE MEASURES  

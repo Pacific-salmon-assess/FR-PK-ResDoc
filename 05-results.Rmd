@@ -3,7 +3,7 @@
 ## MODEL FIT AND DIAGNOSTICS  
 We estimated a total of seven model parameters. 
 Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), and all had effective sample sizes > 1,500 suggesting reasonable model convergence. 
-(See Supplement A (*need to make!*) for fully reproducible analysis and full diagnostics).  
+(See ***Appendix A - make ref*** for fully reproducible analysis and full diagnostics).  
 
 
 ## BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS  
@@ -23,7 +23,7 @@ Since then, catch has reduced and the stock has rebounded to higher levels (Figu
 Overall, the Kobe plot suggests the stock is currently being under fished, but attaining the harvest goal defined in the HCR can be difficult due to other management considerations.  
 
 The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is `r filter(data, year==2023)$spawn`m which is well above the upper bound on the estimate of the upper Wild Salmon biological benchmark of 80% $S_{MSY}$ suggesting the stock is in a “healthy” state. 
-This is consistent with the formal Wild Salmon Policy status assessment that takes data quality and multiple metrics into account [@pestalStateSalmonRapid2023], and which has assessed the stock as in the green Wild Salmon Policy status zone with high confidence (*Appendix  X*). 
+This is consistent with the formal Wild Salmon Policy status assessment that takes data quality and multiple metrics into account [@pestalStateSalmonRapid2023], and which has assessed the stock as in the green Wild Salmon Policy status zone with high confidence (***see xxx for the full assessment***).  
 
 ## HARVEST CONTROL RULE PERFORMANCE  
 

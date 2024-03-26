@@ -23,27 +23,31 @@ Assessment of an illustrative alternative HCR which is more strictly compliant w
 The two robustness tests of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR may have an unacceptably high probability of the stock falling below the lower biological benchmark and hence being at risk of serious and irreversible biological harm.  
 
 
+## CAVEATS AND ASSUMPTIONS  
+
+
+
 ## EXCEPTIONAL CIRCUMSTANCES OR ASSESSMENT TRIGGERS FOR THE STOCK  
 
 Exceptional circumstances and assessment triggers are intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. We recommend a re-assessment be triggered if any of the following occur:  
 
-- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., 3 more generations of negative recruitment residuals such that there are 7 consecutive generations of them)  
+- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., 3 more generations of negative recruitment residuals such that there are 7 consecutive generations of them).  
 
-- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests 
+- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests. 
 
-- New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics 
+- New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics. 
 
-- Fisheries Management considers changes to the existing HCR and/or revises the fishery objectives against which it needs to be evaluated   
+- *Fisheries Management considers changes to the existing HCR and/or revises the fishery objectives against which it needs to be evaluated. - delete based on Convo w/ Adam?*
 
 
 ## AREAS OF POTENTIAL FUTURE WORK  
 
-***placeholder for now***
+- Development of lifecycle models that partition freshwater and marine survival and explicitly account for changing body mass in spawner-recruitment model and simulations. Explore environmental drivers of survival at life stages.   
 
-- lifecycle models that can partition freshwater and marine dynamics and drivers of them and explicitly account for changing body mass in spawner-recruitment model and simulations   
+- Evaluate evidence time varying spawner-recruitment dynamics (e.g., capacity due to recolonization post Hells Gate), and consequences for reference points and HCR performance.   
 
-- evaluate evidence time varying spawner-recruitment dynamics (e.g., capacity due to recolonization post Hells Gate), and consequences for reference points and HCR performance   
+- Detailed understanding of changes in spatial distribution of adult spawners (i.e., above and below Hells Gate) and implication for stock status and future production (e.g., the effect of declining body size and migrating past hydraulic barriers).  
 
-- detailed understanding of changes in spatial distribution of adult spawners and implication for stock status and future production  
+- Further exploration of realistic metrics (or sets of metrics with various assumptions) to use for outcome uncertainty and forecast error in forward simulations.  
 
-- formal MSE (including multi-species and fisheries considerations/dynamics including a more rigorous examination of outcome uncertainty and forecast error)   
+- Review history of Fraser Sockeye and Pink co-management and consider how past and future dynamics will affect management into the future.  

@@ -98,11 +98,12 @@ catch_esc <- data |>
   select(year, harvest, spawn) |>
   pivot_longer(!year, names_to = "type", values_to = "n")
 
-p1 <- ggplot(catch_esc, aes(x = year, y = n, fill = type)) +
-  geom_bar(position="stack", stat="identity") +
+p1 <- ggplot(catch_esc, aes(x = year, y = n)) +
+  geom_bar(position="stack", stat="identity", aes(fill = type)) +
+  geom_line(data = data, aes(x=year, y = ER*30), color = "red", lwd = 1) +   #ADD ER to plot
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
+  scale_y_continuous(sec.axis = sec_axis(~(./30)*100, name = "Exploitation Rate (%)")) +
   theme(legend.position = "bottom") +
-#  geom_line(data = data, aes(x=year, y = ER)) +   #ADD ER to plot
   labs(x = "Return year",
        y = "Total return (millions of fish)")
 
@@ -121,7 +122,7 @@ p <- plot_grid(p1, p2, ncol = 1)
 p
 my.ggsave(here("figure/catch-esc-HCR.png"))
 
-#plot avg mass through time
+#plot avg mass through time---
 if(FALSE){
   #can't figure out how to scale these using line and bar graph.
   #Can't set limits easily with 2 axes. I get we want to spread the line but not sure how.
@@ -145,7 +146,7 @@ ggplot(avg_mass, aes(year, avg.weight)) +
 
 my.ggsave(here("figure/avg-mass.png"))
 
-# plot HCRs ------------------------------------------------------------------------------
+# plot HCRs ---
 p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
   geom_line(size=1.1, alpha = 0.7) +
   geom_vline(xintercept = R.Smsy.8) +
@@ -175,7 +176,7 @@ p <- plot_grid(p1, p2, nrow = 2)
 p
 my.ggsave(here("figure/HCRs.png"))
 
-# plot SR relationship -------------------------------------------------------------------
+# plot SR relationship ---
 ggplot() +
   geom_ribbon(data = SR_pred, aes(x = Spawn, ymin = Rec_lwr, ymax = Rec_upr),
               fill = "grey80", alpha=0.5, linetype=2, colour="gray46") +
@@ -203,7 +204,7 @@ ggplot() +
 
 my.ggsave(here("figure/SRR.png"))
 
-# PLOT KOBE ------------------------------------------------------------------------------
+# plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #draw data and error bars on final year
   geom_point(aes(color = year), size=3) +
@@ -228,7 +229,7 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
 
 ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
-# then residuals--------------------------------------------------------------------------
+# then residuals---
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:33]
 
 resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
@@ -247,7 +248,7 @@ ggplot(resids, aes(x=year, y = mid)) +
 
 my.ggsave(here("figure/rec-resid.png"))
 
-#plot fwd sims of spawners & catch -------------------------------------------------------
+#plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
 d_start <- 2013
 d_end <- 2023
