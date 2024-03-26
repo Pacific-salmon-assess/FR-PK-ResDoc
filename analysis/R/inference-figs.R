@@ -122,14 +122,28 @@ p
 my.ggsave(here("figure/catch-esc-HCR.png"))
 
 #plot avg mass through time
+if(FALSE){
+  #can't figure out how to scale these using line and bar graph.
+  #Can't set limits easily with 2 axes. I get we want to spread the line but not sure how.
+  rescale <- function(x) (x-0)/(max(x) - 0) * max(compitetors$n_pink)
+  rescale(avg_mass$avg.weight)
+
+  ggplot(avg_mass, aes(year, rescale(avg.weight))) +
+    geom_col(data = compitetors, aes(x = return_yr, y = n_pink), fill = "pink", color = "pink") +
+    geom_line() +
+    geom_point() +
+    #scale_y_continuous(sec.axis = sec_axis(~.*200, name = "N. Pacific Pink abundance (millions)")) +
+    labs(x = "Year", y = "Average body mass (kg)")
+}
+
 ggplot(avg_mass, aes(year, avg.weight)) +
-  geom_col(data = compitetors, aes(x = return_yr, y = n_pink/150), fill = "pink", color = "pink") +
+  geom_col(data = compitetors, aes(x = return_yr, y = n_pink/200), fill = "pink", color = "pink") +
   geom_line() +
   geom_point() +
-  scale_y_continuous(sec.axis = sec_axis(~.*150, name = "N. Pacific Pink abundance (millions)")) +
+  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "N. Pacific Pink abundance (millions)")) +
   labs(x = "Year", y = "Average body mass (kg)")
 
-#my.ggsave(here("figure/avg-mass.png"))
+my.ggsave(here("figure/avg-mass.png"))
 
 # plot HCRs ------------------------------------------------------------------------------
 p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
