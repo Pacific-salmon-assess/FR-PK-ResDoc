@@ -44,29 +44,29 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 
 # TABLES  
 
-(ref:tab-spawner-est-methods) Summary of changes in methods used to assess spawning escapement over time and assumed coefficients of variation (CVs) for each period which were used to define magnitude of observation error in state-space spawner-recruitment model.  
+(ref:tab-spawner-est-methods) Summary of changes in methods used to assess spawning escapement over time and assumed coefficients of variation (CVs) for each period which were used to define magnitude of observation error in state-space spawner-recruitment model.
+
 ```{r tab-spawner-est-methods, results = "asis"}
 df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
-                 'Assessment Method' = c("Early International Pacific Salmon Fishing Commission
-                                         (IPSFC, currently known as the Pacific Salmon Commission[PSC])
-                                         system specific mark-recapture: low tagging effort", 
-                            "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: 
-                            high precision methods in larger systems (90% of stock) and lower 
-                            precision in the remainder", 
+                 'Assessment Method' = c("Early International Pacific Salmon Fishing Commission (IPSFC, currently known as the Pacific Salmon Commission, PSC) system specific mark-recapture: low tagging effort", 
+                            "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: high precision methods in larger systems (90 of stock) and lower precision in the remainder", 
                             "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
                             "PSC Mission sonar"), 
                  CV = c("35%", "25%", "20%", "50%", "10%"))
-
-csasdown::csas_table(df,
-                     caption = "(ref:tab-spawner-est-methods)",
-                     format = "pandoc",
+df |>
+mutate_all(function(x){gsub("%", "\\\\%", x)}) |> #to escape special char latex doesn't like 
+csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",
+                     format = "latex", 
                      landscape = FALSE,
                      font_size = 7,
-                     repeat_header = TRUE)
+                     repeat_header = TRUE) |>
+  kableExtra::column_spec(2, width = "8cm") #fix width of 2nd col so it wraps
+
 ```
 
 (ref:tab-perf-metrics-descriptions) Biological and fishery performance measures used in the closed-loop simulations to assess HCR performance.
+
 ```{r tab-perf-metrics-descriptions, results = "asis"}
 df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median annual catch", "catch stability (1/CV)", 
                             "relative catch metric"), 
@@ -85,7 +85,8 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ```
 
-(ref:tab-priors) Prior probability distributions for parameters.  
+(ref:tab-priors) Prior probability distributions for parameters.
+
 ```{r tab-priors, results = "asis"}
 priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
 
@@ -94,7 +95,8 @@ csasdown::csas_table(priors,
                      caption = "(ref:tab-priors)")
 ```
 
-(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size (neff) and potential scale reduction factor (R-hat) for parameters estimated by the model. 
+(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size (neff) and potential scale reduction factor (R-hat) for parameters estimated by the model.
+
 ```{r tab-bench-parms, results = "asis"}
 csasdown::csas_table(bench.par.table,
            caption = "(ref:tab-bench-parms)",
@@ -105,7 +107,8 @@ csasdown::csas_table(bench.par.table,
            align = "lccc")
 ```
 
-(ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.  
+(ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
+
 ```{r tab-HCR-performance, results = "asis"}
 colnames(perf.metrics) <- c("HCR", "Scenario", "% below $S_{gen}$", "% above $S_{MSY}$", 
                             "Median annual catch", "Catch stability (1/CV)", "catch index")
