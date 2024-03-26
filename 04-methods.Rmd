@@ -12,7 +12,6 @@ Estimates of spawner abundance have been derived over this time period using a v
 A detailed review of these assessment programs is provided in @grantFraserRiverPink2014. 
 These approaches varied in their precision but were assumed to not be systematically biased and to account for the vast majority of the spawning population in any given year.  
 
-
 Estimates of total Pink salmon catch include harvest in fisheries occurring in both Canadian and U.S. waters.  Since 1987, PSC staff have applied genetic stock ID from samples taken from test or directed fisheries to estimate total catch of Pink salmon where appropriate. Prior to 1987, Fraser stocks were identified using run reconstruction methods [@whiteGeneticStockIdentification1996].The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
 
 

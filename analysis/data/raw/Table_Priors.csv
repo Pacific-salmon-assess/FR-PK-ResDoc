@@ -1,8 +1,8 @@
 Parameter,Prior,Bounds,Description
 $ln(\alpha)$,"$\sim N(1,2)$","$[0,\inf]$",Natural log of intrinsic rate of growth
-$S_{MAX}$,"help, 75% of observed spawners with transformation",,Maximum spawners
-$\sigma_{S_{MAX}}$,error on above,,standard deviaiton on maximum spawners
-$\beta$,as above,,Magnitude of within brood-year density-dependence 
+$S_{MAX}$,$0.75*max(S)$,,Spawners that maximize recruitment (hyperprior)
+$\sigma_{S_{MAX}}$,$0.75*max(S)$,,Sd of above (hyperprior)
+$\beta$,"$\sim N(1/S_{MAX}, sigma_{S_{MAX}})$",,"Magnitude of within brood-year density-dependence, where the priors based on $S_{MAX}$ have both been bias corrected  (via Quan et al., 2018)"
 $\phi$,"$\sim U(-1,1)$","$[-1,1]$",Lag-one correlation in interannual variation in survival
 $\sigma_R$,"$\sim N(1,2)$","$[0,\inf]$",White noise process standard deviation in survival.
 $ln(R_0)$,"$\sim N(0,20)$","$[0,\inf]$",Natural log of unobserved recruitment in the first seven years of process model.
