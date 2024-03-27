@@ -1,6 +1,6 @@
 ---
 title: |
-    "Quantifying Wild Salmon Policy biological benchmarks and assessing biological and fishery consequences of current harvest control rule for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
+    "Estimating precautionary approach reference points and assessing consequences of harvest control rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
 french_title: "Titre ici (*Nom latin de l'espèce*)"
 author: |
   Dylan M. Glaser^1^
@@ -42,7 +42,7 @@ cat_no: "Fs70-6/2021-012E-PDF"
 citation_other_language: "Last, F.M. et Smith, A.B. Title Here (*Latin Species Name*). DFO Secr. can. des avis sci. du MPO. Doc. de rech 2019/nnn. iv + 13 p."
 
 abstract: |
-  *to write*
+ Fraser River Pink salmon spawn throughout the Fraser Basin and comprise a single Conservation Unit. Landslides have occurred causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1914 and more recently the Big Bar Landslide discovered in 2019. Fraser Pink salmon survival is associated with sea-surface temperatures during early marine life, spring bloom timing, and the North Pacific Current, all of which are expected to change as the North Pacific warms as a result of climate change. Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size. We fit a state-space spawner-recruitment model to available data to characterize stock dynamics and derive estimates of biological benchmarks to assess stock status. We then developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current, and an illustrative alternative harvest control rule. We estimated the upper Wild Salmon Policy biological benchmark of 80% $S_{MSY}$ to be 4.7m (3.37m-8.39m), the lower biological benchmark $S_{gen}$ to be 1.81m (0.87m-4.25m), and a maximum removal reference rate ($U_{MSY}$) equal 0.55 (0.41-0.67). The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is 9.58m suggesting the stock is in a “healthy” state. The existing Harvest Control Rule (HCR) for Fraser Pinks has a very low probability (< 0.02) of the stock falling below the lower biological benchmark, and a relatively high probability (>0.70) of spawner abundance being above the upper biological benchmark over the next 10 years. Assuming fisheries fully utilize allowable harvest, median annual harvest is projected to 1.51m over the same time period. Assessment of an illustrative alternative HCR which is more strictly compliant with DFO’s Precautionary Approach Framework had slightly better fishery performance but at the cost of poorer biological performance. Two robustness tests of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR may have an unacceptably high probability of the stock falling below the lower biological benchmark and hence being at risk of serious and irreversible biological harm. We conclude with recommendations on re-assessment triggers and areas of future work.
   
 french_abstract: |
   Voici 
@@ -64,7 +64,7 @@ output:
    # beginning of the document
    lot_lof: false
    # draft_watermark is a toggle to show/not show a DRAFT watermark across every page
-   draft_watermark: true
+   draft_watermark: false
    # include_section_nums, if true includes section numbering in the document body,
    # if false, no numbering in the document budy but the TOC will still show numbering
    include_section_nums: true
