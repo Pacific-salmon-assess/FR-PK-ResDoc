@@ -2,4 +2,4 @@
 
 We are thankful for the numerous technicians and biologists that have collected the impressive dataset used in this analysis that spans over 60 years, and those that collected contextual data spanning well over a century. 
 Matt Townsend, Sue Grant, Steve Latham, Catherine Michielsens, Merran Hague, Adam Keizer and Mike Hawkshaw provided context and helped reviews this document.
-***add sprint week helpers***. 
+***add sprint week acknowledgements***. 
