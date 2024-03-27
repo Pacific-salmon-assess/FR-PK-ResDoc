@@ -8,7 +8,7 @@ Lastly, we developed a simple closed-loop simulation model to quantify future ex
 
 Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hell’s Gate). 
 Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1913 and more recently the Big Bar Landslide in 2019. 
-Fraser Pink salmon survival is associated with sea-surface temperatures during early marine life, spring bloom timing and the North Pacific Current, all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
+Fraser Pink salmon survival is associated with sea-surface temperatures during early marine life, spring bloom timing and the North Pacific Current (***salinity?***), all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
 Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size.  
 
 We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be 3.94 (2.56-5.84 recruits per spawner) and equilibrium stock size $S_{EQ}$ equal to `r benchmarks[4,1]`m (`r benchmarks[4,2]`m-`r benchmarks[4,3]`m). 
@@ -25,29 +25,51 @@ The two robustness tests of the current HCR suggest that if stock productivity w
 
 ## CAVEATS AND ASSUMPTIONS  
 
+Performance measures from the forward simulations should be interpreted with caution for several reasons. 
+First, the table summarizes performance across the five generation simulation and does not pick up on finer, shorter term performance as shown in the trajectories. 
+Second, we made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes, respectively. 
+When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
+Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
+Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent among run sizes. 
+Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). 
+This reduction in fishing effort may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) right skewed. 
+The 4-year dominant return shown by Fraser Sockeye also means outcome uncertainty may need to include a temporal component. 
+The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (***citations***). 
+Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-performance) as relative performance measures and not absolutes; catches may not be realized due to various management considerations.  
 
 
 ## EXCEPTIONAL CIRCUMSTANCES OR ASSESSMENT TRIGGERS FOR THE STOCK  
 
-Exceptional circumstances and assessment triggers are intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. We recommend a re-assessment be triggered if any of the following occur:  
+Exceptional circumstances are assessment triggers intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. 
+In addition to routine re-assessment every 2 generations to ensure stock status can be updated and captures contemporary fishery and biological processes, we recommend a re-assessment be triggered if any of the following occur:   
 
-- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., 3 more generations of negative recruitment residuals such that there are 7 consecutive generations of them).  
+- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., 3 more generations of negative recruitment residuals such that there are 7 consecutive generations of them);  
 
-- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests. 
+- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests used in this working paper; 
 
-- New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics. 
+- New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics; 
 
-- *Fisheries Management considers changes to the existing HCR and/or revises the fishery objectives against which it needs to be evaluated. - delete based on Convo w/ Adam?*
+- Lastly, should Fisheries Management consider changes to the existing HCR and/or revisions to the fishery objectives against which it needs to be evaluated, then the assessment model and closed-loop simulation framework we describe should be revisited to ensure they adequately capture key attributes needed to support decision making.  
 
 
 ## AREAS OF POTENTIAL FUTURE WORK  
 
-- Development of lifecycle models that partition freshwater and marine survival and explicitly account for changing body mass in spawner-recruitment model and simulations. Explore environmental drivers of survival at life stages.   
+- *Develop a Fraser Pink salmon lifecycle model. Out migrating Fraser Pink fry abundance has been enumerated near Mission, BC since 1984.* 
+Development of a life cycle model that partitions freshwater and marine dynamics, and explicitly accounts for changing reproductive potential (due to declines in body size), would enable more explicit consideration of ecosystem and climate drivers of stock dynamics and enable them to be accounted for when estimating benchmarks and assessing stock status. 
+When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance.     
 
-- Evaluate evidence time varying spawner-recruitment dynamics (e.g., capacity due to recolonization post Hells Gate), and consequences for reference points and HCR performance.   
+-	*Evaluate evidence for, and consequences of, non-stationarity in stock dynamics.* 
+In light of recolonization of spawning habitat following the Hells Gate slide, and potential for declines in marine survival, evidence for non-stationarity in productivity and carrying capacity could be evaluated using models that allow either productivity or carrying capacity to vary over time as a random walk or regime shift(s). 
+If there is evidence of time varying spawner-recruitment dynamics then the closed loop simulation framework we have developed could be used to explore their implications for characterization of stock status and evaluation of HCR performance.
+This could be used in conjunction with life cycle models if regime shifts are only apparent when looking at specific life stages.  
 
-- Detailed understanding of changes in spatial distribution of adult spawners (i.e., above and below Hells Gate) and implication for stock status and future production (e.g., the effect of declining body size and migrating past hydraulic barriers).  
+-	*Improve understanding of changes in spatial distribution of adult spawners.* 
+The last detailed assessment of changes in the spatial distribution Fraser Pink salmon was conducted by @pessInfluencePopulationDynamics2012 with tributary level data through 1947-87. 
+Since that time there has not been formal tributary level assessment of spawner abundance, but there has been anecdotal evidence of continued changes in the spatial distribution of spawning Pink salmon. 
+This information could be compiled, along with observations from assessment projects focused on other species, to critically re-examine our understanding of spatial dynamics of Fraser Pink salmon and their implication for stock status and expectations of future production.  
 
-- Further exploration of realistic metrics (or sets of metrics with various assumptions) to use for outcome uncertainty and forecast error in forward simulations.  
-
-- Review history of Fraser Sockeye and Pink co-management and consider how past and future dynamics will affect management into the future.  
+- *Adapt closed-loop simulation model to better capture contemporary fishery dynamics.* 
+The fishery sub-model we developed is extremely simple and does not capture a number of potentially important process that have the potential to influence fishery outcomes. 
+This includes the influence of other, non-target, species like Fraser sockeye salmon whose depressed abundance in recent years has led to restrictions on fisheries targeting co-migrating Fraser Pink salmon. 
+These weak stock fishery restrictions mean that our characterization of the biological and fishery performance of the current HCR may be pessimistic when it comes to conservation risk, and optimistic when it comes to fishery performance. 
+A multi-species Operating Model in our closed loop simulations that explicitly or implicitly incorporates contemporary Fraser Sockeye dynamics, and revised fishery sub-model that takes at-risk sockeye considerations into account, could be developed to enable more realistic evaluation of HCR performance.  

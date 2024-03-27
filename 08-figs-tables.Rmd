@@ -85,7 +85,7 @@ csasdown::csas_table(df,
                      repeat_header = TRUE)
 ```
 
-(ref:tab-priors) Prior probability distributions for parameters.
+(ref:tab-priors) Prior probability distributions for parameters. ***Note - unsure how to provide hyperlink to reference for transformation of Smax prior***.
 
 ```{r tab-priors, results = "asis"}
 priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))

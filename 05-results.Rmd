@@ -37,14 +37,3 @@ These increased biological risks came with the benefit of higher average annual 
 Performance of the HCRs under the two robustness tests predictably resulted in poorer biological and fishery performance because they were both associated with lower assumed intrinsic productivity (low $\alpha$ median: `r exp(low.ln.a)` recruits per spawner, recent data $\alpha$ median:`r median(exp(model.pars.93$ln_alpha))` recruits per spawner). 
 For example, the probability of the stock falling below the lower biological benchmark was 0.129 and 0.401 for the low productivity and truncated dataset robustness tests, respectively. 
 However, the relative biological and fishery performance of both the current and alternative illustrative HCR remained the same as in the base case closed loop simulations (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
-
-Performance measures in Table \@ref(tab:tab-HCR-performance) should be interpreted with caution for several reasons. 
-First, the table summarizes performance across the five generation simulation and do not pick up on finer, shorter term performance as shown in the trajectories (Figure \@ref(fig:fig-fwd-SC)). 
-Second, we made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes, respectively. 
-When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
-Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
-Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent. 
-Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for practical management reasons. 
-Management of other species like Fraser Sockeye may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) right skewed, which could also be affected by the 4 year life cycle of Fraser Sockeye. 
-The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (citations). Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-performance) as relative measures and not absolutes. (*should this P be in discussion??*)
-

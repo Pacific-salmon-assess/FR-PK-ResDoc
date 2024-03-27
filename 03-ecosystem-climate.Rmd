@@ -6,13 +6,15 @@ Most pink salmon production, however, occurs in the Lower Fraser from the canyon
 
 Pink salmon have exceptional aerobic scope and cardiovascular performance which has been hypothesized to contribute to their resilience to warming freshwaters [@clarkExceptionalAerobicScope2011]. 
 However, due to their relatively small body size they are especially vulnerable to flow related impacts during return freshwater migrations. 
-The major rockslide at Hells Gate in 1913, and subsequent slide in 1941, created a hydrologic barrier that severely limited upstream migration of pink salmon to spawning locations in the upper Fraser River until fish passage facilities were put in place in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser [@pessInfluencePopulationDynamics2012]. 
+The impacts from the initial railway construction at Hells Gate in the 1880's (i.e., rock dumping into river), then construction of the new railway in 1913, and subsequent rockslide in 1914, created a hydrologic barrier that severely limited upstream migration of pink salmon to spawning locations in the upper Fraser River. 
+After observing a large population of Sockeye apparently stuck downstream of the slide in 1941, fish passage facilities were completed in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser [@roosRestoringFraserRiver1991]. 
 The 2018 rockslide at Big Bar in the Fraser Canyon further upstream from Hells Gate created another partial barrier to upstream migration, during periods of high flow, to headwater spawning locations.  
 
 In addition to flow related impacts on adult migration, extreme flows (e.g., from fall rain events) can cause high mortality in the egg to alevin stage of Pacific salmon as a result of scouring spawning redds where eggs incubate [@montgomeryStreambedScourEgg1996]. 
 Though extreme flows and flooding have occurred in the Lower Fraser in recent years (e.g., fall 2021) there has been little examination of extreme flow related impacts on Fraser River pink salmon incubation success.  
 
 In the marine environment, Fraser Pink salmon survival is negatively associated with above average sea-surface temperatures during early marine life [@mueterOppositeEffectsOcean2002], earlier spring bloom timing [@malickEffectsNorthPacific2017], and a weak North Pacific Current as indexed the North Pacific Gyre Oscillation (NPGO) [@malickEffectsNorthPacific2017], all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
+***Steve mentioned something about salinity here - to address.***
 In addition, increasing abundances of Pacific salmon abundances across the North Pacific (dominated by pink, chum, and sockeye) are associated with declines in Fraser River pink salmon adult size (Figure \@ref(fig:fig-avg-mass)) which may result from inter- and intra-specific competition among salmon for limited prey resources at sea [@ruggeroneDiatomsKillerWhales2023]. 
 These declines in spawner size in turn likely impact reproductive output as fecundity scales with female size [@beachamFecundityEggSize1993].  
 
