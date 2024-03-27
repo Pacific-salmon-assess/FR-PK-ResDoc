@@ -263,8 +263,6 @@ perf.metrics <- perf.metrics |>
          HCR = gsub("low_a_|recent_", "", HCR)) |>
   pivot_wider(names_from = metric, values_from = value)
 
-write.csv(perf.metrics, "C:/Users/GLASERD/Desktop/perf.metrics.csv")
-
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
