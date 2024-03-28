@@ -8,13 +8,17 @@ Each of these steps is described in detail below.
 ## DATA SOURCES  
 
 Escapement and catch data from 1959 to present were provided by the Pacific Salmon Commission (available at @pacificsalmoncommissionFraserRiverPanel2024). 
-Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table \@ref(tab:tab-spawner-est-methods)). 
-A detailed review of these assessment programs is provided in @grantFraserRiverPink2014. 
+Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table \@ref(tab:tab-spawner-est-methods)). It should be noted that no calibration was done when switching between escapement estimation methods, but methods have been extensively reviewed in @andrewReviewAssessmentAdult1987 and some corrections have been applied to the data. 
 These approaches varied in their precision but were assumed to not be systematically biased and to account for the vast majority of the spawning population in any given year.  
 
-Estimates of total Pink salmon catch include harvest in fisheries occurring in both Canadian and U.S. waters.  Since 1987, PSC staff have applied genetic stock ID from samples taken from test or directed fisheries to estimate total catch of Pink salmon where appropriate. Prior to 1987, Fraser stocks were identified using run reconstruction methods [@whiteGeneticStockIdentification1996].The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
+Commercial catch has typically been estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch, where the contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and genetic stock identification methodologies (1987-present). 
+Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
+The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
+Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
+Recreational catch is estimated through agency creel surveys (e.g., effort surveys of CPUE paired with flights or other counts) in both countries. 
+First Nations Economic Opportunity (EO) catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Ceremonial, and Sacred catch (FSC) is estimated using methods similar to recreational catch. The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
 
-
+See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data. 
 ## SPAWNER-RECRUIT MODEL  
 
 We modeled the spawner-recruitment data in a state-space framework, following the approach described in @fleischmanAgestructuredStatespaceStock2013. 
@@ -86,7 +90,7 @@ In our main model run, we sampled from 4 chains with 2,000 iterations each and d
 We calculated biological reference points for each MCMC sample and then summarized them across MCMC samples. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions. $S_{MSY}$ was derived as:  
 
 \begin{equation}
-S_{MSY} = 1 - W(e^1-\alpha)/\beta
+S_{MSY} = 1 - W(e^{1-ln(\alpha)})/\beta
 \label{eq:get-Smsy}
 \end{equation}
 
@@ -97,23 +101,22 @@ As an Upper Stock Reference Point we used 80% of $S_{MSY}$ following @holtEvalua
 The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$), and hence the maximum removal reference, was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
 
 \begin{equation}
-U_{MSY} = 1 - W(e^-log(\alpha))
+U_{MSY} = 1 - W(e^{-ln(\alpha)})
 \label{eq:get-Umsy}
 \end{equation}
 
-and $S_{gen}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009], which we considered the Limit Referene Point, was solved numerically according to:  
+and $S_{GEN}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009], which we considered the Limit Reference Point, was solved numerically according to: 
 
 \begin{equation}
-S_{MSY} = S_{gen}e^\alpha(1-S_{gen}/\beta)
+S_{MSY} = S_{GEN}\alpha e^{-\beta S_{GEN}}
 \label{eq:get-Sgen}
 \end{equation}
 
-which were used as biological benchmarks to inform HCRs and evaluate their performance.  
 
 Equilibrium spawner abundance ($S_{eq}$), where recruitment exactly replaces spawners, was estimated as:  
 
 \begin{equation}
-S_{eq} = ln(\alpha)/\beta)
+S_{eq} = ln(\alpha)/\beta
 \label{eq:get-Seq}
 \end{equation}
 
@@ -151,7 +154,7 @@ We quantified the expected performance of the HCRs against biological and fisher
 Biological objectives included minimizing the probability spawner abundances fall below the LRP ($S_{gen}$), and maximizing the probability the stock maintains spawner abundances above the USR (80% $S_{MSY}$) and is hence in a “healthy” or desirable state. 
 The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty was explicitly accounted for in the performance measure calculations. 
 
-Fishery objectives included maximizing average harvest and inter-annual stability in harvest, and minimizing the probability harvests fall below a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2000 (i.e. an indicator of a "good" fishing year).  
+Fishery objectives included maximizing average harvest and inter-annual stability in harvest, and maximizing the probability annual harvests fall above a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2000 (i.e. an indicator of a "good" fishing year).  
 
 
 ### ROBUSTNESS TEST  

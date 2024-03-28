@@ -26,19 +26,7 @@ Changes in diversion rate could also have implications for survival via encounte
 
 ### Escapement and Catch  
 
-Data on catch and spawner abundance (i.e., escapement) has been collected for well over a century, with indices of abundances recorded back to 1901 [@rickerHistoryPresentState1989], but reliable escapement data are only available from `r min(rec_prop$year)` to present.  
-
-Escapement data have been collected with a variety of methods over this period due to changes in priorities, funding and technology (Table \@ref(tab:tab-spawner-est-methods)). 
-Various escapement enumeration methods based on mark-recapture, CPUE indices, and sonar have been used throughout the collection of this dataset.
-It should be noted that no calibration was done when switching between escapement estimation methods, but methods have been extensively reviewed in @andrewReviewAssessmentAdult1987 and some corrections have been applied to the data.  
-
-Commercial catch has typically been estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch, where the contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and GSI methodologies (1987-present). 
-Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
-The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
-Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
-Recreational catch is estimated through agency creel surveys (e.g., effort surveys of CPUE paired with flights or other counts) in both countries. 
-First Nations Economic Opportunity (EO) catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Ceremonial, and Sacred catch (FSC) is estimated using methods similar to recreational catch. 
-See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data.  
+Data on catch and spawner abundance (i.e., escapement) has been collected for well over a century, with indices of abundances recorded back to 1901 [@rickerHistoryPresentState1989]. However, consistent and reliable escapement and catch data are only available from `r min(rec_prop$year)` to present.More details on catch and escapement data used in this report are provided in the Data Sources section.  
 
 ### Current Management and Trends  
 
