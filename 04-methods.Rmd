@@ -1,7 +1,7 @@
 # METHODS  
 
 We compiled available data on Fraser Pink salmon spawner abundance and harvest estimates then developed and fit a state-space spawner-recruitment model to these data to characterize stock dynamics and population characteristics. 
-We then derived estimates of biological benchmarks to assess stock status. 
+We then derived estimates of biological reference points to assess stock status. 
 Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and an alternative harvest control rule for the stock. 
 Each of these steps is described in detail below. 
 
@@ -82,9 +82,9 @@ In our main model run, we sampled from 4 chains with 2,000 iterations each and d
 ***Worth noting how Smax prior is N(.75max(spawners)) here? Bit funky with all the transformations...***
 
 
-## BIOLOGICAL BENCHMARKS  
+## BIOLOGICAL REFERENCE POINTS  
 
-We calculated biological benchmarks for each MCMC sample and then summarized them across MCMC samples. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions. $S_{MSY}$ was derived as:  
+We calculated biological reference points for each MCMC sample and then summarized them across MCMC samples. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions. $S_{MSY}$ was derived as:  
 
 \begin{equation}
 S_{MSY} = 1 - W(e^1-\alpha)/\beta
@@ -93,16 +93,16 @@ S_{MSY} = 1 - W(e^1-\alpha)/\beta
 
 where $W$ is the Lambert function [@scheuerellExplicitSolutionCalculating2016], and $\alpha$ and $\beta$ are intrinsic productivity and the magnitude of within stock density dependence, respectively. 
 We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied @hilborn1985simplified approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ such that infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$. 
-As an upper biological benchmark we used 80% of $S_{MSY}$ following @holtEvaluationBenchmarksConservation2009 and @dfoSustainableFisheriesFramework2022.  
+As an Upper Stock Reference Point we used 80% of $S_{MSY}$ following @holtEvaluationBenchmarksConservation2009 and @dfoSustainableFisheriesFramework2022.  
 
-The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$) was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
+The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$), and hence the maximum removal reference, was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
 
 \begin{equation}
 U_{MSY} = 1 - W(e^-log(\alpha))
 \label{eq:get-Umsy}
 \end{equation}
 
-and $S_{gen}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009] solved numerically according to:  
+and $S_{gen}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009], which we considered the Limit Referene Point, was solved numerically according to:  
 
 \begin{equation}
 S_{MSY} = S_{gen}e^\alpha(1-S_{gen}/\beta)
@@ -117,14 +117,6 @@ Equilibrium spawner abundance ($S_{eq}$), where recruitment exactly replaces spa
 S_{eq} = ln(\alpha)/\beta)
 \label{eq:get-Seq}
 \end{equation}
-
-The reference points above are germane to median yield and recruitment, but because of the assumption that recruitment is lognormally distributed this differs from expected (i.e. mean) yield and recruitment. Therefore, to provide inference about expected yield and recruitment we applied a lognormal bias correction by substituting $\alpha'$ for $\alpha$ in equations \@ref(eq:get-Smsy)-\@ref(eq:get-Seq), where:
-
-\begin{equation}
-ln(\alpha')= ln(\alpha) + \frac{\sigma_{R}}{2(1-\phi^{2})}
-\label{eq:alpha-corr}
-\end{equation}
-
 
 ## CLOSED-LOOP SIMULATION MODEL   
 
@@ -157,8 +149,8 @@ To avoid this, slight variations on this type of HCR have been used for Fraser S
 ### PERFORMANCE MEASURES  
 
 We quantified the expected performance of the HCRs against biological and fishery objectives and associated quantitative performance measures (Table \@ref(tab:tab-perf-metrics-descriptions)).
-Biological objectives included minimizing the probability spawner abundances fall below $S_{gen}$, and maximizing the probability the stock maintains spawner abundances above 80% $S_{MSY}$ and is hence in a “healthy” or desirable state. 
-The values used for these biological benchmarks were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty was explicitly accounted for in the performance measure calculations. 
+Biological objectives included minimizing the probability spawner abundances fall below the LRP ($S_{gen}$), and maximizing the probability the stock maintains spawner abundances above the USR (80% $S_{MSY}$) and is hence in a “healthy” or desirable state. 
+The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty was explicitly accounted for in the performance measure calculations. 
 
 Fishery objectives included maximizing average harvest and inter-annual stability in harvest, and minimizing the probability harvests fall below a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2000 (i.e. an indicator of a "good" fishing year).  
 
