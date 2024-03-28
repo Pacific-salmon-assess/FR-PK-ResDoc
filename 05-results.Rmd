@@ -1,7 +1,6 @@
 # RESULTS  
 
 ## MODEL FIT AND DIAGNOSTICS  
-We estimated a total of seven model parameters. 
 Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), and all had effective sample sizes > 1,500 suggesting reasonable model convergence. 
 (See ***Appendix A - make ref*** for fully reproducible analysis and full diagnostics).  
 

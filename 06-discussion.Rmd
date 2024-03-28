@@ -25,15 +25,14 @@ The two robustness tests of the current HCR suggest that if stock productivity w
 ## CAVEATS AND ASSUMPTIONS  
 
 Performance measures from the forward simulations should be interpreted with caution for several reasons. 
-First, the table summarizes performance across the five generation simulation and does not pick up on finer, shorter term performance as shown in the trajectories. 
+First, our performance measures are calculated across the full five generations of the simulations and so do not capture finer, shorter term performance as shown in the trajectories. 
 Second, we made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes, respectively. 
 When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
 Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
 Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent among run sizes. 
-Outcome uncertainty (i.e. how close you are toward target exploitation) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). 
-This reduction in fishing effort may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) right skewed. 
-The 4-year dominant return shown by Fraser Sockeye also means outcome uncertainty may need to include a temporal component. 
-The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate (***citation(s)***). 
+Outcome uncertainty (i.e.how close you are toward target exploitation) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). 
+This reduction in fishing effort may make the shape of true outcome uncertainty (i.e. the error in hitting target escapement) right skewed. 
+The price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate. 
 Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-performance) as relative performance measures and not absolutes; catches may not be realized due to various management considerations.  
 
 
@@ -48,7 +47,7 @@ In addition to routine re-assessment every 2 generations to ensure stock status 
 
 - New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics; 
 
-- Lastly, should Fisheries Management consider changes to the existing HCR and/or revisions to the fishery objectives against which it needs to be evaluated, then the assessment model and closed-loop simulation framework we describe should be revisited to ensure they adequately capture key attributes needed to support decision making.  
+Lastly, should Fisheries Management consider changes to the existing HCR and/or revisions to the fishery objectives against which it needs to be evaluated, then the assessment model and closed-loop simulation framework we describe should be revisited to ensure they adequately capture key attributes needed to support decision making.  
 
 
 ## AREAS OF POTENTIAL FUTURE WORK  
