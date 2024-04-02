@@ -1,11 +1,11 @@
 # FIGURES  
 
-(ref:fig-catch-esc) Full time series of escapement and catch.
+(ref:fig-catch-esc) Spawning escapement and catch from 1957 to present. Resulting exploitatin rate is show in red on secondary y-axis.
 ```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
 knitr::include_graphics(here::here("figure/catch-esc.png"))
 ```
 
-(ref:fig-map) Map of the Fraser River watershed showing Pink Salmon distribution (red) and key survey sites (green) from [@grantFraserRiverPink2014].  
+(ref:fig-map) Fraser River Basin, extent of Pink salmon spawning distribution (red), and approximate locations of the Mission hydroacoustics site, Hell's Gate and Big Bar. Map adapted from [@grantFraserRiverPink2014].  
 ```{r fig-map, fig.cap = "(ref:fig-map)"}
 knitr::include_graphics(here::here("figure/map.png"))
 ```
@@ -15,7 +15,7 @@ knitr::include_graphics(here::here("figure/map.png"))
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
-(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules. The top panel is the harvest control rule relating target harvest rate to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote limit ($S_{gen}$) and upper stock (`r expression(italic(paste("80%",S)[MSY]))`) reference points, in run-size units.  
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest ra80 to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limte ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```

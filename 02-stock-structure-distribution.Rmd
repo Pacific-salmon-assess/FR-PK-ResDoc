@@ -1,6 +1,6 @@
 # STOCK STRUCTURE AND DISTRIBUTION  
 
-Fraser River Pink salmon predominantly spawn in the Lower Fraser watershed, below the Fraser Canyon and Hells Gate (Figure \@ref(fig:fig-map)). 
+Fraser River Pink salmon predominantly spawn in the lower portion fo the Fraser Basin, below the Fraser Canyon and Hells Gate (Figure \@ref(fig:fig-map)). 
 However, there is a large component of the stock that returns to the Thompson River and the Seton-Anderson complex. 
 Before the slide at Hells Gate in 1914, most of the Fraser River Pink salmon run returned and spawned in the Upper Fraser River [@pessInfluencePopulationDynamics2012]. 
 Although there is a lack of abundance data at the tributary level in recent decades for Fraser Pink salmon, assessment observations from other species have persistently noted Pink salmon in the Quesnel, Chilcotin, and the Nechako Rivers. 
@@ -9,9 +9,9 @@ Pink salmon were noted as being among the species delayed in their upstream migr
 Slide mitigation efforts have largely been successful and Pink salmon were in the Nechako River upstream of the slide in 2023 (R. Martin, DFO, pers comm.).  
 
 
-Fraser Pink salmon currently are assumed to comprise a single Conservation Unit [@holtbyConservationUnitsPacific2008]. 
+Fraser Pink salmon are assumed to comprise a single Conservation Unit [@holtbyConservationUnitsPacific2008]. 
 However, there is some evidence for life history differences between Pinks that spawn above and below Hell’s Gate. 
-For example, Pink salmon from above Hell’s Gate are larger than their Lower Fraser River counterparts and have higher maximum swimming speeds, allowing them to negotiate the Hell’s Gate rapids ***Williams et al. 1986*** [@beachamVariationBodySize1988, @rickerHistoryPresentState1989]. 
+For example, Pink salmon from above Hell’s Gate are larger than their Lower Fraser River counterparts and have higher maximum swimming speeds, allowing them to negotiate the Hell’s Gate rapids ***Williams et al. 1986*** [@beachamVariationBodySize1988; @rickerHistoryPresentState1989]. 
 In addition, Pink salmon returning to areas upstream and downstream of Hell's Gate have slightly different return timing as evidenced through recent sampling for genetic stock identification in lower Fraser test fisheries (S. Latham, PSC, pers comm). 
-The differences support the hypothesis that there may be more genetic and life history differences between spawning populations above and below Hell's gate that previously thought. 
+The differences suggest that there may be more genetic and life history differences between spawning populations above and below Hell's Gate that previously thought. 
 The Committee on the Status of Endangered Wildlife in Canada is currently reviewing Pink salmon population structure in Canada including in the Fraser River (B. Leaman, pers. comm.).  

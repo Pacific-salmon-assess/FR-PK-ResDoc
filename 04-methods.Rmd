@@ -1,6 +1,6 @@
 # METHODS  
 
-We compiled available data on Fraser Pink salmon spawner abundance and harvest estimates then developed and fit a state-space spawner-recruitment model to these data to characterize stock dynamics and population characteristics. 
+We compiled available data on Fraser Pink salmon spawner abundance and harvest, and then developed and fit a state-space spawner-recruitment model to these data to characterize stock dynamics and population characteristics. 
 We then derived estimates of biological reference points to assess stock status. 
 Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and an alternative harvest control rule for the stock. 
 Each of these steps is described in detail below. 
@@ -9,26 +9,27 @@ Each of these steps is described in detail below.
 
 Escapement and catch data from 1959 to present were provided by the Pacific Salmon Commission (available at @pacificsalmoncommissionFraserRiverPanel2024). 
 Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table \@ref(tab:tab-spawner-est-methods)). It should be noted that no calibration was done when switching between escapement estimation methods, but methods have been extensively reviewed in @andrewReviewAssessmentAdult1987 and some corrections have been applied to the data. 
-These approaches varied in their precision but were assumed to not be systematically biased and to account for the vast majority of the spawning population in any given year.  
+These approaches have varied in their precision but were assumed to account for the vast majority of the spawning population in any given year, and to not be systematically biased.  
 
 Commercial catch has typically been estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stocks to the coastal catch, where the contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and genetic stock identification methodologies (1987-present). 
-Methods of estimating catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
+Methods used to estimate catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
 The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
 Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
 Recreational catch is estimated through agency creel surveys (e.g., effort surveys of CPUE paired with flights or other counts) in both countries. 
-First Nations Economic Opportunity (EO) catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Ceremonial, and Sacred catch (FSC) is estimated using methods similar to recreational catch. The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
+First Nations Economic Opportunity catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Ceremonial, and Sacred catch (FSC) is estimated using methods similar to recreational catch. The total return (or recruitment) in any given year was assumed to be the sum of catch and escapement.  
 
-See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape; including detailed methodologies and reporting on escapement, catch, and biological data. 
+See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape including methodologies used to collect escapement, catch, and biological data. 
+
 ## SPAWNER-RECRUIT MODEL  
 
 We modeled the spawner-recruitment data in a state-space framework, following the approach described in @fleischmanAgestructuredStatespaceStock2013. 
 State-space models allow for the separation of observation (e.g., sampling) error and true underlying process variation and have become increasingly common in ecological modelling [@auger-metheGuideStateSpace2021]. 
-State-space spawner-recruitment models tend to generate less biased estimates of leading parameters (e.g., intrinsic productivity and density dependence) than traditional regression based approaches that do not separate observation error and process variation and hence can be vulnerable to errors-in-variables and time series bias [@adkisonReviewSalmonSpawnerRecruitment2021; @statonEvaluationMethodsSpawner2020; @suPerformanceBayesianStatespace2012].  
+State-space spawner-recruitment models tend to generate less biased estimates of leading parameters (e.g., intrinsic productivity and density dependence) than traditional regression based approaches that do not separate observation error and process variation and hence can be vulnerable to errors-in-variables and time series biases [@adkisonReviewSalmonSpawnerRecruitment2021; @statonEvaluationMethodsSpawner2020; @suPerformanceBayesianStatespace2012].  
 
 
 ### PROCESS MODEL  
 
-The process model is intended to represent the true population dynamics (i.e., free of measurement error; describing true variation in the environment).
+The process model is intended to represent the true population dynamics (i.e., free of measurement error).
 This component of our state-space spawner-recruitment model specifies productivity and density-dependence.
 Recruitment abundances of adult Pinks ($R_y$) were treated as unobserved states and modeled as a function of spawner abundance in year $y$ ($S_y$) assuming a @rickerStockRecruitment1954 spawner-recruitment relationship with serially auto-correlated log-normal process variation:  
 
@@ -69,7 +70,7 @@ S_y = N_y (1 - U_y)
 
 ### OBSERVATION MODEL  
 
-We assumed that observation error in spawning abundance varied among assessment regimes, *r*, (Table \@ref(tab:tab-spawner-est-methods)) and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:  
+We assumed that observation error in spawning abundance varied among assessment regimes, *r* (Table \@ref(tab:tab-spawner-est-methods)) and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:  
 
 \begin{equation}
 \sigma^2_{r,y} = \ln\left(\mathrm{CV}_y^2 + 1\right)
@@ -87,7 +88,7 @@ In our main model run, we sampled from 4 chains with 2,000 iterations each and d
 
 ## BIOLOGICAL REFERENCE POINTS  
 
-We calculated biological reference points for each MCMC sample and then summarized them across MCMC samples. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions. $S_{MSY}$ was derived as:  
+We calculated biological reference points for each MCMC sample and then summarized them across MCMC samples. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions, $S_{MSY}$ was derived as:  
 
 \begin{equation}
 S_{MSY} = 1 - W(e^{1-ln(\alpha)})/\beta
@@ -98,7 +99,7 @@ where $W$ is the Lambert function [@scheuerellExplicitSolutionCalculating2016], 
 We chose to apply this exact solution for $S_{MSY}$ instead of the commonly applied @hilborn1985simplified approximation because the approximation only holds for $0 <ln(\alpha) \leq3$ such that infrequent, but large, posterior samples of $\alpha$ can result in biased estimates of the posterior distribution of $S_{MSY}$. 
 As an Upper Stock Reference Point we used 80% of $S_{MSY}$ following @holtEvaluationBenchmarksConservation2009 and @dfoSustainableFisheriesFramework2022.  
 
-The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$), and hence the maximum removal reference, was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
+The harvest rate expected to lead to maximum sustainable yield ($U_{MSY}$), and hence the maximum Removal Reference, was derived according to the solution proposed by @scheuerellExplicitSolutionCalculating2016 as:  
 
 \begin{equation}
 U_{MSY} = 1 - W(e^{-ln(\alpha)})
@@ -123,7 +124,7 @@ S_{eq} = ln(\alpha)/\beta
 ## CLOSED-LOOP SIMULATION MODEL   
 
 We developed a simple closed loop forward simulation, conditioned on our estimates of historical spawner abundance, intrinsic productivity, carrying capacity, and temporal variation in survival. 
-We used this simulation to project the Fraser Pink stock forward in time and evaluate the biological and fishery performance of the current and an alternative HCR. 
+We used this simulation to project the Fraser Pink stock forward in time and evaluate the biological and fishery performance of the current, and an illustrative alternative, HCR. 
 Details on model components and calculation of performance are provided below.   
 
 
@@ -142,9 +143,9 @@ Outcome uncertainty (i..e., deviations from targeted catch) was then applied to 
 We assumed this outcome uncertainty was normally distributed around the target catch with a CV of `r OU.CV*100`%.  
 
 In addition to evaluating the current HCR we also considered an illustrative alternative that is compliant with Fisheries and Oceans Canada's Precautionary Approach Framework [@dfoFisheryDecisionmakingFramework2009] (Figure \@ref(fig:fig-HCRs)). 
-Under this alternative (“PA alternate”) HCR the lower operational control point (OCP) is set to our median estimate of $S_{gen}$ below which the target harvest rate is zero, an upper OCP is set to run-size associated with our median estimate of 80% $S_{MSY}$ where the maximum target harvest rate (removal reference) is set to our median estimate of $U_{MSY}$. 
+Under this alternative (“PA alternate”) HCR the lower operational control point (OCP) is set to our median estimate of $S_{gen}$ below which the target harvest rate is zero, and an upper OCP is set to run-size associated with our median estimate of 80% $S_{MSY}$ where the maximum target harvest rate (removal reference) is set to our median estimate of $U_{MSY}$. 
 At run-sizes between the lower and upper OCPs the target harvest rate was linearly interpolated. 
-An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic for management. 
+An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic from a practical management implementaion perspective. 
 To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye (***Pestal et al. 2012***).  
 
 
@@ -152,16 +153,16 @@ To avoid this, slight variations on this type of HCR have been used for Fraser S
 
 We quantified the expected performance of the HCRs against biological and fishery objectives and associated quantitative performance measures (Table \@ref(tab:tab-perf-metrics-descriptions)).
 Biological objectives included minimizing the probability spawner abundances fall below the LRP ($S_{gen}$), and maximizing the probability the stock maintains spawner abundances above the USR (80% $S_{MSY}$) and is hence in a “healthy” or desirable state. 
-The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty was explicitly accounted for in the performance measure calculations. 
+The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty in these reference points was explicitly accounted for in the performance measure calculations. 
 
 Fishery objectives included maximizing average harvest and inter-annual stability in harvest, and maximizing the probability annual harvests fall above a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2000 (i.e. an indicator of a "good" fishing year).  
 
 
-### ROBUSTNESS TEST  
+### ROBUSTNESS TESTS  
 
-We used a robustness test to evaluate the sensitivity of HCR performance to two alternative assumptions about the true state of nature and Fraser Pink population characteristics. 
+We used robustness testS to evaluate the sensitivity of HCR performance to two alternative assumptions about the true state of nature and Fraser Pink population characteristics. 
 The first robustness test assumed future intrinsic productivity of the Fraser Pink stock dramatically declined due to, for example, large changes in marine or freshwater survival. 
 To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of parameters associated with the lower tenth percentile of the posterior distribution for the productivity parameter ($\alpha$).  
 
-The second robustness test assumed that Fraser Pink population characteristics are best described by observation of harvest and spawner abundance since 1993 instead of 1957. This cutoff was chosen because of uncertainty in the representativeness of the earlier observations due to the large changes in assessment programs over time (Table \@ref(tab:tab-spawner-est-methods)) and previous work that has cautioned against their use in spawner-recruitment analyses [@grantFraserRiverPink2014]. 
-For this robustness test we conditioned our biological sub-model using joint posterior samples from a fit of the spawner-recruitment model to this truncated dataset. 
+The second robustness test assumed that Fraser Pink population characteristics are best described by observations of harvest and spawner abundance since 1993 instead of 1957. This cutoff was chosen because of uncertainty in the representativeness of the earlier observations due to the large changes in assessment programs over time (Table \@ref(tab:tab-spawner-est-methods)) and previous work that has cautioned against their use in spawner-recruitment analyses [@grantFraserRiverPink2014]. 
+For this robustness test we conditioned our biological sub-model using joint posterior samples from a fit of the spawner-recruitment model to this truncated (post 1993) dataset. 
