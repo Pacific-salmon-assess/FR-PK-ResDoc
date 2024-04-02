@@ -48,7 +48,7 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 
 ```{r tab-spawner-est-methods, results = "asis"}
 df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
-                 'Assessment Method' = c("Early International Pacific Salmon Fishing Commission (IPSFC, currently known as the Pacific Salmon Commission, PSC) system specific mark-recapture: low tagging effort", 
+                 "Assessment Method" = c("Early International Pacific Salmon Fishing Commission (IPSFC, currently known as the Pacific Salmon Commission, PSC) system specific mark-recapture: low tagging effort", 
                             "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: high precision methods in larger systems (90 of stock) and lower precision in the remainder", 
                             "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
@@ -59,7 +59,6 @@ mutate_all(function(x){gsub("%", "\\\\%", x)}) |> #to escape special char latex 
 csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",
                      format = "latex", 
                      landscape = FALSE,
-                     font_size = 7,
                      repeat_header = TRUE) |>
   kableExtra::column_spec(2, width = "8cm") #fix width of 2nd col so it wraps
 
@@ -70,19 +69,26 @@ csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",
 ```{r tab-perf-metrics-descriptions, results = "asis"}
 df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median annual catch", "catch stability (1/CV)", 
                             "relative catch metric"), 
-                 Description = c("percent of simulations going below that simulations relative lower benchmark",
-                                 "percent of simulations going above that simulations relative upper benchmark",
-                                 "expected median annual catch (distribution of medians across years) 
-                                 if the harvest control rule is followed",
-                                 "expected stability (as above) if the harvest control rule is followed",
-                                 "percent of simulations where catch is greater than the average of the 
-                                 top 3 years of catch since 2000 - a semi-arbitrary indicator of a 'good year'"))
-csasdown::csas_table(df,
-                     caption = "(ref:tab-perf-metrics-descriptions)",
-                     format = "pandoc",
+                 Description = c("Probability the stock spawner abundance falls below the Limit Reference Point across replicate simulations and years, where n rep is the number of replicate simulations and $t_1$ and $t_2$ are the first and last years over which the metric is calculated ",
+                                 "Probability the stock spawner abundance falls above the Upper Stock Reference Point across replicate simulations and years ",
+                                 "Average harvest across replicate simulations and years",
+                                 "Stability in average harvest across replicate simulations and years($\\mu_C$), where is $\\sigma_C$ the standard deviation in harvest",
+                                 "Probability annual harvest is greater than the average of the top 3 years of harvest since 2000 ($C_{top}$), a semi-arbitrary indicator of a ‘good year’ "),
+                 Equation = c("$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_t<S_{gen}} {t_2-t_1+1}$", 
+                              "$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_t>0.8S_{MSY}} {t_2-t_1+1}$", 
+                              "$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_tC_t} {t_2-t_1+1}$", 
+                              "$\\cfrac{1}{\\tfrac{\\sigma_C}{\\mu_C}}$", 
+                              "$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}C_t>C_{top}} {t_2-t_1+1}$"))
+df|>
+   mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
+   mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
+   mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
+  csasdown::csas_table(caption = "(ref:tab-perf-metrics-descriptions)",
+                     format = "latex",
                      landscape = FALSE,
-                     font_size = 7,
-                     repeat_header = TRUE)
+                     repeat_header = TRUE, 
+                     align = "llc")|>
+  kableExtra::column_spec(2, width = "8cm")
 ```
 
 (ref:tab-priors) Prior probability distributions for parameters. ***Note - unsure how to provide hyperlink to reference for transformation of Smax prior***.
