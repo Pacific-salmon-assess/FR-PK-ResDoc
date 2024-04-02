@@ -85,7 +85,7 @@ rec_prop <- data |>
          ER = (harvest/rec)*100)
 
 # FIGS & TABLES --------------------------------------------------------------------------
-theme_set(theme_bw())
+theme_set(theme_bw(base_size = 14))
 
 #wrapper function to set dims before saving, so things scale proper each time
   #ASSUMED this is the correct scaling based on index.Rmd
@@ -271,7 +271,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
            label = "italic(S[gen])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "return year", y = "escapement") +
+  labs(x = "Return year", y = "Escapement") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
   theme(legend.position = "bottom")
@@ -291,7 +291,7 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
            label = "catch index") +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "return year", y = "catch (M)") +
+  labs(x = "Return year", y = "Catch (M)") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
   theme(legend.position = "bottom")
@@ -321,7 +321,7 @@ ggplot(data = fwd.sim) +
            label = "italic(U[MSY])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks()) +
   #coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "harvest rate") +
+  labs(x = "Return year", y = "Harvest rate") +
   scale_fill_viridis_d(name = "HCR",
                        breaks = c("current", "alt", "WSP"),
                        labels = c("current", "alternate", "WSP")) +

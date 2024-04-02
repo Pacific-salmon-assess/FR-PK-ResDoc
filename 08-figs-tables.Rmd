@@ -1,6 +1,6 @@
 # FIGURES  
 
-(ref:fig-catch-esc) Spawning escapement and catch from 1957 to present. Resulting exploitatin rate is show in red on secondary y-axis.
+(ref:fig-catch-esc) Spawning escapement and catch from 1959 to present. Resulting exploitation rate is show in red on secondary y-axis.
 ```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
 knitr::include_graphics(here::here("figure/catch-esc.png"))
 ```
@@ -15,7 +15,7 @@ knitr::include_graphics(here::here("figure/map.png"))
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
 
-(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest ra80 to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limte ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest ra80 to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
