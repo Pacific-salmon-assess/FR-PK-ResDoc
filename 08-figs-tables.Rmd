@@ -5,12 +5,12 @@
 knitr::include_graphics(here::here("figure/catch-esc.png"))
 ```
 
-(ref:fig-map) Fraser River Basin, extent of Pink salmon spawning distribution (red), and approximate locations of the Mission hydroacoustics site, Hell's Gate and Big Bar. Map adapted from [@grantFraserRiverPink2014].  
+(ref:fig-map) Fraser River Basin, extent of Pink salmon spawning distribution (red), and approximate locations of the Mission hydroacoustics site, Hells Gate and Big Bar. Map adapted from [@grantFraserRiverPink2014].  
 ```{r fig-map, fig.cap = "(ref:fig-map)"}
 knitr::include_graphics(here::here("figure/map.png"))
 ```
 
-(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks over time and total returns of Pink salmon across the North Pacific, 1925-present. Body mass data were taken from @pacificsalmoncommissionPSCBiologicalData2023 and time series of North Pacific wide pink salmon abundance are from [@ruggeroneNumbersBiomassNatural2018] and updated through present.  
+(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks over time and total returns of Pink salmon across the North Pacific, 1925-present. Body mass data were taken from @pacificsalmoncommissionPSCBiologicalData2023 and time series of North Pacific wide Pink salmon abundance are from [@ruggeroneNumbersBiomassNatural2018] and updated through present.  
 ```{r fig-avg-mass, fig.cap = "(ref:fig-avg-mass)"}
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
@@ -85,23 +85,44 @@ df|>
    mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
   csasdown::csas_table(caption = "(ref:tab-perf-metrics-descriptions)",
                      format = "latex",
-                     landscape = FALSE,
                      repeat_header = TRUE, 
                      align = "llc")|>
   kableExtra::column_spec(2, width = "8cm")
 ```
 
-(ref:tab-priors) Prior probability distributions for parameters. ***Note - unsure how to provide hyperlink to reference for transformation of Smax prior***.
+(ref:tab-priors) Prior probability distributions for parameters.
 
 ```{r tab-priors, results = "asis"}
-priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
+if(TRUE){
+  priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
 
 csasdown::csas_table(priors,
-                     escape = TRUE, 
-                     caption = "(ref:tab-priors)")
+       #              escape = TRUE,
+                     #format = "latex",
+                     caption = "(ref:tab-priors)") |>
+    kableExtra::column_spec(4, width = "2cm") #doesn't get smaller - wtf
+}
+
+if(FALSE){
+    priors2 <- read.csv(here("analysis/data/raw/Table_priors2.csv"))
+    
+    priors2 |>
+   mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
+   mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
+   mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
+      csasdown::csas_table(format = "latex",
+                     caption = "(ref:tab-priors)", 
+                     repeat_header = TRUE) |>
+    kableExtra::column_spec(4, width = "5cm")
+
+    #\\\\sim N(ln(1/S_{MAX}) - 0.5\\\\sigma_{S_{MAX}}^2, \\\\sqrt{ln(1+ \\\\cfrac{(\\\\cfrac{1}{\\\\sigma S_{MAX}})^2}{(\\\\cfrac{1}{S_{MAX}})^2}})) #to debug Smax prior
+}
+
+#ugh write it all out as above?
+
 ```
 
-(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size ($n_{eff}$) and potential scale reduction factor ($\hat{R}$)for parameters estimated by the model.
+(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size ($N_{eff}$) and potential scale reduction factor ($\hat{R}$)for parameters estimated by the model.
 
 ```{r tab-bench-parms, results = "asis"}
 csasdown::csas_table(bench.par.table,
@@ -120,10 +141,8 @@ colnames(perf.metrics) <- c("HCR", "Scenario", "% below $S_{gen}$", "% above $S_
                             "Median annual catch", "Catch stability (1/CV)", "catch index")
 csasdown::csas_table(perf.metrics,
            caption = "(ref:tab-HCR-performance)",
-           format = "pandoc",
-           landscape = FALSE,
-           font_size = 7,
            repeat_header = TRUE, 
-           align = "llccccc")
+           align = "llccccc") |>
+  kableExtra::column_spec(c(2,3,4), width = "1cm")
 ```
 
