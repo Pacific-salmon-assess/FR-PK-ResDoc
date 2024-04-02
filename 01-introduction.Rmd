@@ -8,17 +8,15 @@ The Fraser River is a large free-flowing river that is 1375 km long and drains 2
 The basin has a wide diversity of habitats that have been divided into several distinct regions including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008]. 
 The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. The environmental complexity of the Fraser River, and the diversity of the salmon populations within it, has underpinned indigenous food security for millennia [@nesbittSpeciesPopulationDiversity2016] and likely contributed to the resilience of salmon populations to environmental disturbances through time. 
 
-
 Fraser River Pink salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. 
-Currently, the largest aggregate of Pink Salmon spawns in the Lower Fraser watershed.
-However, prior to the slide at Hells Gate, Fraser River Pink salmon spawned at greater abundances in the Upper Fraser watershed with significant populations in the Thompson and Seton systems [@pessInfluencePopulationDynamics2012]. 
+Currently, the largest aggregate of Pink Salmon spawns in the lower Fraser watershed.
+However, prior to the slide at Hells Gate, Fraser River Pink salmon spawned at greater abundances in the upper Fraser watershed with significant populations in the Thompson and Seton systems [@pessInfluencePopulationDynamics2012]. 
 Pink salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from mid-August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
 This obligate 2 year life cycle exhibited by Pink salmon results in even and odd year cohorts that are reproductively isolated from each other and density-dependent interactions between odd and even lineages likely often contributes to one cycle line being numerically dominant over the other [@krkosek2011cycles]. The even year Pink return to the Fraser is negligible and not assessed.    
 
-
 Fraser River Pink salmon migrate to the Fraser River estuary shortly after emergence and spend several months feeding in the Strait of Georgia before migrating as far north as the Gulf of Alaska where they reside for approximately one year [@dfoFraserRiverSalmon1998]. 
-When Fraser Pinks return to the Fraser from the North Pacific, a portion of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
-This diversion rate is increasingly dominated by Pink salmon trueninf via the northern migration route, which affects the accuracy of run size estimates [@hagueMovingTargetsAssessing2021] as a result of differential encounters with test fisheries. 
+When Fraser Pinks return to the Fraser River from the North Pacific, a portion of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
+This diversion rate is increasingly dominated by Pink salmon taking the northern migration route, which affects the accuracy of run size estimates [@hagueMovingTargetsAssessing2021] as a result of differential encounters with test fisheries. 
 Changes in diversion rate could also have implications for survival via encounters with prey, predators, pathogens, and co-occurring species as a result of differing densities of fish farms on either side of Vancouver Island [@grantSummaryFraserRiver2018]. 
 
 
@@ -52,7 +50,7 @@ The new FSP requirements necessitate a careful re-examination of population dyna
 
 ## OBJECTIVES  
 
-As the Fraser Pink Salmon Stock Management Unit (SMU) is comprised of a single Conservation Unit, we use DFO’s Wild Salmon Policy benchmarks, which should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009], to identify candidate FSP reference points. 
+As the Fraser Pink salmon Stock Management Unit (SMU) is comprised of a single Conservation Unit, we use DFO’s Wild Salmon Policy benchmarks, which should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009], to identify candidate FSP reference points. 
 
 The objectives of this working paper are to:  
 

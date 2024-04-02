@@ -52,7 +52,7 @@ Lastly, should Fisheries Management consider changes to the existing HCR and/or 
 
 ## AREAS OF POTENTIAL FUTURE WORK  
 
-- *Develop a Fraser Pink salmon lifecycle model.* Out migrating Fraser Pink fry abundance has been enumerated near Mission since 1984 
+- *Develop a Fraser Pink salmon life cycle model.* Out migrating Fraser Pink fry abundance has been enumerated near Mission since 1984 
 Development of a life cycle model that partitions freshwater and marine dynamics, and explicitly accounts for changing reproductive potential (due to declines in body size), would enable more explicit consideration of ecosystem and climate drivers of stock dynamics and enable them to be accounted for when estimating benchmarks and assessing stock status. 
 When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance.     
 

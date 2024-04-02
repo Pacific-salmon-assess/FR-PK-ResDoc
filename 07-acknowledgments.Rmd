@@ -1,4 +1,5 @@
-#  ACKNOLEDGEMENTS    
+#  ACKNOWLEDGEMENTS    
 
 We are thankful for the numerous technicians and biologists that have collected data on Fraser River Pinks for over 60 years. 
-Matt Townsend, Sue Grant, Steve Latham, Catherine Michielsens, Merran Hague, Adam Keizer and Mike Hawkshaw provided helpful background context and feedback on an earlier version of this document.
+Matt Townsend, Sue Grant, Steve Latham, Catherine Michielsens, Merran Hague, Adam Keizer and Mike Hawkshaw provided helpful background context and feedback on an earlier version of this document. 
+We thank Teri Tarita for help accessing historical documentation on the rationale for the current escapement goals and wish her a happy retirement.  

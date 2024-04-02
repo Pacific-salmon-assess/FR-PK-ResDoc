@@ -1,7 +1,7 @@
 library(tidyverse)
 library(here)
 library(gsl)
-library(patchwork)
+#library(patchwork)
 library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
 source(here("analysis/R/fwd-sim.R"))

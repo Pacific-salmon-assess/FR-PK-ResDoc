@@ -1,7 +1,7 @@
 library(tidyverse)
 library(rstan)
 library(here)
-library(bayesplot)
+#library(bayesplot)
 set.seed(123)
 # load data ------------------------------------------------------------------------------
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv"))
