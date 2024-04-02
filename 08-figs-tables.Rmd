@@ -95,7 +95,7 @@ csasdown::csas_table(priors,
                      caption = "(ref:tab-priors)")
 ```
 
-(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size (neff) and potential scale reduction factor (R-hat) for parameters estimated by the model.
+(ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size ($n_{eff}$) and potential scale reduction factor ($\hat{R}$)for parameters estimated by the model.
 
 ```{r tab-bench-parms, results = "asis"}
 csasdown::csas_table(bench.par.table,
