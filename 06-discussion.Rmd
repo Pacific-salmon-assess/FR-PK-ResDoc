@@ -6,8 +6,8 @@ In this working paper we briefly review our current understanding of Fraser Rive
 We then fit a state-space spawner-recruitment model to available to data to characterize stock dynamics, and derive estimates of biological benchmarks to assess stock status. 
 Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and an illustrative alternative harvest control rule.  
 
-Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hell’s Gate). 
-Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hell’s Gate in 1914 and more recently the Big Bar Landslide in 2019. 
+Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hells Gate). 
+Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide in 2019. 
 Fraser Pink salmon survival is associated with sea-surface temperatures during early marine life, spring bloom timing and the North Pacific Current, all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. 
 Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size.  
 
@@ -57,7 +57,7 @@ Development of a life cycle model that partitions freshwater and marine dynamics
 When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance.     
 
 -	*Evaluate evidence for, and consequences of, non-stationarity in stock dynamics.* 
-In light of recolonization of spawning habitat following the Hell's Gate slide, and potential for declines in marine survival, evidence for non-stationarity in productivity and carrying capacity could be evaluated using models that allow either productivity or carrying capacity to vary over time as a random walk or regime shift(s). 
+In light of recolonization of spawning habitat following the Hells Gate slide, and potential for declines in marine survival, evidence for non-stationarity in productivity and carrying capacity could be evaluated using models that allow either productivity or carrying capacity to vary over time as a random walk or regime shift(s). 
 If there is evidence of time varying spawner-recruitment dynamics, then the closed loop simulation framework we have developed could be used to explore their implications for characterization of stock status and evaluation of HCR performance.
 
 -	*Improve understanding of changes in spatial distribution of adult spawners.* 
