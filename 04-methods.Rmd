@@ -146,7 +146,7 @@ In addition to evaluating the current HCR we also considered an illustrative alt
 Under this alternative (“PA alternate”) HCR the lower operational control point (OCP) is set to our median estimate of $S_{gen}$ below which the target harvest rate is zero, and an upper OCP is set to run-size associated with our median estimate of 80% $S_{MSY}$ where the maximum target harvest rate (removal reference) is set to our median estimate of $U_{MSY}$. 
 At run-sizes between the lower and upper OCPs the target harvest rate was linearly interpolated. 
 An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic from a practical management implementaion perspective. 
-To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye (***Pestal et al. 2012***).  
+To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye [@pestalUpdatedMethodsAssessing2012].  
 
 
 ### PERFORMANCE MEASURES  
