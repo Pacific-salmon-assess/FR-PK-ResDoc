@@ -187,7 +187,7 @@ ind.sims <- NULL
 
 for(i in 1:2){
   sub <- fwd.states[,,,i] #subset 1st or 2nd HCR
-  for(j in 1:3){
+  for(j in 1:2){
     k <- sample(n.sims, 1, replace = TRUE)
     single.sim <- t(sub[k,,]) |>
       as.data.frame() |>

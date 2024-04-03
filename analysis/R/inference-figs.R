@@ -250,14 +250,14 @@ d_end <- 2023
 #spawners---
 p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR, color = HCR),
-              alpha=0.2, lty = 2) +
+  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR),alpha=0.2) +
   #draw the exsiting data
-  geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
+            lwd = 1.2) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
-  geom_line(aes(x = year, y = S, color = HCR), lwd = 1.5) +
+  geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = spawners, lty = sim, color = HCR)) +
   annotate("text", x = 2020, y = benchmarks[1,1]+.4,
            label = expression(italic(paste("80%",S)[MSY]))) +
@@ -276,13 +276,13 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
 #catch ---
 p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = HCR, color = HCR),
-              lty = 2, alpha=0.2) +
+  geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = HCR), alpha=0.2) +
   #draw the exsiting data
-  geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
+  geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
+            lwd = 1.2) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  geom_line(aes(x = year, y = C, color = HCR), lwd = 1.5) +
+  geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = d_start + 4, y = rel.catch.index+.2,
