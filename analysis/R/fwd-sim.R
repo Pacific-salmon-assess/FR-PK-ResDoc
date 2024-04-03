@@ -86,6 +86,9 @@ bench.par.table <- bind_rows(as.data.frame(benchmarks), par.summary) |>
 bench.par.table <- bench.par.table |>
   replace(is.na(bench.par.table), "")
 
+rownames(bench.par.table) <- c("80% $S_{MSY}$", "$S_{gen}$", "$U_{MSY}$", "$S_{eq}$",
+                               "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
+
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit
 sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
@@ -177,7 +180,25 @@ for(i in 1:length(HCRs)){
     }
   }
 }
-#t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
+t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
+
+# pull some individual sims for plotting...
+ind.sims <- NULL
+
+for(i in 1:2){
+  sub <- fwd.states[,,,i] #subset 1st or 2nd HCR
+  for(j in 1:3){
+    k <- sample(n.sims, 1, replace = TRUE)
+    single.sim <- t(sub[k,,]) |>
+      as.data.frame() |>
+      select(2,3) |>
+      mutate(year = seq(max(data$year), max(data$year)+((sim.gens-1)*2), by = 2),
+             HCR = HCRs[i],
+             sim = as.factor(j))
+    ind.sims <- rbind(ind.sims, single.sim)
+  }
+}
+colnames(ind.sims)[1:2] <- c("spawners", "catch")
 
 #wrangle fwd.sim into summary array of [yr, states(+CIs), HCR] for plotting...
 fwd.sim <- NULL

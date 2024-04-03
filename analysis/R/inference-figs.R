@@ -1,7 +1,6 @@
 library(tidyverse)
 library(here)
 library(gsl)
-#library(patchwork)
 library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
 source(here("analysis/R/fwd-sim.R"))
@@ -14,11 +13,6 @@ avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.cs
 colnames(avg_mass) <- c("year", "avg.weight", "reference")
 
 compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.csv"))
-
-#bench.par.table <- round(bench.par.table, 2) |>
-#  as.data.frame()
-rownames(bench.par.table) <- c("80% $S_{MSY}$", "$S_{gen}$", "$U_{MSY}$", "$S_{eq}$",
-                               "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -263,7 +257,8 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
-  geom_line(aes(x = year, y = S, color = HCR), lwd = 1) +
+  geom_line(aes(x = year, y = S, color = HCR), lwd = 1.5) +
+  geom_line(data = ind.sims, aes(x = year, y = spawners, lty = sim, color = HCR)) +
   annotate("text", x = 2020, y = benchmarks[1,1]+.4,
            label = expression(italic(paste("80%",S)[MSY]))) +
   geom_hline(yintercept = benchmarks[2,1]) +
@@ -274,7 +269,9 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   labs(x = "Return year", y = "Escapement") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  theme(legend.position = "bottom")
+  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+  theme(legend.position = "bottom") +
+  guides(lty = "none")
 
 #catch ---
 p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
@@ -285,7 +282,8 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  geom_line(aes(x = year, y = C, color = HCR), lwd = 1, lty = 1) +
+  geom_line(aes(x = year, y = C, color = HCR), lwd = 1.5) +
+  geom_line(data = ind.sims, aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = d_start + 4, y = rel.catch.index+.2,
            label = "catch index") +
@@ -294,7 +292,9 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   labs(x = "Return year", y = "Catch (M)") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  theme(legend.position = "bottom")
+  scale_linetype_manual(values=c(1,1,1,1)) +
+  theme(legend.position = "bottom") +
+  guides(lty = "none")
 
 p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
 p
