@@ -1,6 +1,6 @@
 Parameter,Prior,Bounds,Description
 $ln(\alpha)$,"$\sim N(1,2)$","$[0,\inf]$",Natural log of intrinsic rate of growth
-$ln(\beta)$,"$\sim N\Big(ln(1/S_{MAX}) - 0.5\sigma_{S_{MAX}}^2, \sqrt{ln(1+ \cfrac{(\cfrac{1}{\sigma S_{MAX}})^2}{(\cfrac{1}{S_{MAX}})^2}})\Bigr)$",,"Magnitude of within brood-year density-dependence, where $S_{MAX}$ is the maximum spawner abundance times 0.75."
+$ln(\beta)$,"$\sim N\bigg(ln(1/S_{MAX}) - 0.5\sigma_{S_{MAX}}^2, \sqrt{ln(1+ \cfrac{(\cfrac{1}{\sigma S_{MAX}})^2}{(\cfrac{1}{S_{MAX}})^2}})\biggr)$",,"Magnitude of within brood-year density-dependence, where $S_{MAX}$ is the maximum spawner abundance times 0.75."
 $\phi$,"$\sim U(-1,1)$","$[-1,1]$",Lag-one correlation in interannual variation in survival
 $\sigma_R$,"$\sim N(1,2)$","$[0,\inf]$",White noise process standard deviation in survival.
 $ln(R_0)$,"$\sim N(0,20)$","$[0,\inf]$",Natural log of unobserved recruitment in the first seven years of process model.
