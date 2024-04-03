@@ -300,8 +300,6 @@ p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
 p
 my.ggsave(here("figure/fwd-SC.png"))
 
-
-
 # APPENDIX FIGS? -------------------------------------------------------------------------
 if(FALSE){
 #and fwd sim harvest rate
