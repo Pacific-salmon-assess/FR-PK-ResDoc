@@ -106,10 +106,10 @@ U_{MSY} = 1 - W(e^{-ln(\alpha)})
 \label{eq:get-Umsy}
 \end{equation}
 
-and $S_{GEN}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009], which we considered the Limit Reference Point, was solved numerically according to: 
+and $S_{gen}$, the spawner abundance expected to result in the stock rebuilding to $S_{MSY}$ in one generation in the absence of fishing [@holtEvaluationBenchmarksConservation2009], which we considered the Limit Reference Point, was solved numerically according to: 
 
 \begin{equation}
-S_{MSY} = S_{GEN}\alpha e^{-\beta S_{GEN}}
+S_{MSY} = S_{gen}\alpha e^{-\beta S_{gen}}
 \label{eq:get-Sgen}
 \end{equation}
 
