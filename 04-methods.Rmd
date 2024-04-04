@@ -70,7 +70,7 @@ S_y = N_y (1 - U_y)
 
 ### OBSERVATION MODEL  
 
-We assumed that observation error in spawning abundance varied among assessment regimes, *r* (Table \@ref(tab:tab-spawner-est-methods)) and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:  
+We assumed that observation error in spawning abundance varied among assessment regimes, $r$ (Table \@ref(tab:tab-spawner-est-methods)) and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:  
 
 \begin{equation}
 \sigma^2_{r,y} = \ln\left(\mathrm{CV}_y^2 + 1\right)
@@ -145,7 +145,7 @@ We assumed this outcome uncertainty was normally distributed around the target c
 In addition to evaluating the current HCR we also considered an illustrative alternative that is compliant with Fisheries and Oceans Canada's Precautionary Approach Framework [@dfoFisheryDecisionmakingFramework2009] (Figure \@ref(fig:fig-HCRs)). 
 Under this alternative (“PA alternate”) HCR the lower operational control point (OCP) is set to our median estimate of $S_{gen}$ below which the target harvest rate is zero, and an upper OCP is set to run-size associated with our median estimate of 80% $S_{MSY}$ where the maximum target harvest rate (removal reference) is set to our median estimate of $U_{MSY}$. 
 At run-sizes between the lower and upper OCPs the target harvest rate was linearly interpolated. 
-An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic from a practical management implementaion perspective. 
+An unintended consequence of this alternative is that the associated target escapement declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic from a practical management implementation perspective. 
 To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye [@pestalUpdatedMethodsAssessing2012].  
 
 
@@ -165,4 +165,4 @@ The first robustness test assumed future intrinsic productivity of the Fraser Pi
 To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of parameters associated with the lower tenth percentile of the posterior distribution for the productivity parameter ($\alpha$).  
 
 The second robustness test assumed that Fraser Pink population characteristics are best described by observations of harvest and spawner abundance since 1993 instead of 1957. This cutoff was chosen because of uncertainty in the representativeness of the earlier observations due to the large changes in assessment programs over time (Table \@ref(tab:tab-spawner-est-methods)) and previous work that has cautioned against their use in spawner-recruitment analyses [@grantFraserRiverPink2014]. 
-For this robustness test we conditioned our biological sub-model using joint posterior samples from a fit of the spawner-recruitment model to this truncated (post 1993) dataset. 
+For this robustness test we conditioned our biological sub-model using joint posterior samples from a fit of the spawner-recruitment model to this truncated (1993-present) dataset. 
