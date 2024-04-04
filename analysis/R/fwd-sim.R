@@ -255,15 +255,15 @@ for(i in 1:length(HCRs)){
     map_dbl(\(x) median(Cs[x,])) |>
     quantile(probs = c(.1, .5, .9)) |>
     round(2)
-  catch <- as.character(paste0(catch[2], " (",catch[1], "-", catch[3], ")"))
+  catch <- as.character(paste0(catch[2], " (", catch[1], "-", catch[3], ")"))
 
   catch.stability <- 1:nrow(Cs) |>
     map_dbl(\(x) median(Cs[x,])/sd(Cs[x,])) |>
     quantile(probs = c(.1, .5, .9), na.rm=T) |> #no NAs, but breaks without na.rm=T, maybe because many 0's?
     round(2)
 
-  catch.stability <- as.character(paste0(catch.stability[2], " (",catch.stability[1],
-                                         "-", catch.stability[3], ")"))
+  catch.stability <- as.character(paste0(catch.stability[2], " (", catch.stability[1], "-",
+                                          catch.stability[3], ")"))
 
   catch.index <- length(which(Cs > rel.catch.index))/length(Cs)*100 |> #total points that go above index
     round(2)
@@ -277,9 +277,10 @@ for(i in 1:length(HCRs)){
 
 perf.metrics <- perf.metrics |>
   mutate(scenario = case_when(grepl("low", HCR) ~ "low productivity",
-                              grepl("recent", HCR) ~ "recent, baseline",
+                              grepl("recent", HCR) ~ "recent baseline",
                               TRUE ~ "baseline"),
          HCR = gsub("low_a_|recent_", "", HCR)) |>
+  mutate(HCR = ifelse(HCR == "PA_alt", "PA alternate", HCR)) |>
   pivot_wider(names_from = metric, values_from = value)
 
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
