@@ -25,7 +25,7 @@ knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
-(ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 95% credible interval while the thick black line is the expected relationship.
+(ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
 ```
@@ -35,12 +35,12 @@ knitr::include_graphics(here::here("figure/SRR.png"))
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
-(ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 95% credible intervals are included for the last year of assessment. 
+(ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 80% credible intervals are included for the last year of assessment. 
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
 knitr::include_graphics(here::here("figure/kobe.png"))
 ```
 
-(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch are included for reference. Shaded polygons and dashed lines are 50% credible intervals. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
+(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch are included for reference. Shaded polygons and dashed lines are 80% credible intervals. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```
@@ -98,56 +98,31 @@ df|>
 (ref:tab-priors) Prior probability distributions for parameters.
 
 ```{r tab-priors, results = "asis"}
-if(FALSE){
-  priors <- read.csv(here("analysis/data/raw/Table_priors.csv"))
-
-csasdown::csas_table(priors,
-                     #format = "latex",
-                     caption = "(ref:tab-priors)") |>
-    kableExtra::column_spec(4, width = "2cm") #doesn't get smaller - wtf
-}
-
-if(FALSE){
-    priors2 <- read.csv(here("analysis/data/raw/Table_priors2.csv"))
-    
-    priors2 |>
-   mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
-   mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
-   mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
-      csasdown::csas_table(format = "latex",
-                     caption = "(ref:tab-priors)", 
-                     repeat_header = TRUE) |>
-    kableExtra::column_spec(4, width = "5cm")
-
-    #\\\\sim N(ln(1/S_{MAX}) - 0.5\\\\sigma_{S_{MAX}}^2, \\\\sqrt{ln(1+ \\\\cfrac{(\\\\cfrac{1}{\\\\sigma S_{MAX}})^2}{(\\\\cfrac{1}{S_{MAX}})^2}})) #to debug Smax prior
-}
-if(TRUE){
-#ugh write it all out as above?
-priors.df <- data.frame(#Parameter = c("$ln(\\alpha)$", 
-                        #              "$ln(\\beta)$", 
-                        #              "$\\phi$", 
-                        #              "$\\sigma_R$", 
-                        #              "$ln(R_0)$", 
-                        #              "$\\sigma_{R_0}$"), 
+priors.df <- data.frame(Parameter = c("$ln(\\alpha)$", 
+                                      "$ln(\\beta)$", 
+                                      "$\\phi$", 
+                                      "$\\sigma_R$", 
+                                      "$ln(R_0)$", 
+                                      "$\\sigma_{R_0}$"), 
                         Prior = c("$\\sim N(1,2)$", 
-                                  "$\\sim N\\bigg(ln(1/S_{MAX}) - 0.5\\sigma_{S_{MAX}}^2, \\sqrt{ln(1+ \\cfrac{(\\cfrac{1}{\\sigma S_{MAX}})^2}{(\\cfrac{1}{S_{MAX}})^2}})\\biggr)$", 
+                                  "$\\sim N\\bigg(ln(1/S_{MAX}) - 0.5\\sigma_{S_{MAX}}^2, 
+                                  \\sqrt{ln(1+ \\cfrac{(\\cfrac{1}{\\sigma S_{MAX}})^2}{(\\cfrac{1}{S_{MAX}})^2}})\\biggr)$", 
                                   "$\\sim U(-1,1)$", 
                                   "$\\sim N(1,2)$", 
                                   "$\\sim N(0,20)$", 
-                                  "$\\sim Inv-Gamma(2,1)$"))
-                        #Bounds= c("$[0,\\inf]$",
-                        #          "free", 
-                        #          "$[-1,1]$", 
-                        #          "$[0,\\inf]$",
-                        #          "[0,\\inf]$", 
-                        #          "$[0,\\inf]$")#, turned off to isolate problem
-                        #Description = c("Natural log of intrinsic rate of growth.",
-#"Magnitude of within brood-year density-dependence, where $S_{MAX}$ is the maximum spawner abundance times 0.75.",
-#"Lag-one correlation in interannual variation in survival.", 
-#"White noise process standard deviation in survival.", 
-#"Natural log of unobserved recruitment in the first year of process model.",
-#"Standard deviation in unobserved recruitment in the first year of process model." )
-)
+                                  "$\\sim Inv-Gamma(2,1)$"),
+                        Bounds= c("$[0,\\inf]$",
+                                  "free", 
+                                  "$[-1,1]$", 
+                                  "$[0,\\inf]$",
+                                  "$[0,\\inf]$", 
+                                  "$[0,\\inf]$"),
+                        Description = c("Natural log of intrinsic rate of growth.",
+"Magnitude of within brood-year density-dependence, where $S_{MAX}$ is the maximum spawner abundance times 0.75.",
+"Lag-one correlation in interannual variation in survival.", 
+"White noise process standard deviation in survival.", 
+"Natural log of unobserved recruitment in the first year of process model.",
+"Standard deviation in unobserved recruitment in the first year of process model." ))
 
 priors.df |>
    mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
@@ -155,10 +130,9 @@ priors.df |>
    mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
   csasdown::csas_table(format = "latex",
                      caption = "(ref:tab-priors)", 
-                     repeat_header = TRUE)# |>
-    #kableExtra::column_spec(2, width = "5cm") #off to isolate problem
-}
-
+                     repeat_header = TRUE) |>
+    kableExtra::column_spec(4, width = "5cm") |>
+    kableExtra::column_spec(2, width = "7cm")
 ```
 
 (ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size ($N_{eff}$) and potential scale reduction factor ($\hat{R}$)for parameters estimated by the model.
@@ -166,24 +140,22 @@ priors.df |>
 ```{r tab-bench-parms, results = "asis"}
 csasdown::csas_table(bench.par.table,
            caption = "(ref:tab-bench-parms)",
-           format = "pandoc",
-           landscape = FALSE,
            font_size = 7,
-           repeat_header = TRUE, 
            align = "lccc")
 ```
 
 (ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
 
 ```{r tab-HCR-performance, results = "asis"}
-colnames(perf.metrics) <- c("HCR", "Scenario", "% below $S_{gen}$", "% above $S_{MSY}$", 
+colnames(perf.metrics) <- c("HCR", "Scenario", "\\% below $S_{gen}$", "\\% above $S_{MSY}$", 
                             "Median annual catch", "Catch stability (1/CV)", "catch index")
-csasdown::csas_table(perf.metrics,
-           caption = "(ref:tab-HCR-performance)",
-           repeat_header = TRUE, 
-           align = "llccccc") |>
-  kableExtra::column_spec(c(2,3,4), width = "1cm")
-if(FALSE){
+#csasdown::csas_table(perf.metrics,
+#           caption = "(ref:tab-HCR-performance)",
+#           repeat_header = TRUE, 
+#           align = "llccccc") |>
+#  kableExtra::column_spec(c(2,3,4), width = "1cm")
+
+if(TRUE){
   perf.metrics |>  
   mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
    mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
