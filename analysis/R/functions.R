@@ -1,4 +1,4 @@
-quantile_df <- function(x, probs = c(0.025, 0.25, 0.5, 0.75, 0.975)){ #where probs is a vector of percentiles (0-100)
+quantile_df <- function(x, probs = c(.1, 0.5, 0.9)){
   tibble(val = quantile(x, probs, na.rm = TRUE))
 }
 

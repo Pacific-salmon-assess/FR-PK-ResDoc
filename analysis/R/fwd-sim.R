@@ -17,7 +17,7 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
          spawn = round(spawn/1000000, 2),
          ER = harvest/(harvest+spawn))
 
-# get benchmarks
+# get benchmarks & pars ------------------------------------------------------------------
 bench <- matrix(NA,1000,4,
                 dimnames = list(seq(1:1000), c("Sgen","Smsy","Umsy", "Seq")))
 
@@ -25,69 +25,69 @@ for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
   ln_a <- model.pars$ln_alpha[r]
   b <- model.pars$beta[r]
-  bench[i,2] <- get_Smsy(ln_a,b) #Smsy
-  bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #Sgen
-  bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #Umsy
-  bench[i,4] <- ln_a/b #S EQ
-
+  bench[i,2] <- get_Smsy(ln_a,b) #S_MSY
+  bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #S_gen
+  bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #U_MSY
+  bench[i,4] <- ln_a/b #S_eq
 }
 
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
-bench.quant <- apply(bench, 2, quantile, probs=c(0.025,0.5,0.975), na.rm=T)
+bench.quant <- apply(bench, 2, quantile, probs=c(0.1,0.5,0.9), na.rm=T) |>
+  t()
+
+mean <- apply(bench,2,mean, na.rm=T)
+
+benchmarks <- cbind(bench.quant, mean) |>
+  as.data.frame() |>
+  relocate('50%', 1)
 
 if(FALSE){ #some benchmarks to pass Sue for salmon scanner
   bench.quant <- t(apply(bench, 2, quantile, probs=c(0.025,0.05,0.1,0.25,0.5,0.75,0.9,0.95,0.975), na.rm=T))
   rownames(bench.quant) <- c("80% Smsy","Sgen","Umsy")
   mean <- apply(bench, 2, mean, na.rm=T)
   sd <- apply(bench, 2, sd, na.rm=T)
-
   bench.sue <- cbind(bench.quant,mean,sd)
   write.csv(bench.sue, "C:/Users/GLASERD/Desktop/Sues.bench.csv")
 }
 
-benchmarks <- matrix(NA,4,3)
-benchmarks[1,] <- c(bench.quant[2,2],bench.quant[1,2],bench.quant[3,2])
-benchmarks[2,] <- c(bench.quant[2,1],bench.quant[1,1],bench.quant[3,1])
-benchmarks[3,] <- c(bench.quant[2,3],bench.quant[1,3],bench.quant[3,3])
-benchmarks[4,] <- c(bench.quant[2,4],bench.quant[1,4],bench.quant[3,4])
-
-rownames(benchmarks) <- c("80% Smsy","Sgen","Umsy", "Seq")
-colnames(benchmarks) <- c("median","lower 95% CI","upper 95% CI")
-
 #pull some values to use later and in text
-Smsy.8 <- benchmarks[1,1]
-Sgen <- benchmarks[2,1]
+Sgen <- benchmarks[1,1]
+Smsy.8 <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 Seq <- benchmarks[4,1]
-R.Smsy.8 <- benchmarks[1,1]/(1-Umsy) #recruitment @ Smsy to be used as BB USR
+R.Smsy.8 <- Smsy.8/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
-low.ln.a <- quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))], .5)[]
+low.ln.a <- quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))],.5)[]
+alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.1, .5, .9))
+beta.CI <- quantile(model.pars$beta, probs = c(.1, .5, .9))
+phi.CI <- quantile(model.pars$phi, probs = c(.1, .5, .9))
+sigma.CI <- quantile(model.pars$sigma_R_corr, probs = c(.1, .5, .9))
 
-alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.025, .5, .975))
-beta.CI <- quantile(model.pars$beta, probs = c(.025, .5, .975))
-phi.CI <- quantile(model.pars$phi, probs = c(.025, .5, .975))
-sigma.CI <- quantile(model.pars$sigma_R_corr, probs = c(.025, .5, .975))
+par.quants <- rbind(alpha.CI, beta.CI, phi.CI, sigma.CI)
 
 #make big table of bench and pars
 par.summary <- as.data.frame(rstan::summary(stan.fit)$summary) |>
-  select('50%', '2.5%', '97.5%', mean, n_eff, Rhat)
+  select(mean, n_eff, Rhat)
 
 par.summary <- filter(par.summary, row.names(par.summary) %in% c('ln_alpha', 'beta', 'phi', 'sigma_R'))
-par.summary[1,1:4] <- exp(par.summary[1,1:4])
+par.summary[1,1] <- exp(par.summary[1,1])
 
-colnames(par.summary) <- c("median","lower 95% CI","upper 95% CI", "mean", "N_eff", "Rhat")
-bench.par.table <- bind_rows(as.data.frame(benchmarks), par.summary) |>
-  mutate(mean = round(mean, 2),
-         N_eff = round(N_eff, 0),
+pars <- cbind(par.quants, par.summary)
+
+bench.par.table <- bind_rows(benchmarks, pars) |>
+  mutate(n_eff = round(n_eff, 0),
          Rhat = round(Rhat, 4))
 
-bench.par.table <- bench.par.table |>
-  replace(is.na(bench.par.table), "")
+bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
+bench.par.table[is.na(bench.par.table)] <- ""
 
-rownames(bench.par.table) <- c("80% $S_{MSY}$", "$S_{gen}$", "$U_{MSY}$", "$S_{eq}$",
+
+rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
                                "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
+colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "Mean",
+                               "$N_{eff}$", "$\\hat{R}$")
 
 # initialize the sim ---------------------------------------------------------------------
 last.yr <- max(data$year) #final yr of model fit
@@ -180,7 +180,7 @@ for(i in 1:length(HCRs)){
     }
   }
 }
-t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
+#t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
 
 # pull some individual sims for plotting...
 ind.sims <- NULL
@@ -211,7 +211,7 @@ for(i in 1:length(HCRs)){
   for(j in 1:sim.gens){
     sub_sub <- as.data.frame(sub[,,j]) |>
       reframe(across(1:5, quantile_df, .unpack = TRUE)) |> #could use a better fun.?
-      mutate(quant = c("lwr", "lwr_med", "med", "upr_med", "upr")) |>
+      mutate(quant = c("lwr", "med", "upr")) |>
       pivot_wider(values_from = 1:5, names_from = quant) |>
       mutate(HCR = HCRs[i],
              year = as.numeric(yrs[j])) |>
@@ -227,11 +227,9 @@ fwd.sim <- fwd.sim |>
          HCR = gsub("low_a_|recent_", "", HCR)) |>
   relocate(scenario, .after=2)
 
-colnames(fwd.sim) <- c("year", "HCR", "scenario", "R_lwr", "R_mid_lwr", "R", "R_mid_upr",
-                       "R_upr", "S_lwr", "S_mid_lwr", "S", "S_mid_upr", "S_upr", "C_lwr",
-                       "C_mid_lwr", "C", "C_mid_upr", "C_upr", "U_lwr", "U_mid_lwr", "U",
-                       "U_mid_upr", "U_upr", "lnresid_lwr","lnresid_mid_lwr", "lnresid",
-                       "lnresid_mid_upr", "lnresid_upr")
+colnames(fwd.sim) <- c("year", "HCR", "scenario", "R_lwr", "R", "R_upr", "S_lwr",  "S",
+                       "S_upr", "C_lwr", "C", "C_upr", "U_lwr", "U", "U_upr", "lnresid_lwr",
+                       "lnresid", "lnresid_upr")
 
 # summarise performance metrics------------------------------------------------------
 perf.metrics <- NULL
@@ -288,4 +286,4 @@ rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
    ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
-   sub.Sgen, under.Sgen)
+   sub.Sgen, under.Sgen, par.quants, par.summary, pars, single.sim)

@@ -16,8 +16,8 @@ compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.c
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
-spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.025,0.5,0.975))[,1:32]
-rec.quant <- apply(model.pars$R, 2, quantile, probs=c(0.025,0.5,0.975))[,2:33]
+spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.5,0.9))[,1:32]
+rec.quant <- apply(model.pars$R, 2, quantile, probs=c(0.1,0.5,0.9))[,2:33]
 
 brood_t <- as.data.frame(cbind(data$year[1:32],t(spwn.quant), t(rec.quant))) |>
   round(2)
@@ -34,24 +34,24 @@ for(i in 1:max_samples){
   SR_pred[,i] <- (exp(a)*spw*exp(-b*spw))
 }
 
-SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred,c(1),quantile,probs=c(0.025,0.5,0.975),na.rm=T))))|>
+SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred,c(1),quantile,probs=c(0.1,0.5,0.9),na.rm=T))))|>
   round(2)
 colnames(SR_pred) <- c("Spawn", "Rec_lwr","Rec_med","Rec_upr")
 
 #create spawner & esc df --- #should map() these...
-spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))
+spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 spwn_df <- as.data.frame(cbind(data$year, t(spwn.quant)))
 colnames(spwn_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-er.quant <- apply(model.pars$U, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))
+er.quant <- apply(model.pars$U, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 er_df <- as.data.frame(cbind(data$year, t(er.quant)))
 colnames(er_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-R.quant <- apply(model.pars$R, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))
+R.quant <- apply(model.pars$R, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 R_df <- as.data.frame(cbind(data$year, t(R.quant)))
 colnames(R_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-C.quant <- apply(model.pars$C, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))
+C.quant <- apply(model.pars$C, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 C_df <- as.data.frame(cbind(data$year, t(C.quant)))
 colnames(C_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
@@ -224,7 +224,7 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
 ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
 # then residuals---
-resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.025,0.25,0.5,0.75,0.975))[,1:33]
+resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
 
 resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
 colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
@@ -250,7 +250,7 @@ d_end <- 2023
 #spawners---
 p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_ribbon(aes(x = year, ymin = S_mid_lwr, ymax = S_mid_upr, fill = HCR),alpha=0.2) +
+  geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr, fill = HCR),alpha=0.2) +
   #draw the exsiting data
   geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
             lwd = 1.2) +
@@ -269,14 +269,14 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   labs(x = "Return year", y = "Escapement") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+ # scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
 #catch ---
 p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   #draw the fwd.sim
-  geom_ribbon(aes(x = year, ymin = C_mid_lwr, ymax = C_mid_upr, fill = HCR), alpha=0.2) +
+  geom_ribbon(aes(x = year, ymin = C_lwr, ymax = C_upr, fill = HCR), alpha=0.2) +
   #draw the exsiting data
   geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
             lwd = 1.2) +
@@ -292,7 +292,6 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   labs(x = "Return year", y = "Catch (M)") +
   scale_fill_viridis_d(name = "HCR") +
   scale_color_viridis_d(name = "HCR") +
-  scale_linetype_manual(values=c(1,1,1,1)) +
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
@@ -368,7 +367,5 @@ my.ggsave(here("figure/fwd-R.png"))
 #make objs to read into text
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
-
-
 
 rm(p, p1, p2, C_df, C.quant, R_df, R.quant, resid.quant, resids)
