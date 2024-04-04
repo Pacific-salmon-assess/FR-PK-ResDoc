@@ -259,10 +259,10 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = spawners, lty = sim, color = HCR)) +
-  annotate("text", x = 2020, y = benchmarks[1,1]+.4,
+  annotate("text", x = 2021, y = benchmarks[2,1]+.4,
            label = expression(italic(paste("80%",S)[MSY]))) +
   geom_hline(yintercept = benchmarks[2,1]) +
-  annotate("text", x = 2020, y = 2.2,
+  annotate("text", x = 2021, y = 2.2,
            label = "italic(S[gen])", parse = TRUE) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
@@ -285,19 +285,48 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
-  annotate("text", x = d_start + 4, y = rel.catch.index+.2,
+  annotate("text", x = d_start + 4, y = rel.catch.index+.5,
            label = "catch index") +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch (M)") +
-  scale_fill_viridis_d(name = "HCR") +
-  scale_color_viridis_d(name = "HCR") +
+  scale_fill_viridis_d(name = "HCR", option = "D") +
+  scale_color_viridis_d(name = "HCR", option = "D") +
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
 p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
+
 p
 my.ggsave(here("figure/fwd-SC.png"))
+
+#fig for AMH's FSRR
+ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
+  #draw the fwd.sim
+  geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr),alpha=0.2) +
+  #draw the exsiting data
+  geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
+            lwd = 1.2) +
+  geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
+              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+  geom_hline(yintercept = benchmarks[1,1]) +
+  geom_line(aes(x = year, y = S), lwd = 1.2) +
+  geom_line(data = filter(ind.sims, HCR == "current"), aes(x = year, y = spawners, lty = sim)) +
+  annotate("text", x = 2021, y = benchmarks[2,1]+.4,
+           label = expression(italic(paste("80%",S)[MSY]))) +
+  geom_hline(yintercept = benchmarks[2,1]) +
+  annotate("text", x = 2021, y = 2.2,
+           label = "italic(S[gen])", parse = TRUE) +
+  scale_x_continuous(breaks= pretty_breaks(),
+                     expand = expansion(mult = c(0, .01))) +
+  scale_linetype_manual(values=c(2,2)) +
+  labs(x = "Return year", y = "Escapement") +
+  theme(legend.position = "bottom") +
+  guides(lty = "none")
+
+my.ggsave(here("figure/fwd-S.png"))
+
+
 
 # APPENDIX FIGS? -------------------------------------------------------------------------
 if(FALSE){
