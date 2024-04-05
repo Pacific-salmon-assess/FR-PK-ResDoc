@@ -25,7 +25,8 @@ for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
   ln_a <- model.pars$ln_alpha[r]
   b <- model.pars$beta[r]
-  bench[i,2] <- get_Smsy(ln_a,b) #S_MSY
+  a <- exp(ln_a)
+  bench[i,2] <- get_Smsy(ln_a, b) #S_MSY
   bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #S_gen
   bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #U_MSY
   bench[i,4] <- ln_a/b #S_eq
@@ -56,10 +57,13 @@ Smsy.8 <- benchmarks[2,1]
 Umsy <- benchmarks[3,1]
 Seq <- benchmarks[4,1]
 R.Smsy.8 <- Smsy.8/(1-Umsy) #recruitment @ Smsy to be used as BB USR
+
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
-low.ln.a <- quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))],.5)[]
+low.alpha <- exp(quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))],.5)[])
+recent.alpha <- exp(median(model.pars.93$ln_alpha))
+
 alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.1, .5, .9))
 beta.CI <- quantile(model.pars$beta, probs = c(.1, .5, .9))
 phi.CI <- quantile(model.pars$phi, probs = c(.1, .5, .9))
@@ -82,7 +86,6 @@ bench.par.table <- bind_rows(benchmarks, pars) |>
 
 bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
 bench.par.table[is.na(bench.par.table)] <- ""
-
 
 rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
                                "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
@@ -281,8 +284,10 @@ perf.metrics <- perf.metrics |>
                               TRUE ~ "baseline"),
          HCR = gsub("low_a_|recent_", "", HCR)) |>
   mutate(HCR = ifelse(HCR == "PA_alt", "PA alternate", HCR)) |>
-  pivot_wider(names_from = metric, values_from = value)
+  pivot_wider(names_from = metric, values_from = value) |>
+  as.data.frame()
 
+#take the trash out --
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
