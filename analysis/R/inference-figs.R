@@ -355,15 +355,14 @@ esc_ryear <- smudat |>
 ER_ryear <- smudat |>
   ggplot(aes(x = year)) +
   geom_line(aes(y = exp_rate), linewidth = 0.5) +
-  geom_hline(yintercept = Umsy, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for ER cap that may/may not exist for the SMU
+  geom_hline(yintercept = Umsy*100, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for ER cap that may/may not exist for the SMU
   labs(y = "Aggregate Exploitation Rate (ER)", x = "Return Year") +
   theme_classic() +
   theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
 
 recruits_ryear <- smudat |>
   ggplot(aes(x = year)) +
-  geom_line(aes(y = recruits), linewidth = 0.5) +
-         geom_hline(yintercept = Umsy, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for ER cap that may exist for the SMU
+  geom_line(aes(y = recruits), linewidth = 0.5) + 
   labs(y = "Recruitment (millions)", x = "Return Year") +
   theme_classic() +
   theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
