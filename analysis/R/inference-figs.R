@@ -277,7 +277,7 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
            label = "catch index") +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "Return year", y = "Catch (M)") +
+  labs(x = "Return year", y = "Catch") +
   scale_fill_viridis_d(name = "HCR", option = "D") +
   scale_color_viridis_d(name = "HCR", option = "D") +
   theme(legend.position = "bottom") +

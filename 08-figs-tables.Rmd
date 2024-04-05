@@ -40,7 +40,7 @@ knitr::include_graphics(here::here("figure/rec-resid.png"))
 knitr::include_graphics(here::here("figure/kobe.png"))
 ```
 
-(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch are included for reference. Shaded polygons and dashed lines are 80% credible intervals. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
+(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons and dashed lines are 80% credible intervals. Thin lines are 2 randomly selected simulations from each HCR to highlight variability. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```

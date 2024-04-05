@@ -2,7 +2,7 @@
 
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
 
-# REPRODUCIBILITY AND CODE {#app:a}  
+# COMPUTING ENVIRONMENT {#app:a}  
 
 This document aims to be transparent and reproducible. 
 All data and code to reproduce the analysis in the report, and generate it, is available in [this GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc). 
