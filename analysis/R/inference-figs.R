@@ -107,11 +107,18 @@ my.ggsave(here("figure/catch-esc.png"))
 # HCR and realized harvest ---
 p2 <- ggplot(filter(HCRs, HCR=="current")) +
   geom_line(aes(x=run_size, y = ER)) +
+  geom_segment(x = 22, y = .7, xend = 25) +
   geom_point(data = filter(data, year >= 1987),
-             aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year)) +
-  scale_color_viridis_c() +
+             aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
+             size =2) +
+  scale_color_viridis_c(breaks = c(1987, 2023)) +
   labs(x = "run size", y = "target exploitation rate") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        text = element_text(size = 16))
+
+p2
+my.ggsave(here("figure/realized-HCR.png"))
+
 p <- plot_grid(p1, p2, ncol = 1)
 p
 my.ggsave(here("figure/catch-esc-HCR.png"))
