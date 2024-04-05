@@ -1,7 +1,7 @@
 library(tidyverse)
 library(rstan)
 library(here)
-#library(bayesplot)
+library(bayesplot)
 set.seed(123)
 # load data ------------------------------------------------------------------------------
 data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv"))
@@ -26,7 +26,7 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(stan.fit)
-#saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
+saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
@@ -81,7 +81,7 @@ stan.fit.93 <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                            thin = 1,
                            control = list(adapt_delta = 0.99, max_treedepth = 20))
 #shinystan::launch_shinystan(stan.fit)
-#saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
+saveRDS(stan.fit.93, file=here("analysis/data/generated/SS-SR_AR1.stan.fit.93.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
