@@ -3,6 +3,7 @@ library(here)
 library(gsl)
 library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
+library(ggpubr) #for ggarrange on the 4 panel FSRR plot
 source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
@@ -75,10 +76,10 @@ rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
 # INFERENCE ------------------------------------------------------------------------------
 #get DATA (not latent state) of avg run sizes for context/background section
 rec_prop <- data |>
-  mutate(rec = harvest + spawn,
-         ER = (harvest/rec)*100)
+  mutate(recruits = harvest + spawn,
+         ER = (harvest/recruits)*100)
 
-# FIGS & TABLES --------------------------------------------------------------------------
+# FIGS & TABLES FOR RESDOC ---------------------------------------------------------------
 theme_set(theme_bw(base_size = 14))
 
 #wrapper function to set dims before saving, so things scale proper each time
@@ -92,7 +93,7 @@ catch_esc <- data |>
   select(year, harvest, spawn) |>
   pivot_longer(!year, names_to = "type", values_to = "n")
 
-p1 <- ggplot(catch_esc, aes(x = year, y = n)) +
+ggplot(catch_esc, aes(x = year, y = n)) +
   geom_bar(position="stack", stat="identity", aes(fill = type)) +
   geom_line(data = data, aes(x=year, y = ER*30), color = "red", lwd = 1) +   #ADD ER to plot
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
@@ -101,27 +102,7 @@ p1 <- ggplot(catch_esc, aes(x = year, y = n)) +
   labs(x = "Return year",
        y = "Total return (millions of fish)")
 
-p1
 my.ggsave(here("figure/catch-esc.png"))
-
-# HCR and realized harvest ---
-p2 <- ggplot(filter(HCRs, HCR=="current")) +
-  geom_line(aes(x=run_size, y = ER)) +
-  geom_segment(x = 22, y = .7, xend = 25) +
-  geom_point(data = filter(data, year >= 1987),
-             aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
-             size =2) +
-  scale_color_viridis_c(breaks = c(1987, 2023)) +
-  labs(x = "run size", y = "target exploitation rate") +
-  theme(legend.position = "bottom",
-        text = element_text(size = 16))
-
-p2
-my.ggsave(here("figure/realized-HCR.png"))
-
-p <- plot_grid(p1, p2, ncol = 1)
-p
-my.ggsave(here("figure/catch-esc-HCR.png"))
 
 #plot avg mass through time---
 if(FALSE){
@@ -149,7 +130,7 @@ my.ggsave(here("figure/avg-mass.png"))
 
 # plot HCRs ---
 p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
-  geom_line(size=1.1, alpha = 0.7) +
+  geom_line(linewidth=1.1, alpha = 0.7) +
   geom_vline(xintercept = R.Smsy.8) +
   annotate("text", x = R.Smsy.8+1.5, y = .7,
            label = expression(italic(R[paste("80%",S)[MSY]]))) +
@@ -165,7 +146,7 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
         axis.ticks.x=element_blank())
 
 p2 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=esc_goal, color = HCR)) +
-  geom_line(size=1.1, alpha = 0.7) +
+  geom_line(linewidth=1.1, alpha = 0.7) +
   scale_color_viridis_d() +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
@@ -233,7 +214,7 @@ ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 # then residuals---
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
 
-resids <- as.data.frame(cbind(data$year[1:32], t(resid.quant)))
+resids <- as.data.frame(cbind(data$year[1:33], t(resid.quant)))
 colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
 
 ggplot(resids, aes(x=year, y = mid)) +
@@ -307,6 +288,22 @@ p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
 p
 my.ggsave(here("figure/fwd-SC.png"))
 
+
+# Figs for FSRR --------------------------------------------------------------------------
+# HCR and realized harvest ---
+ggplot(filter(HCRs, HCR=="current")) +
+  geom_line(aes(x=run_size, y = ER)) +
+  geom_segment(x = 22, y = .7, xend = 25) +
+  geom_point(data = filter(data, year >= 1987),
+             aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
+             size =2) +
+  scale_color_viridis_c(breaks = c(1987, 2023)) +
+  labs(x = "run size", y = "target exploitation rate") +
+  theme(legend.position = "bottom",
+        text = element_text(size = 16))
+
+my.ggsave(here("figure/realized-HCR.png"))
+
 #fig for AMH's FSRR
 ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
   #draw the fwd.sim
@@ -331,9 +328,49 @@ ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
-my.ggsave(here("figure/fwd-S.png"))
+my.ggsave(here("figure/fwd-S-current-HCR.png"))
 
+# 4 pane plot adapted from John Gray's code ---
+smudat <- rec_prop |>
+  rename(catch = harvest,
+         escapement = spawn,
+         exp_rate = ER)
 
+catch_ryear <- smudat |>
+  ggplot(aes(x = year, y = catch)) +
+  geom_line() +
+  labs(y = "Catch (millions)", x = "") +
+  theme_classic() +
+  theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
+
+esc_ryear <- smudat |>
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = escapement), linewidth = 0.5) +
+         geom_hline(yintercept = R.Smsy.8, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for upper reference points - colour scheme matching ice cream plots
+         geom_hline(yintercept = Sgen, linetype = "dashed", size = 0.8, colour = "#d01c8b") + # A marker for lower reference points - colour scheme matching ice cream plots
+  labs(y = "Spawner \nAbundance (millions)", x = "") +
+  theme_classic() +
+  theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
+
+ER_ryear <- smudat |>
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = exp_rate), linewidth = 0.5) +
+  geom_hline(yintercept = Umsy, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for ER cap that may/may not exist for the SMU
+  labs(y = "Aggregate Exploitation Rate (ER)", x = "Return Year") +
+  theme_classic() +
+  theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
+
+recruits_ryear <- smudat |>
+  ggplot(aes(x = year)) +
+  geom_line(aes(y = recruits), linewidth = 0.5) +
+         geom_hline(yintercept = Umsy, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for ER cap that may exist for the SMU
+  labs(y = "Recruitment (millions)", x = "Return Year") +
+  theme_classic() +
+  theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
+
+ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2, align = "hv", common.legend = TRUE)
+
+my.ggsave(here("figure/4-panel.png"))
 
 # APPENDIX FIGS? -------------------------------------------------------------------------
 if(FALSE){
