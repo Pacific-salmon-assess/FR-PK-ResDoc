@@ -72,9 +72,9 @@ csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",
 (ref:tab-perf-metrics-descriptions) Biological and fishery performance measures used in the closed-loop simulations to assess HCR performance.
 
 ```{r tab-perf-metrics-descriptions, results = "asis"}
-df <- data.frame(Metric = c("% sims < $S_{gen}$", "% sims > $S_{MSY}$", "median annual catch", "catch stability (1/CV)", 
+df <- data.frame(Metric = c("% replicate simulations < LRP", "% replicate simulations > USR", "average annual catch", "catch stability (1/CV)", 
                             "relative catch metric"), 
-                 Description = c("Probability the stock spawner abundance falls below the Limit Reference Point across replicate simulations and years, where n rep is the number of replicate simulations and $t_1$ and $t_2$ are the first and last years over which the metric is calculated ",
+                 Description = c("Probability the stock spawner abundance falls below the Limit Reference Point across replicate simulations and years, where $n$ rep is the number of replicate simulations and $t_1$ and $t_2$ are the first and last years over which the metric is calculated ",
                                  "Probability the stock spawner abundance falls above the Upper Stock Reference Point across replicate simulations and years ",
                                  "Average harvest across replicate simulations and years",
                                  "Stability in average harvest across replicate simulations and years($\\mu_C$), where is $\\sigma_C$ the standard deviation in harvest",
