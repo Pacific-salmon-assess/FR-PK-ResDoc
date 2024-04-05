@@ -346,7 +346,7 @@ catch_ryear <- smudat |>
 esc_ryear <- smudat |>
   ggplot(aes(x = year)) +
   geom_line(aes(y = escapement), linewidth = 0.5) +
-         geom_hline(yintercept = R.Smsy.8, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for upper reference points - colour scheme matching ice cream plots
+         geom_hline(yintercept = Smsy.8, linetype = "dashed", size = 0.8, colour = "#01665e") + # A marker for upper reference points - colour scheme matching ice cream plots
          geom_hline(yintercept = Sgen, linetype = "dashed", size = 0.8, colour = "#d01c8b") + # A marker for lower reference points - colour scheme matching ice cream plots
   labs(y = "Spawner \nAbundance (millions)", x = "") +
   theme_classic() +
