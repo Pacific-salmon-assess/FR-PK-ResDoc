@@ -82,7 +82,7 @@ We assumed that harvest had a 5% CV and so harvest observations were also assume
 
 ### MODEL FITTING AND DIAGNOSTICS  
 
-We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman_no-u-turn_2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
+We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
 In our main model run, we sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ (potential scale reduction factor; @vehtari2021rank) was less than 1.01 and that the effective sample size was greater than 400. Priors were generally uninformative or weakly informative and are summarized in Table \@ref(tab:tab-priors).The one exception was the prior on $\beta$ which was made moderately informative to ensure that the model would converge when fit to both the full time series as well as the truncated time series as part of a robustness test (see section below).
 
 
