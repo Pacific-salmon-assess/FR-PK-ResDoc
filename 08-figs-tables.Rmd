@@ -24,15 +24,14 @@ knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
+(ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is median estimates while shaded bands are 50th and 95th percentiles.
+```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
+knitr::include_graphics(here::here("figure/rec-resid.png"))
+```
 
 (ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
-```
-
-(ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is median estimates while shaded bands are 50th and 95th percentiles.
-```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
-knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
 (ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 80% credible intervals are included for the last year of assessment. 
