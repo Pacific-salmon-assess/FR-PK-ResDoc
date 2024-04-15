@@ -286,7 +286,7 @@ perf.metrics <- perf.metrics |>
   mutate(HCR = ifelse(HCR == "PA_alt", "PA alternate", HCR)) |>
   pivot_wider(names_from = metric, values_from = value) |>
   as.data.frame()
-
+write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"))
 #take the trash out --
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
