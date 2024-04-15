@@ -137,7 +137,7 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
   geom_vline(xintercept = Sgen) +
   annotate("text", x = Sgen+1, y = .7,
            label = "italic(S[gen])", parse = TRUE) +
-  scale_color_viridis_d() +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target ER") +
@@ -147,7 +147,7 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
 
 p2 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  scale_color_viridis_d() +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
@@ -255,9 +255,9 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Escapement") +
-  scale_fill_viridis_d(name = "HCR") +
-  scale_color_viridis_d(name = "HCR") +
- # scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  # scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
@@ -278,8 +278,8 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
-  scale_fill_viridis_d(name = "HCR", option = "D") +
-  scale_color_viridis_d(name = "HCR", option = "D") +
+  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
@@ -362,7 +362,7 @@ ER_ryear <- smudat |>
 
 recruits_ryear <- smudat |>
   ggplot(aes(x = year)) +
-  geom_line(aes(y = recruits), linewidth = 0.5) + 
+  geom_line(aes(y = recruits), linewidth = 0.5) +
   labs(y = "Recruitment (millions)", x = "Return Year") +
   theme_classic() +
   theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
