@@ -142,8 +142,8 @@ options(scipen = 1, digits = 2)
 
 source(here("analysis/R/inference-figs.R")) #grab important objects from analysis
 
-#if you want to re-tidy the bib run this - but beware
-  #recompile doc and make sure everything gets cited though. Kinda dangerzone to run
+#Don't run this. You need to be linked to Dylan's zotero library to get it back. It will 
+  #overwrite the refs.bib file and you'll lose the references!
 if(FALSE){
   library(citr)
   tidy_bib_file(c("01-introduction.Rmd","02-stock-structure-distribution.Rmd","03-ecosystem-climate.Rmd","04-methods.Rmd","05-results.Rmd","06-discussion.Rmd","07-acknowledgments.Rmd"),
