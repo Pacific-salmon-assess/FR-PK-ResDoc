@@ -24,6 +24,7 @@ knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
+
 (ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is median estimates while shaded bands are 50th and 95th percentiles.
 ```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
 knitr::include_graphics(here::here("figure/rec-resid.png"))
