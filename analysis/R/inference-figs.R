@@ -243,22 +243,22 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_line(data = filter(spwn_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
             lwd = 1.2) +
   geom_ribbon(data = filter(spwn_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+              aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = spawners, lty = sim, color = HCR)) +
   annotate("text", x = 2021, y = benchmarks[2,1]+.4,
-           label = expression(italic(paste("80%",S)[MSY]))) +
+           label = expression(italic(paste("80%",S)[MSY])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
   annotate("text", x = 2021, y = 2.2,
-           label = "italic(S[gen])", parse = TRUE) +
+           label = "italic(S[gen])", parse = TRUE, size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Escapement") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  # scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
-  theme(legend.position = "bottom") +
+  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+  theme(legend.position = "none") +
   guides(lty = "none")
 
 #catch ---
@@ -269,24 +269,25 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_line(data = filter(C_df, year >=d_start, year <= d_end), aes(x = year, y = mid),
             lwd = 1.2) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
+              aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
   geom_line(data = ind.sims, aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
-  annotate("text", x = d_start + 4, y = rel.catch.index+.5,
-           label = "catch index") +
+  annotate("text", x = d_start + 4, y = rel.catch.index+1,
+           label = "catch index", size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
-p <- plot_grid(p1, p2) #+ draw_grob(legend) #fix to make a single legend?
+p <- plot_grid(p1, p2, nrow = 2) #+ draw_grob(legend) #fix to make a single legend?
 
 p
-my.ggsave(here("figure/fwd-SC.png"))
+ggsave(here("figure/fwd-SC.png"), width= 9, height = 9, dpi= 180)
 
 
 # Figs for FSRR --------------------------------------------------------------------------
@@ -304,7 +305,7 @@ ggplot(filter(HCRs, HCR=="current")) +
 
 my.ggsave(here("figure/realized-HCR.png"))
 
-#fig for AMH's FSRR
+# fig for AMH's FSRR ---
 ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr),alpha=0.2) +
@@ -367,76 +368,12 @@ recruits_ryear <- smudat |>
   theme_classic() +
   theme(axis.text = element_text(size = 8), axis.title = element_text(size = 9))
 
-ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2, align = "hv", common.legend = TRUE)
+ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2,
+          align = "hv", common.legend = TRUE)
 
 my.ggsave(here("figure/4-panel.png"))
 
-# APPENDIX FIGS? -------------------------------------------------------------------------
-if(FALSE){
-#and fwd sim harvest rate
-ggplot(data = fwd.sim) +
-  #draw the fwd.sim
-  geom_line(aes(x = year, y = U, color = HCR), lwd = 1, lty = 2) +
-  geom_ribbon(aes(x = year, ymin = U_mid_lwr, ymax = U_mid_upr, fill = HCR), alpha=0.2) +
-  #draw the exsiting data
-  geom_line(data = filter(er_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
-  geom_ribbon(data = filter(er_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(data = filter(er_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  #draw the benchmarks
-  geom_hline(yintercept = benchmarks$median[3]) +
-  annotate("text", x = d_start + 0.5, y = 0.55,
-           label = "italic(U[MSY])", parse = TRUE) +
-  scale_x_continuous(breaks= pretty_breaks()) +
-  #coord_cartesian(expand = FALSE) +
-  labs(x = "Return year", y = "Harvest rate") +
-  scale_fill_viridis_d(name = "HCR",
-                       breaks = c("current", "alt", "WSP"),
-                       labels = c("current", "alternate", "WSP")) +
-  scale_color_viridis_d(name = "HCR",
-                        breaks = c("current", "alt", "WSP"),
-                        labels = c("current", "alternate", "WSP")) +
-  facet_grid(prod~.) +
-  theme(legend.position = "bottom")
-
-my.ggsave(here("figure/fwd-U.png"))
-
-#and recruits
-ggplot(data = fwd.sim) +
-  #draw the fwd.sim
-  geom_line(aes(x = year, y = R, color = HCR), lwd = 1, lty = 2) +
-  #geom_ribbon(aes(x = year, ymin = R_lwr, ymax = R_upr,  fill = HCR), alpha = 0.5) +
-  geom_ribbon(aes(x = year, ymin = R_mid_lwr, ymax = R_mid_upr, fill = HCR), alpha=0.2) +
-  #draw the exsiting data
-  geom_line(data = filter(R_df, year >=d_start, year <= d_end), aes(x = year, y = mid)) +
-  geom_ribbon(data = filter(R_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(data = filter(R_df, year >=d_start, year <= d_end),
-              aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
-  #draw the benchmarks
-  #geom_rect(aes(xmin = d_start, xmax = max(fwd.sim$year),
-  #              ymin = benchmarks$`lower 95% CI`[2], ymax = benchmarks$`upper 95% CI`[2]),
-  #          fill = "darkred", alpha = 0.02) +
-  geom_hline(yintercept = benchmarks$median[2], color = "darkred") +
-  annotate("text", x = d_start + 2, y = 4,
-           label = "italic(S[gen])", parse = TRUE, color = "darkred") +
-  scale_x_continuous(breaks= pretty_breaks()) +
-  #coord_cartesian(expand = FALSE) +
-  labs(x = "return year", y = "recruits") +
-  scale_fill_viridis_d(name = "HCR",
-                       breaks = c("current", "alt", "WSP"),
-                       labels = c("current", "alternate", "WSP")) +
-  scale_color_viridis_d(name = "HCR",
-                        breaks = c("current", "alt", "WSP"),
-                        labels = c("current", "alternate", "WSP")) +
-  facet_grid(prod~.) +
-  theme(legend.position = "bottom")
-
-my.ggsave(here("figure/fwd-R.png"))
-}
-
-#make objs to read into text
+# make objs to read into text ------------------------------------------------------------
 model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
 
