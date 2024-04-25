@@ -33,7 +33,7 @@ parameters{
 }
 
 transformed parameters{
-  vector<lower=0>[nyrs] N;              // run size states
+  vector<lower=0>[nyrs] N;              // run size states (vestigial from age structured model)
   vector<lower=0>[nyrs] S;              // spawner states
   vector[nyrs] lnS;                     // log spawner states
   vector<lower=0>[nyrs] C;              // catch states
@@ -51,7 +51,7 @@ transformed parameters{
 
   // Calculate returns, spawners and catch by return year
   for(t in 1:nyrs) {
-    N[t] = R[t];
+    N[t] = R[t]; //sort of redundant leftover from when there's age structure
     S[t] = N[t] * (1 - U[t]);
     lnS[t] = log(S[t]);
     C[t] = N[t] * U[t];
