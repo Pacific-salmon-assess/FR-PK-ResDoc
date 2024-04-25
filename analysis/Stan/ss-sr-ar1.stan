@@ -98,3 +98,7 @@ model{
     S_obs[t] ~ lognormal(lnS[t], sqrt(log((S_cv[t]^2) + 1)));
   }
 }
+
+//could to posterior predicitive check in generated quantities block
+  //if sampling statement is y ~ normal(x, sig), you could generate y_rep = normal_rng(x, sig)
+  // from posteriors
