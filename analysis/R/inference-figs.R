@@ -378,3 +378,26 @@ model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
 model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
 
 rm(p, p1, p2, C_df, C.quant, R_df, R.quant, resid.quant, resids)
+
+# Kalman filter time-varying productivity estimates from point estimates of S and R. 
+
+source(here("analysis/R/kalman-code.R"))
+
+# plot estimate of time varying productivity
+lnRS<- log(brood_t$R_med/brood_t$S_med)
+bt_lnRS  <- cbind(seq(1,length(lnRS)),brood_t$S_med,lnRS)
+colnames(bt_lnRS) <- c("BY", "S", "lnRS") 
+
+kalman_fit <- run.kalman.Ricker(as.data.frame(bt_lnRS)) 
+kalman_fit$df$brood_yr <- brood_t$BroodYear
+
+ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
+  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) + 
+  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
+  xlab("Brood year") +
+  ylab("Intrinsic productivity") +
+  theme(legend.position = "none") +
+  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
+  theme_bw()+
+  coord_cartesian(ylim=c(0,6)) 
+my.ggsave(here("figure/tv-prod.png"))
