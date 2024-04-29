@@ -153,8 +153,8 @@ for(i in 1:length(HCRs)){
     sigma_R_corr <- sub.pars$sigma_R_corr[r]
     phi <- sub.pars$phi[r]
     #estimate draw-specific benchmarks for relative performance measures later
-    sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
-    sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
+    sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8 ##fix to draw from FULL POSTERIOR to analyse against
+    sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8) ##FIX AS ABOVE
     #draw final states from model to start fwd sim from
     R <- sub.pars$R[r, last.yr.ind]
     S <- sub.pars$S[r, last.yr.ind]
