@@ -88,6 +88,10 @@ my.ggsave <- function(filename = default_name(plot), width= 9, height = 5.562, d
   ggsave(filename=filename, width=width, height=height, dpi=dpi)
 }
 
+my.ggsave.long <- function(filename = default_name(plot), width= 11, height = 5.562, dpi= 180){
+  ggsave(filename=filename, width=width, height=height, dpi=dpi)
+}
+
 # plot catch & escapement ---
 catch_esc <- data |>
   select(year, harvest, spawn) |>
@@ -379,7 +383,7 @@ model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
 
 rm(p, p1, p2, C_df, C.quant, R_df, R.quant, resid.quant, resids)
 
-# Kalman filter time-varying productivity estimates from point estimates of S and R. 
+# Kalman filter time-varying productivity estimates from point estimates of S and R ---- 
 
 source(here("analysis/R/kalman-code.R"))
 
@@ -394,10 +398,97 @@ kalman_fit$df$brood_yr <- brood_t$BroodYear
 ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
   geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) + 
   geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
-  xlab("Brood year") +
-  ylab("Intrinsic productivity") +
   theme(legend.position = "none") +
   geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
-  theme_bw()+
+  labs(x = "Brood year",
+       y = "Intrinsic productivity") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  theme(legend.position = "none") +
   coord_cartesian(ylim=c(0,6)) 
 my.ggsave(here("figure/tv-prod.png"))
+
+# plot estimate of time varying productivity with base case productivity
+
+ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
+  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) + 
+  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
+  theme(legend.position = "none") +
+  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
+  geom_hline(yintercept = 3.94, col = "dark green", lwd = 1) + 
+  geom_hline(yintercept = 2.99, col = "dark green", lwd = 1, lty = 2) + 
+  geom_hline(yintercept = 5.05, col = "dark green", lwd = 1, lty = 2) + 
+  geom_text(x = 2000, y = 4.1,
+            label = "base case scenario",
+            color = 'dark green')+
+  labs(x = "Brood year",
+       y = "Intrinsic productivity") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  theme(legend.position = "none") +
+  coord_cartesian(ylim=c(0,6)) 
+my.ggsave(here("figure/tv-prod-w-base.png"))
+
+# plot estimate of time varying productivity with base case productivity and low productivity 
+
+ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
+  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) + 
+  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
+  theme(legend.position = "none") +
+  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
+  geom_hline(yintercept = 3.94, col = "dark green", lwd = 1) + 
+  geom_hline(yintercept = 2.99, col = "dark green", lwd = 1, lty = 2) + 
+  geom_hline(yintercept = 5.05, col = "dark green", lwd = 1, lty = 2) + 
+  geom_text(x = 2000, y = 4.1,
+            label = "base case scenario",
+            color = 'dark green')+
+  geom_hline(yintercept = 2.77, col = "dark red", lwd = 1) + 
+  geom_hline(yintercept = 2.37, col = "dark red", lwd = 1, lty = 2) + 
+  geom_hline(yintercept = 2.94, col = "dark red", lwd = 1, lty = 2) + 
+  geom_text(x = 1975, y = 2.65,
+            label = "low productivity scenario",
+            color = 'dark red')+  
+  geom_text(x = 1972, y = 1.2,
+            label = "replacement",
+            color = 'grey')+  
+  labs(x = "Brood year",
+       y = "Intrinsic productivity") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  theme(legend.position = "none") +
+  
+  coord_cartesian(ylim=c(0,6)) 
+my.ggsave(here("figure/tv-prod-w-base-and-low.png"))
+
+
+# plot recruitment residuals + time-varying productivity
+resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
+
+resids <- as.data.frame(cbind(data$year[1:33], t(resid.quant)))
+colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
+
+a <- ggplot(resids, aes(x=year, y = mid)) +
+  geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
+  geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) +
+  geom_line(lwd = 1.1) +
+  coord_cartesian(ylim=c(-2,2)) +
+  labs(x = "Return year",
+       y = "Recruitment residuals") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
+
+b <- ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
+  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) + 
+  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
+  labs(x = "Brood year",
+       y = "Intrinsic productivity") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  theme(legend.position = "none") +
+  coord_cartesian(ylim=c(0,6)) 
+
+pp <- plot_grid(a, b, ncol = 2) #+ draw_grob(legend) #fix to make a single legend?
+
+pp  
+my.ggsave.long(here("figure/rec-resid-tv-prod.png"))
