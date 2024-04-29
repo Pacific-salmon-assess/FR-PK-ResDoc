@@ -230,6 +230,16 @@ ggplot(resids, aes(x=year, y = mid)) +
 
 my.ggsave(here("figure/rec-resid.png"))
 
+ggplot(resids, aes(x=year, y = mid)) +
+geom_point() +
+  geom_line(lwd = 1.1) +
+  coord_cartesian(ylim=c(-2,2)) +
+  labs(x = "Return year",
+       y = "Recruitment residuals") +
+  theme(legend.position = "none",
+        panel.grid = element_blank()) +
+  geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
+
 #plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
 d_start <- 2013
