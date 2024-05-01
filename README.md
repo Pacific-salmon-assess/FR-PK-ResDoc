@@ -11,23 +11,13 @@ The root directory contains all files produced when running [csasdown](https://g
 To reproduce this document, fork or clone this repository, run the analysis, [fit the model](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R), run the [forward simulation](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fwd-sim.R), [generate figures](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/inference-figs.R), and finally knit the [csasdown](https://github.com/pbs-assess/csasdown) generated [index](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/index.Rmd) document. Flag problems in [issues](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/issues) or reach out to dylan.glaser@dfo-mpo.gc.ca for help. 
 
 This analysis depends on you loading: 
-```{r env}
-suppressWarnings({suppressMessages({
-library(here)
-library(tidyverse)
-library(rosettafish)
-library(csasdown)
-library(kableExtra)
-library(rstan)
-library(gsl)
-library(cowplot)
-library(scales)
-})})
-pkgs <- sort(c("here", "tidyverse", "rosettafish", "csasdown", "kableExtra", "rstan", "gsl", "cowplot", "scales"))
-
-devtools::session_info()$packages %>%
-  dplyr::filter(package %in% pkgs) %>%
-  dplyr::select(package, loadedversion, date) %>%
-  dplyr::rename(Package = package, Version = loadedversion, Date = date) %>%
-  csasdown::csas_table()
-```
+Package | Version | Date
+ cowplot | 1.1.3 | 2024-01-22
+ csasdown | 0.1.3 | 2024-02-23
+ gsl | 2.1-8 | 2023-01-24
+ here | 1.0.1 | 2020-12-13
+ kableExtra | 1.4.0 | 2024-01-24
+ rosettafish | 0.0.0.9000 | 2024-02-23
+ rstan | 2.32.3 | 2023-10-15
+ scales | 1.3.0 | 2023-11-28
+ tidyverse | 2.0.0 | 2023-02-22
