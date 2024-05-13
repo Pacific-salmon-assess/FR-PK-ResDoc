@@ -104,7 +104,7 @@ HCRs <- c("current", "PA_alt",
 OU.CV <- 0.1 #assumed outcome uncertainty
 
 # calc forecast error
-  #using mean absolute percent error approach (MAPE)
+#using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
   mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)) #divided by 2 to account for in-season adjustment
 
@@ -253,7 +253,7 @@ for(i in 1:length(HCRs)){
   above.Smsy.8 <- (length(which(sub.data[,7,]==1))/length(sub.data[,7,]))*100
 
   #then treating catch more like a distribution and describing the distribution of medians
-    #by draw, kind of like describing the distribution of the intercepts...
+  #by draw, kind of like describing the distribution of the intercepts...
   catch <- 1:nrow(Cs) |>
     map_dbl(\(x) median(Cs[x,])) |>
     quantile(probs = c(.1, .5, .9)) |>
@@ -266,7 +266,7 @@ for(i in 1:length(HCRs)){
     round(2)
 
   catch.stability <- as.character(paste0(catch.stability[2], " (", catch.stability[1], "-",
-                                          catch.stability[3], ")"))
+                                         catch.stability[3], ")"))
 
   catch.index <- length(which(Cs > rel.catch.index))/length(Cs)*100 |> #total points that go above index
     round(2)
@@ -274,8 +274,8 @@ for(i in 1:length(HCRs)){
   perf.metrics <- rbind(perf.metrics, data.frame(HCR = rep(HCRs[i],5),
                                                  value = c(below.Sgen, above.Smsy.8,
                                                            catch, catch.stability, catch.index),
-                                     metric = c("below.Sgen", "above.Smsy.8", "median annual catch",
-                                                "catch.stability", "catch index")))
+                                                 metric = c("below.Sgen", "above.Smsy.8", "median annual catch",
+                                                            "catch.stability", "catch index")))
 }
 
 perf.metrics <- perf.metrics |>
