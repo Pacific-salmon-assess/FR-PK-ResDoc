@@ -18,9 +18,11 @@ compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.c
 
 hatchery <- read_xlsx(here("analysis/data/raw/hatchery/Fraser Pink Releases 1971-2021.xlsx"),
                       sheet = 2) |>
-  filter(STOCK_CU_NAME == "FRASER RIVER") |>
-  group_by(BROOD_YEAR, STOCK_PROD_AREA_CODE) |>
-  summarise(ReleaseM = sum(TotalRelease)/1000000)
+  filter(STOCK_CU_NAME == "FRASER RIVER",
+         RELEASE_STAGE_NAME %in% c("Fed Fry", "Unfed")) |>
+  group_by(BROOD_YEAR, STOCK_PROD_AREA_CODE, RELEASE_STAGE_NAME) |>
+  summarise(ReleaseM = sum(TotalRelease)/1000000) |>
+  mutate(RELEASE_STAGE_NAME = ifelse(RELEASE_STAGE_NAME == "Fed Fry", "Fed", RELEASE_STAGE_NAME))
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
@@ -141,11 +143,12 @@ my.ggsave(here("figure/avg-mass.png"))
 
 # hatchery influnence ---
 
-ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = STOCK_PROD_AREA_CODE)) +
+ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   geom_point() +
   geom_line() +
   theme(legend.position = "bottom") +
-  labs(title = "Fraser Pink Releases by STOCK_PROD_AREA_CODE",
+  guides(color=guide_legend(title="release stage")) +
+  labs(title = "Fraser Pink Hatchery Contribution",
        x = "brood year",
        y = "released fry (millions)")
 
