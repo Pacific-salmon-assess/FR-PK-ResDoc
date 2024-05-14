@@ -24,10 +24,12 @@ parameters{
   vector<lower=0.01,upper=0.99>[T] U; // harvest rate
 
   //variance components
-  real<lower = 0> sigma;
+  real<lower = 0> sigma_R;
+  real<lower = 0> sigma_R0;
   real<lower = 0> sigma_alpha;
 
   //parms
+  real<lower=0> mean_ln_R0;               // "true" mean log recruitment in first a.max years with no spawner link
   real ln_alpha0;         // initial productivity (on log scale)
   real<upper=0> ln_beta;  // Ricker b - force it negative
   vector[T-1] alpha_dev;  // time varying year-to-year deviations in a
@@ -41,11 +43,15 @@ transformed parameters{
   vector[T] lnC;         // log catch states
   vector<lower=0>[T] R;  // recruitment states
   // Ricker model parms
-  real beta;             // beta transformed to normal
-  vector[T] ln_alpha;    // ln_alpha in each year
+  real beta;                  // beta transformed to normal
+  vector[T] ln_alpha;         // ln_alpha in each year
+  vector[T] lnresid;          // log recruitment residuals
+  vector[T] lnRm_1;           // log recruitment states in absence of lag-one correlation
+  real<lower=0> sigma_R_corr; // log-normal bias-corrected process error
 
   beta = exp(ln_beta);
   R = exp(lnR);
+  sigma_R_corr = (sigma_R*sigma_R)/2;
 
   // Calculate latent states of returns, spawners and catch by return year
   for(t in 1:T){
@@ -60,6 +66,18 @@ transformed parameters{
   for(t in 2:T){
     ln_alpha[t] = ln_alpha[t-1] + alpha_dev[t-1]*sigma_alpha; // random walk of log_a
   }
+
+  //initialize predictions
+  for (i in 1:T) {
+    lnresid[i] = 0.0;
+    lnRm_1[i] = 0.0;
+  }
+
+  //get expectations
+  for(t in 2:T) {
+    lnRm_1[t] = lnS[t-1] + ln_alpha[t-1] - beta * S[t-1];
+    lnresid[t] = lnR[t] - lnRm_1[t];
+  }
 }
 
 model{
@@ -67,14 +85,17 @@ model{
   ln_alpha0 ~ normal(0,5);
   ln_beta ~ normal(ln_beta_pr,ln_beta_pr_sig); //per capita capacity parameter - wide prior
   alpha_dev ~ std_normal();                    //standardized (z-scales) deviances
+  mean_ln_R0 ~ normal(0,20);
 
-  //variance terms
-  sigma ~ normal(0,1);       //half normal on variance (lower limit of zero)
+  // variance terms
+  sigma_R0 ~ inv_gamma(2,1);
+  sigma_R ~ normal(1,2);
   sigma_alpha ~ normal(0,1); //half normal on variance (lower limit of zero)
 
   // Likelihoods
   // Process model
-  for(t in 1:T) R[t] ~ normal(lnS[t] + ln_alpha[t] - beta * S[t], sigma);
+  lnR[1] ~ normal(mean_ln_R0, sigma_R0);
+  lnR[2:T] ~ normal(lnRm_1[2:T], sigma_R_corr);
 
   // Observation model
   for(t in 1:T){
