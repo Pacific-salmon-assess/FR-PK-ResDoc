@@ -64,7 +64,7 @@ transformed parameters{
 
 model{
   // Priors
-  ln_alpha ~ normal(1,2);
+  ln_alpha0 ~ normal(0,5);
   ln_beta ~ normal(ln_beta_pr,ln_beta_pr_sig); //per capita capacity parameter - wide prior
   alpha_dev ~ std_normal();                    //standardized (z-scales) deviances
 

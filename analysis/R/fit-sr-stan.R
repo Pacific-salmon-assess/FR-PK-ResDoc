@@ -50,13 +50,13 @@ ggplot(model.summary, aes(Rhat)) +
 max(model.summary$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit, pars = c("beta", "ln_alpha0", "sigma", "sigma_alpha", "ln_alpha0"),
+mcmc_combo(stan.fit, pars = c("beta", "ln_alpha0", "sigma", "sigma_alpha"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 #want to see alpha but theres 33 of them...
 
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit, pars = c("beta",  "sigma", "sigma_alpha", "ln_alpha0"))
+pairs(stan.fit, pars = c("beta", "ln_alpha0",  "sigma", "sigma_alpha"))
 
 # THE OLD MODEL --------------------------------------------------------------------------
   # comparing these becasue my old alpha was lower, and beta was higher
