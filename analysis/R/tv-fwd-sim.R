@@ -14,30 +14,27 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
 stan.fit <- readRDS(here("analysis/data/generated/SS-SR-TV-alpha.stan.fit.rds"))
 model.pars <- rstan::extract(stan.fit)
 
-#compare with old model as a check -----------------
-old.stan.fit <- readRDS(here("analysis/data/generated/SS-SR_AR1.stan.fit.rds"))
-old.model.pars <- rstan::extract(old.stan.fit)
+for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
+  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize))
 
-median(old.model.pars$beta)
-median(model.pars$beta)
+# calc forecast error ---
+  #using mean absolute percent error approach (MAPE)
+for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
+  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize))
 
-median(old.model.pars$ln_alpha)
-median(model.pars$ln_alpha) #- something is pretty wrong!!
-
-#plot alpha through time
-a_yrs <- NULL
-for(i in 1:dim(model.pars$ln_alpha)[2]){
-  a_yrs <- rbind(a_yrs,
-                 quantile(exp(model.pars$ln_alpha[,i]), probs = c(.1, .5, .9)))
+if(FALSE){ #check trends and distribution of error
+  ggplot(for.error, aes(YearX, error)) +
+    geom_point() +
+    stat_smooth(method = "lm") +
+    labs(y="forecast error (CV)", x = "year")
+  ggplot(lm(error~YearX, data = for.error), aes(x = .fitted, y = .resid)) +
+    geom_point() +
+    stat_smooth()
 }
 
-a_yrs <- cbind(data$year, a_yrs)
-colnames(a_yrs) <- c("brood_year", "lwr", "mid", "upr")
-
-ggplot(a_yrs) +
-  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "pink") +
-  geom_line(aes(x = brood_year, y = mid), lwd = 2, color = "red") +
-  labs(title = "time varying alpha", y = "alpha (90th percentiles)", x = "brood year")
+for.error <- for.error |>
+  pull(error) |>
+  mean()
 
 # get benchmarks & pars ------------------------------------------------------------------
 bench <- matrix(NA,1000,4,
@@ -45,7 +42,7 @@ bench <- matrix(NA,1000,4,
 
 for(i in 1:1000){
   r <- sample(seq(1,1000),1,replace=TRUE)
-  ln_a <- median(model.pars$ln_alpha[r,]) #take the mean of 1 posterior "slice" for all years
+  ln_a <- median(model.pars$ln_alpha[r,]) #median of 1 posterior "slice" for all years
 
   b <- model.pars$beta[r]
   bench[i,2] <- get_Smsy(ln_a, b) #S_MSY
@@ -117,36 +114,95 @@ colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "
 last.yr <- max(data$year) #final yr of model fit
 sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
-states <- c("R", "S", "C", "U", "lnresid")
+states <- c("R", "S", "C", "U", "lnresid", "under_Sgen", "over_Smsy")
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
-HCRs <- c("current", "PA_alt",
-          "low_a_current", "low_a_PA_alt",
-          "recent_current", "recent_PA_alt")
-OU.CV <- 0.1 #assumed outcome uncertainty
+scenarios <- c("base", "low_prod")
+HCRs <- c("current", "PA_alt")
+OU.CV <- 0.1 #assumed outcome uncertainty, did forecast error earlier
+styles <- c("base-linked", "unlinked")
 
-# calc forecast error
-  #using mean absolute percent error approach (MAPE)
-for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)) #divided by 2 to account for in-season adjustment
+#filter out ln alpha in the lower 50th percentile
+#what is the alpha median?
+#this really depends on the 2 ways to calculate the median for the cutoff (overall or by year)
+low.a.total <- mean(model.pars$ln_alpha)
+low.a.by.year <- mean(apply(model.pars$ln_alpha, 2, mean))
 
-if(FALSE){ #check trends and distribution of error
-  ggplot(for.error, aes(YearX, error)) +
-    geom_point() +
-    stat_smooth(method = "lm") +
-    labs(y="forecast error (CV)", x = "year")
-  ggplot(lm(error~YearX, data = for.error), aes(x = .fitted, y = .resid)) +
-    geom_point() +
-    stat_smooth()
+alpha.meds <- apply(model.pars$ln_alpha, 1, mean)# summarise medians by draw
+
+low_a_rows <- which(alpha.meds<low.a.by.year)
+
+fwd.states <- array(NA, dim = c(length(styles), length(scenarios), length(HCRs), n.sims,
+                                sim.gens, length(states)))
+
+for(i in unique(styles)){
+  for(j in unique(scenarios)){
+    for(k in unique(HCRs)){
+      for(l in 1:n.sims){
+        sub.pars <- model.pars
+        if(i == "base-linked" & j == "base"){ #everything linked scenario
+          r <- sample(length(sub.pars$beta), 1, replace = TRUE) #random draw
+          #draw FULLY CORRELATED pars, starting-states, and calc benchmarks for the sim
+          #draw parms for the sim
+          ln_alpha <- median(sub.pars$ln_alpha[r, (last.yr.ind-2):last.yr.ind])
+          beta <- sub.pars$beta[r]
+          sigma_R_corr <- sub.pars$sigma_R_corr[r]
+          #estimate draw-specific benchmarks for relative performance measures later
+          sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
+          sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
+          #draw final states from model to start fwd sim from
+          R <- sub.pars$R[r, last.yr.ind]
+          S <- sub.pars$S[r, last.yr.ind]
+          C <- sub.pars$C[r, last.yr.ind]
+          U <- sub.pars$U[r, last.yr.ind]
+        } else{
+          if(j == "low_prod"){
+            sub.pars
+          }
+        }
+      }
+    }
+  }
 }
 
-for.error <- for.error |>
-  pull(error) |>
-  mean()
 
-# do fwd sim -----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#old one
 fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
 ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
-
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
   sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
