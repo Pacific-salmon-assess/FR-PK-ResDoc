@@ -80,6 +80,16 @@ kobe_df <- data.frame(S = spwn_df$mid,
          S_Smsy_LCI = round(S_LCI/(Smsy.8*1.25), 2),
          S_Smsy_UCI = round(S_UCI/(Smsy.8*1.25), 2))
 
+#get alpha through time ---
+a_yrs <- NULL
+for(i in 1:dim(model.pars$ln_alpha)[2]){
+  a_yrs <- rbind(a_yrs,
+                 quantile(exp(model.pars$ln_alpha[,i]), probs = c(.1, .5, .9)))
+}
+
+a_yrs <- cbind(data$year, a_yrs)
+colnames(a_yrs) <- c("brood_year", "lwr", "mid", "upr")
+
 rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
 
 # INFERENCE ------------------------------------------------------------------------------
@@ -87,6 +97,10 @@ rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
 rec_prop <- data |>
   mutate(recruits = harvest + spawn,
          ER = (harvest/recruits)*100)
+
+# what % of the last 3 gens of spawning escapement fall below Sgen or above Smsy?
+#take median of last 3 gens, see where it lies with if statements and make character vector of status.
+
 
 # FIGS & TABLES FOR RESDOC ---------------------------------------------------------------
 theme_set(theme_bw(base_size = 14))
@@ -142,7 +156,6 @@ ggplot(avg_mass, aes(year, avg.weight)) +
 my.ggsave(here("figure/avg-mass.png"))
 
 # hatchery influnence ---
-
 ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   geom_point() +
   geom_line() +
@@ -151,6 +164,9 @@ ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   labs(title = "Fraser Pink Hatchery Contribution",
        x = "brood year",
        y = "released fry (millions)")
+
+my.ggsave(here("figure/hatchery-influence.png"))
+
 
 # plot HCRs ---
 p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
@@ -210,30 +226,13 @@ ggplot() +
 
 my.ggsave(here("figure/SRR.png"))
 
-# plot Kobe ---
-ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
-  #draw data and error bars on final year
-  geom_point(aes(color = year), size=3) +
-  #geom_path() + #if you want to connect the dots
-  geom_errorbar(data = filter(kobe_df, year == max(kobe_df$year)),
-                aes(x = S_Smsy, ymin = U_Umsy_LCI, ymax = U_Umsy_UCI), width = 0) +
-  geom_errorbarh(data = filter(kobe_df, year == max(kobe_df$year)),
-                 aes(y = U_Umsy, xmin = S_Smsy_LCI, xmax = S_Smsy_UCI), height = 0) +
-  #add "crosshairs"
-  geom_vline(xintercept = 1, lty = 2) +
-  geom_hline(yintercept = 1, lty = 2) +
-  #geom_vline(xintercept = 0.8, lty = 3) +
-  #add labels to 80% Smsy, first and last year of data
-  #annotate("text", x = 0.8, y = .4, hjust = 1,
-  #         label = expression(italic(paste("80%",S)[MSY]))) +
-  geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
-            aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
-            hjust = 0-.2, vjust = 0-.2) +
-  scale_colour_viridis_c(name="Year") +
-  labs(y="U/Umsy", x= "S/Smsy") +
-  theme(legend.position = "bottom")
+# time varying alpha ---
+ggplot(a_yrs) +
+  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "pink") +
+  geom_line(aes(x = brood_year, y = mid), lwd = 2, color = "red") +
+  labs(title = "time varying alpha", y = "alpha (90th percentiles)", x = "brood year")
 
-ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
+my.ggsave(here("figure/tv-alpha.png"))
 
 # then residuals---
 resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
@@ -263,6 +262,34 @@ geom_point() +
   theme(legend.position = "none",
         panel.grid = element_blank()) +
   geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
+
+# plot Kobe ---
+ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
+  #draw data and error bars on final year
+  geom_point(aes(color = year), size=3) +
+  #geom_path() + #if you want to connect the dots
+  geom_errorbar(data = filter(kobe_df, year == max(kobe_df$year)),
+                aes(x = S_Smsy, ymin = U_Umsy_LCI, ymax = U_Umsy_UCI), width = 0) +
+  geom_errorbarh(data = filter(kobe_df, year == max(kobe_df$year)),
+                 aes(y = U_Umsy, xmin = S_Smsy_LCI, xmax = S_Smsy_UCI), height = 0) +
+  #add "crosshairs"
+  geom_vline(xintercept = 1, lty = 2) +
+  geom_hline(yintercept = 1, lty = 2) +
+  #geom_vline(xintercept = 0.8, lty = 3) +
+  #add labels to 80% Smsy, first and last year of data
+  #annotate("text", x = 0.8, y = .4, hjust = 1,
+  #         label = expression(italic(paste("80%",S)[MSY]))) +
+  geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
+            aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
+            hjust = 0-.2, vjust = 0-.2) +
+  scale_colour_viridis_c(name="Year") +
+  labs(y="U/Umsy", x= "S/Smsy") +
+  theme(legend.position = "bottom")
+
+ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
+
+
+#plot the last 3 gens distribution of spawners and the posteriors of Sgen and Smsy
 
 #plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
