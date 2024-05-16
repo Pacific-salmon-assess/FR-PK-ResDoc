@@ -24,6 +24,8 @@ Changes in diversion rate could also have implications for survival via encounte
 
 Data on catch and spawner abundance (i.e., escapement) has been collected for well over a century, with indices of abundance recorded back to 1901 [@rickerHistoryPresentState1989]. However, consistent and reliable escapement and catch data are only available from `r min(rec_prop$year)` to present. More details on catch and escapement data used in this report are provided in the Data Sources section.  
 
+### Hatcheries and Enhancement  
+
 ### Current Management and Trends  
 
 The current harvest control rule (HCR) for Fraser Pink salmon was first implemented in 1987. 
@@ -31,6 +33,7 @@ It consists of three management zones: 1) at run sizes below 7.059 million pinks
 Documentation of the rationale for the current HCR has been difficult to locate, but a handwritten International Pacific Salmon Fisheries Commission memo from 1983 appears to calculate an egg deposition target of 5 billion eggs that would generate desired production and associated adult escapement target, assuming an average weight, that would meet the egg deposition target (S. Latham, PSC, Vancouver, British Columbia, pers. comm.), @rickerHistoryPresentState1989 also estimates $U_{MSY}$ at 70% which may have supported the target Removal Reference.  
 
 
+**add context from Colin & Max**
 Additional management measures are often taken during fisheries directed on Fraser Pink salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not.
 These measures have included: time and area closures (e.g., Interior Fraser Coho fishing window closure), gear requirements (e.g., use of beach seines or shallow seines instead of drift gill nets, bait ban for recreational fisheries), and operational changes (e.g., brailing requirements and maximum recommended set sizes for purse seines).
 
