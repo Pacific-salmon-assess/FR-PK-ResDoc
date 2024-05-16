@@ -124,7 +124,6 @@ for.error <- for.error |>
 
 # do fwd sim -----------------------------------------------------------------------------
 fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
-ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
 
 for(i in 1:length(HCRs)){
   HCR <- HCRs[i]
@@ -291,5 +290,5 @@ write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"))
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
    phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
+   sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
    sub.Sgen, under.Sgen, par.quants, par.summary, pars, single.sim)
