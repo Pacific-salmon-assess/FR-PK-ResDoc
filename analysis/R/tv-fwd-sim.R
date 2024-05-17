@@ -119,50 +119,65 @@ last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
 scenarios <- c("base", "low_prod")
 HCRs <- c("current", "PA_alt")
 OU.CV <- 0.1 #assumed outcome uncertainty, did forecast error earlier
-styles <- c("base-linked", "unlinked")
 
 #filter out ln alpha in the lower 50th percentile
-#what is the alpha median?
-#this really depends on the 2 ways to calculate the median for the cutoff (overall or by year)
-low.a.total <- mean(model.pars$ln_alpha)
-low.a.by.year <- mean(apply(model.pars$ln_alpha, 2, mean))
+  #check the 2 medians and the mean (mean is same if you do yearly or not)
+if(FALSE){
+  log.a.med <- median(model.pars$ln_alpha)
+  log.a.med.yearly <- median(apply(model.pars$ln_alpha, 2, median))
+  log.a.mean <- mean(model.pars$ln_alpha)
 
-alpha.meds <- apply(model.pars$ln_alpha, 1, mean)# summarise medians by draw
+  hist(model.pars$ln_alpha)
+  abline(v=log.a.med, col='red', lty='dashed')
+  abline(v=log.a.med.yearly, col='blue', lty='dashed')
+  abline(v=log.a.mean, col='green', lty='dashed')
+  dev.off()
+}
+#pick one of the above to use as a cutoff for subsetting low productivity
+log.a.med.yearly <- median(apply(model.pars$ln_alpha, 2, median))
 
-low_a_rows <- which(alpha.meds<low.a.by.year)
+fwd.states <- array(NA, dim = c(length(scenarios), length(HCRs), n.sims, sim.gens, length(states)))
 
-fwd.states <- array(NA, dim = c(length(styles), length(scenarios), length(HCRs), n.sims,
-                                sim.gens, length(states)))
+for(i in unique(scenarios)){
+  sub.pars <- model.pars
+  #take median of last 3 gens productivity, and final spawner state
+  sub.pars$ln_alpha <- apply(model.pars$ln_alpha[,(last.yr.ind-2):last.yr.ind], 1, median)
+  low.a.rows <- which(sub.pars$ln_alpha<log.a.med.yearly) #rows to subset later
+  #overwrite low.a pop dynamics to subset later
+  low.a.ln.alpha <- sub.pars$ln_alpha[low.a.rows]
+  low.a.beta <- sub.pars$beta[low.a.rows]
+  low.a.sigma_R_corr <- sub.pars$sigma_R_corr[low.a.rows]
+  for(j in unique(HCRs)){
+    for(k in 1:n.sims){
+      #taking a random coorelated slice.
+      r <- sample(length(sub.pars$beta), 1, replace = TRUE) #random draw
+      #draw FULLY CORRELATED pars, starting-states, and calc benchmarks for the sim
+      #draw parms for the sim
+      ln_alpha <- median(sub.pars$ln_alpha[r])
+      beta <- sub.pars$beta[r]
+      sigma_R_corr <- sub.pars$sigma_R_corr[r]
+      #estimate draw-specific benchmarks for relative performance measures later
+      sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
+      sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
+      #draw final states from model to start fwd sim from
+      R <- sub.pars$R[r, last.yr.ind]
+      S <- sub.pars$S[r, last.yr.ind]
+      C <- sub.pars$C[r, last.yr.ind]
+      U <- sub.pars$U[r, last.yr.ind]
 
-for(i in unique(styles)){
-  for(j in unique(scenarios)){
-    for(k in unique(HCRs)){
-      for(l in 1:n.sims){
-        sub.pars <- model.pars
-        if(i == "base-linked" & j == "base"){ #everything linked scenario
-          r <- sample(length(sub.pars$beta), 1, replace = TRUE) #random draw
-          #draw FULLY CORRELATED pars, starting-states, and calc benchmarks for the sim
-          #draw parms for the sim
-          ln_alpha <- median(sub.pars$ln_alpha[r, (last.yr.ind-2):last.yr.ind])
-          beta <- sub.pars$beta[r]
-          sigma_R_corr <- sub.pars$sigma_R_corr[r]
-          #estimate draw-specific benchmarks for relative performance measures later
-          sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
-          sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
-          #draw final states from model to start fwd sim from
-          R <- sub.pars$R[r, last.yr.ind]
-          S <- sub.pars$S[r, last.yr.ind]
-          C <- sub.pars$C[r, last.yr.ind]
-          U <- sub.pars$U[r, last.yr.ind]
-        } else{
-          if(j == "low_prod"){
-            sub.pars
-          }
-        }
+      if(i == "low_prod"){#subset the low.a dynamics only
+        r.2 <- sample(length(low.a.rows), 1, replace = TRUE)
+        low.a.ln.alpha <- low.a.ln.alpha[r.2]
+        low.a.beta <- low.a.beta[r.2]
+        low.a.sigma_R_corr <- low.a.sigma_R_corr[r.2]
+      }
+      for(l in sim.gens){
+        #go forward
       }
     }
   }
 }
+
 
 
 
