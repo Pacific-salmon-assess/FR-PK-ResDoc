@@ -80,23 +80,30 @@ R.Smsy.8 <- Smsy.8/(1-Umsy) #recruitment @ Smsy to be used as BB USR
 percentiles <- quantile(data$spawn, probs=c(0.25, 0.5))
 lower.25th.Sp <- percentiles[1]
 lower.50th.Sp <- percentiles[2]
-low.alpha <- exp(quantile(model.pars$ln_alpha[which(model.pars$ln_alpha <= quantile(model.pars$ln_alpha, probs = 0.1))],.5)[])
 
-alpha.CI <- quantile(exp(model.pars$ln_alpha), probs = c(.1, .5, .9))
+alpha.CI <- exp(quantile(model.pars$ln_alpha, probs = c(.1, .5, .9)))
 beta.CI <- quantile(model.pars$beta, probs = c(.1, .5, .9))
-phi.CI <- quantile(model.pars$phi, probs = c(.1, .5, .9))
 sigma.CI <- quantile(model.pars$sigma_R_corr, probs = c(.1, .5, .9))
 
-par.quants <- rbind(alpha.CI, beta.CI, phi.CI, sigma.CI)
+par.quants <- rbind(alpha.CI, sigma.CI, beta.CI)
 
 #make big table of bench and pars
 par.summary <- as.data.frame(rstan::summary(stan.fit)$summary) |>
   select(mean, n_eff, Rhat)
 
-par.summary <- filter(par.summary, row.names(par.summary) %in% c('ln_alpha', 'beta', 'phi', 'sigma_R'))
-par.summary[1,1] <- exp(par.summary[1,1])
+#summarise not alphas...
+other.par.summary <- filter(par.summary, row.names(par.summary) %in% c('beta', 'sigma_R'))
 
-pars <- cbind(par.quants, par.summary)
+par.summary <- filter(par.summary, grepl("ln_alpha", rownames(par.summary)) &
+                          rownames(par.summary)!= "ln_alpha0") |>
+  apply(2, median) |>
+  t() |>
+  as.data.frame() |>
+  mutate(mean = exp(mean)) |>
+  bind_rows(other.par.summary)
+
+pars <- cbind(par.quants, par.summary) |>
+  arrange(Rhat) #dumb trick to get it in order
 
 bench.par.table <- bind_rows(benchmarks, pars) |>
   mutate(n_eff = round(n_eff, 0),
@@ -106,7 +113,7 @@ bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
 bench.par.table[is.na(bench.par.table)] <- ""
 
 rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
-                               "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma$")
+                               "$\\alpha$", "$\\beta$", "$\\sigma$")
 colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "Mean",
                                "$N_{eff}$", "$\\hat{R}$")
 
@@ -114,7 +121,7 @@ colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "
 last.yr <- max(data$year) #final yr of model fit
 sim.gens <- 1+5 #final state in model + nyrs (i.e. gens for pinks) to fwd sim
 n.sims <- 1000
-states <- c("R", "S", "C", "U", "lnresid", "under_Sgen", "over_Smsy")
+states <- c("R", "S", "C", "U", "under_Sgen", "over_Smsy") #don't THINK I need to track residual?
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
 scenarios <- c("base", "low_prod")
 HCRs <- c("current", "PA_alt")
@@ -134,163 +141,82 @@ if(FALSE){
   dev.off()
 }
 #pick one of the above to use as a cutoff for subsetting low productivity
-log.a.med.yearly <- median(apply(model.pars$ln_alpha, 2, median))
+  #just use overall median, they're so close
+log.a.med <- median(model.pars$ln_alpha)
 
 fwd.states <- array(NA, dim = c(length(scenarios), length(HCRs), n.sims, sim.gens, length(states)))
 
-for(i in unique(scenarios)){
+for(i in 1:length(scenarios)){
+  scenario <- scenarios[i]
   sub.pars <- model.pars
-  #take median of last 3 gens productivity, and final spawner state
+  #take median of last 3 gens productivity
   sub.pars$ln_alpha <- apply(model.pars$ln_alpha[,(last.yr.ind-2):last.yr.ind], 1, median)
-  low.a.rows <- which(sub.pars$ln_alpha<log.a.med.yearly) #rows to subset later
+  low.a.rows <- which(sub.pars$ln_alpha<log.a.med) #rows to subset later
   #overwrite low.a pop dynamics to subset later
   low.a.ln.alpha <- sub.pars$ln_alpha[low.a.rows]
   low.a.beta <- sub.pars$beta[low.a.rows]
   low.a.sigma_R_corr <- sub.pars$sigma_R_corr[low.a.rows]
-  for(j in unique(HCRs)){
+  for(j in 1:length(HCRs)){
+    HCR <- HCRs[j]
     for(k in 1:n.sims){
-      #taking a random coorelated slice.
+      #take a random correlated slice
       r <- sample(length(sub.pars$beta), 1, replace = TRUE) #random draw
-      #draw FULLY CORRELATED pars, starting-states, and calc benchmarks for the sim
-      #draw parms for the sim
-      ln_alpha <- median(sub.pars$ln_alpha[r])
+      #draw FULLY CORRELATED pars, states, and benchmarks for the sim
+      ln_alpha <- sub.pars$ln_alpha[r]
       beta <- sub.pars$beta[r]
       sigma_R_corr <- sub.pars$sigma_R_corr[r]
       #estimate draw-specific benchmarks for relative performance measures later
-      sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8
-      sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8)
+      sub.Smsy <- get_Smsy(ln_alpha, beta)
+      sub.Smsy.8 <- sub.Smsy*0.8
+      sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy)
       #draw final states from model to start fwd sim from
       R <- sub.pars$R[r, last.yr.ind]
       S <- sub.pars$S[r, last.yr.ind]
       C <- sub.pars$C[r, last.yr.ind]
       U <- sub.pars$U[r, last.yr.ind]
 
-      if(i == "low_prod"){#subset the low.a dynamics only
+      fwd.states[i,j,k,1, ] <- c(R,S,C,U,NA,NA) #states and holders for above/below bench
+
+      if(scenario == "low_prod"){#subset the low.a dynamics only
         r.2 <- sample(length(low.a.rows), 1, replace = TRUE)
-        low.a.ln.alpha <- low.a.ln.alpha[r.2]
-        low.a.beta <- low.a.beta[r.2]
-        low.a.sigma_R_corr <- low.a.sigma_R_corr[r.2]
+        ln_alpha <- low.a.ln.alpha[r.2]
+        beta <- low.a.beta[r.2]
+        sigma_R_corr <- low.a.sigma_R_corr[r.2]
       }
-      for(l in sim.gens){
+      for(l in 2:sim.gens){
         #go forward
+        last.S <- fwd.states[i,j,k,l-1,2]
+        R <- exp(ln_alpha)*last.S*exp(-beta*last.S+log(sigma_R_corr)) #predict R
+        R <- R*rlnorm(1, 0, for.error) #add forecast error
+
+        if(HCR == "current"){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
+        if(HCR == "PA_alt"){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
+                                                Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
+        under.Sgen <- post_HCR[1] < sub.Sgen
+        over.Smsy.8 <- post_HCR[1] > sub.Smsy.8
+        fwd.states[i,j,k,l, ] <- c(R, post_HCR, under.Sgen, over.Smsy.8) #write state to array
       }
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#old one
-fwd.states <- array(NA, dim = c(n.sims, length(states)+2, sim.gens, length(HCRs)))
-ref.pts <- array(NA, dim = c(n.sims, 2, sim.gens-1, length(HCRs)))
-for(i in 1:length(HCRs)){
-  HCR <- HCRs[i]
-  sub.pars <- model.pars #overwrite each time so it doesn't break when subsetting in loop
-  if(grepl("low_a", HCR)){ #overwrite posterior & final state to low productivity if "low_a"
-    low_a_rows <- which(sub.pars$ln_alpha <= quantile(sub.pars$ln_alpha, probs = 0.1))
-    #subset posterior to only draw parms and states from low productivity draws
-    sub.pars$ln_alpha <- sub.pars$ln_alpha[low_a_rows]
-    sub.pars$beta <- sub.pars$beta[low_a_rows]
-    sub.pars$sigma_R_corr <- sub.pars$sigma_R_corr[low_a_rows]
-    sub.pars$phi <- sub.pars$phi[low_a_rows]
-    #draw sub.pars states to start from
-    sub.pars$R <- sub.pars$R[low_a_rows,]
-    sub.pars$S <- sub.pars$S[low_a_rows,]
-    sub.pars$C <- sub.pars$C[low_a_rows,]
-    sub.pars$U <- sub.pars$U[low_a_rows,]
-  }
-  if(grepl("recent", HCR)){sub.pars <- model.pars.93
-  last.yr.ind <- ncol(model.pars.93$lnR)
-  }
-  for(j in 1:n.sims){
-    r <- sample(length(sub.pars$ln_alpha), 1, replace = TRUE) #random draw
-    #draw parms for the sim
-    ln_alpha <- sub.pars$ln_alpha[r]
-    beta <- sub.pars$beta[r]
-    sigma_R_corr <- sub.pars$sigma_R_corr[r]
-    phi <- sub.pars$phi[r]
-    #estimate draw-specific benchmarks for relative performance measures later
-    sub.Smsy.8 <- get_Smsy(ln_alpha, beta)*.8 ##fix to draw from FULL POSTERIOR to analyse against
-    sub.Sgen <- get_Sgen(exp(ln_alpha), beta, -1, 1/beta*2, sub.Smsy.8) ##FIX AS ABOVE
-    #draw final states from model to start fwd sim from
-    R <- sub.pars$R[r, last.yr.ind]
-    S <- sub.pars$S[r, last.yr.ind]
-    C <- sub.pars$C[r, last.yr.ind]
-    U <- sub.pars$U[r, last.yr.ind]
-    last.lnresid <- sub.pars$lnresid[r, last.yr.ind]
-    fwd.states[j,,1,i] <- c(R,S,C,U,last.lnresid, NA, NA) #write final state from model to array
-    for(k in 2:sim.gens){
-      #get previous state
-      last.S <- fwd.states[j,2,k-1,i]
-      last.lnresid <- fwd.states[j,5,k-1,i]
-      #calc R and pred R
-      R <- exp(ln_alpha)*last.S*exp(-beta*last.S+phi*last.lnresid+log(sigma_R_corr))
-      R <- R*rlnorm(1, 0, for.error) #add forecast error
-      pred.R <- exp(ln_alpha)*last.S*exp(-beta*last.S+phi*last.lnresid)
-      last.lnresid <- log(R)-log(pred.R)
-      #apply HCR
-      if(grepl("current", HCR)){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
-      if(grepl("PA", HCR)){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
-                                              Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
-      #make binary obs for some summaries later
-      under.Sgen <- post_HCR[1] < sub.Sgen
-      over.Smsy.8 <- post_HCR[1] > sub.Smsy.8
-
-      fwd.states[j,,k,i] <- c(R,post_HCR,last.lnresid, under.Sgen, over.Smsy.8) #write it
-    }
-  }
-}
-#t(fwd.states[j,,,i]) #see sim year(rows) where it potentially breaks
 
 # pull some individual sims for plotting...
 ind.sims <- NULL
 
-for(i in 1:2){
-  sub <- fwd.states[,,,i] #subset 1st or 2nd HCR
-  for(j in 1:2){
-    k <- sample(n.sims, 1, replace = TRUE)
-    single.sim <- t(sub[k,,]) |>
-      as.data.frame() |>
-      select(2,3) |>
-      mutate(year = seq(max(data$year), max(data$year)+((sim.gens-1)*2), by = 2),
-             HCR = HCRs[i],
-             sim = as.factor(j))
-    ind.sims <- rbind(ind.sims, single.sim)
+for(i in 1:length(scenarios)){
+  for(j in 1:length(HCRs)){
+    for(k in 1:2){
+      sub <- fwd.states[i,j,,,]
+      r <- sample(n.sims, 1, replace = TRUE)
+      single.sim <- sub[r,,] |>
+        as.data.frame() |>
+        select(2,3) |>
+        mutate(year = seq(max(data$year), max(data$year)+((sim.gens-1)*2), by = 2),
+               scenario = scenarios[i],
+               HCR = HCRs[j],
+               sim = as.factor(k))
+      ind.sims <- rbind(ind.sims, single.sim)
+    }
   }
 }
 colnames(ind.sims)[1:2] <- c("spawners", "catch")
@@ -300,31 +226,31 @@ fwd.sim <- NULL
 yrs <- as.character(seq(from = last.yr,
                         to = last.yr+((sim.gens-1)*2), by=2)) #final yr of sim + fwd sims
 
-for(i in 1:length(HCRs)){
-  sub <- fwd.states[,,,i]
-  HCR <- HCRs[i]
-  for(j in 1:sim.gens){
-    sub_sub <- as.data.frame(sub[,,j]) |>
-      reframe(across(1:5, quantile_df, .unpack = TRUE)) |> #could use a better fun.?
-      mutate(quant = c("lwr", "med", "upr")) |>
-      pivot_wider(values_from = 1:5, names_from = quant) |>
-      mutate(HCR = HCRs[i],
-             year = as.numeric(yrs[j])) |>
-      relocate(c(year, HCR), 1)
-    fwd.sim <- rbind(fwd.sim, sub_sub)
+for(i in 1:length(scenarios)){
+  for(j in 1:length(HCRs)){
+    scenario <- scenarios[i]
+    HCR <- HCRs[j]
+    sub <- fwd.states[i,j,,,]
+     for(k in 1:sim.gens){
+      sub_sub <- as.data.frame(sub[,k,]) |>
+        reframe(across(1:4, quantile_df, .unpack = TRUE)) |> #could use a better fun.?
+        mutate(quant = c("lwr", "med", "upr")) |>
+        pivot_wider(values_from = 1:4, names_from = quant) |>
+        mutate(scenario = scenario,
+               HCR = HCR,
+               year = as.numeric(yrs[k])) |>
+        relocate(c(year, HCR), 1)
+      fwd.sim <- rbind(fwd.sim, sub_sub)
+    }
   }
 }
 
 fwd.sim <- fwd.sim |>
-  mutate(scenario = case_when(grepl("low", HCR) ~ "low productivity",
-                              grepl("recent", HCR) ~ "recent, baseline",
-                              TRUE ~ "baseline"),
-         HCR = gsub("low_a_|recent_", "", HCR)) |>
-  relocate(scenario, .after=2)
+  relocate(scenario, .after=2) |>
+  as.data.frame()
 
 colnames(fwd.sim) <- c("year", "HCR", "scenario", "R_lwr", "R", "R_upr", "S_lwr",  "S",
-                       "S_upr", "C_lwr", "C", "C_upr", "U_lwr", "U", "U_upr", "lnresid_lwr",
-                       "lnresid", "lnresid_upr")
+                       "S_upr", "C_lwr", "C", "C_upr", "U_lwr", "U", "U_upr")
 
 # summarise performance metrics------------------------------------------------------
 perf.metrics <- NULL
@@ -336,13 +262,14 @@ rel.catch.index <- filter(data, year >= 2000) |>
   summarise(mean(harvest)) |>
   pull()
 
-for(i in 1:length(HCRs)){
-  sub.data <- fwd.states[,,2:(sim.gens),i] #slice HCR to NOT include final year of observed data.
-  Cs <- sub.data[,3,] #catch sims
+for(i in 1:length(scenarios)){
+  for(j in 1:length(HCRs)){
+  sub.data <- fwd.states[i,j,,2:(sim.gens),] #slice HCR to NOT include final year of observed data.
+  Cs <- sub.data[,,3] #catch sims
 
   #getting total count of points that dipped above/below lines
-  below.Sgen <- (length(which(sub.data[,6,]==1))/length(sub.data[,6,]))*100
-  above.Smsy.8 <- (length(which(sub.data[,7,]==1))/length(sub.data[,7,]))*100
+  below.Sgen <- (length(which(sub.data[,,5]==1))/length(sub.data[,,5]))*100
+  above.Smsy.8 <- (length(which(sub.data[,,6]==1))/length(sub.data[,,6]))*100
 
   #then treating catch more like a distribution and describing the distribution of medians
     #by draw, kind of like describing the distribution of the intercepts...
@@ -363,25 +290,24 @@ for(i in 1:length(HCRs)){
   catch.index <- length(which(Cs > rel.catch.index))/length(Cs)*100 |> #total points that go above index
     round(2)
 
-  perf.metrics <- rbind(perf.metrics, data.frame(HCR = rep(HCRs[i],5),
+  perf.metrics <- rbind(perf.metrics, data.frame(scenario = rep(scenarios[i],5),
+                                                 HCR = rep(HCRs[j],5),
                                                  value = c(below.Sgen, above.Smsy.8,
                                                            catch, catch.stability, catch.index),
                                      metric = c("below.Sgen", "above.Smsy.8", "median annual catch",
                                                 "catch.stability", "catch index")))
+  }
 }
 
 perf.metrics <- perf.metrics |>
-  mutate(scenario = case_when(grepl("low", HCR) ~ "low productivity",
-                              grepl("recent", HCR) ~ "recent baseline",
-                              TRUE ~ "baseline"),
-         HCR = gsub("low_a_|recent_", "", HCR)) |>
-  mutate(HCR = ifelse(HCR == "PA_alt", "PA alternate", HCR)) |>
   pivot_wider(names_from = metric, values_from = value) |>
   as.data.frame()
 write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"))
+
 #take the trash out --
-rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
-   HCR, HCRs, i,j,k,last.lnresid,last.S, last.yr, sub.data, low_a_rows, n.sims,
-   phi,post_HCR, pred.R, r, R, S, sigma_R_corr, sim.gens, states,sub_sub, below.Sgen,
-   ref.pts, sub, sub.pars,yrs, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
-   sub.Sgen, under.Sgen, par.quants, par.summary, pars, single.sim)
+rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant, HCR,
+   HCRs, i,j,k,last.S, last.yr, sub.data, n.sims, post_HCR, r, R, S, sigma_R_corr,
+   sim.gens, states, below.Sgen, sub.pars, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
+   sub.Sgen, under.Sgen, par.quants, par.summary, pars, sub, scenario, scenarios,
+   alpha.summary, other.par.summary, single.sim, sub_sub, b, l, low.a.beta, low.a.ln.alpha,
+   low.a.rows, low.a.sigma_R_corr, mean, percentiles, r.2, sub.Smsy.8)

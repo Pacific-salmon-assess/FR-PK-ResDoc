@@ -5,6 +5,7 @@ quantile_df <- function(x, probs = c(.1, 0.5, 0.9)){
 # benchmark functions --------------------------------------------------------------------
 get_Smsy <- function(a, b){
   Smsy <- (1 - lambert_W0(exp(1 - a))) / b
+  if(Smsy <0){Smsy <- 0.001} #dumb hack for low draws so Smsy doesnt go negative
   return(Smsy)
 }
 

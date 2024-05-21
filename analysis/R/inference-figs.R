@@ -5,7 +5,7 @@ library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
 library(ggpubr) #for ggarrange on the 4 panel FSRR plot
 library(readxl)
-source(here("analysis/R/fwd-sim.R"))
+source(here("analysis/R/tv-fwd-sim.R")) #toggle between tv and normal
 
 # read in data and fit -------------------------------------------------------------------
 HCRs <- read.csv(here("analysis/data/raw/HCRs.csv")) |>
@@ -16,7 +16,7 @@ colnames(avg_mass) <- c("year", "avg.weight", "reference")
 
 compitetors <- read.csv(here("analysis/data/raw/bio/Ruggerone_Irvine_2018_TS21.csv"))
 
-hatchery <- read_xlsx(here("analysis/data/raw/hatchery/Fraser Pink Releases 1971-2021.xlsx"),
+hatchery <- read_xlsx(here("analysis/data/raw/hatchery/Fraser Pink Releases 1955-2021.xlsx"),
                       sheet = 2) |>
   filter(STOCK_CU_NAME == "FRASER RIVER",
          RELEASE_STAGE_NAME %in% c("Fed Fry", "Unfed")) |>
@@ -35,11 +35,11 @@ colnames(brood_t) <- c("BroodYear","S_lwr","S_med","S_upr","R_lwr","R_med","R_up
 
 #SR relationship---
 spw <- seq(0,max(brood_t$S_upr),length.out=100)
-max_samples <- dim(model.pars$ln_alpha)
+max_samples <- dim(model.pars$beta)
 SR_pred <- matrix(NA,100,max_samples)
 
 for(i in 1:max_samples){
-  a <- model.pars$ln_alpha[i] #corrected here too? - it makes it go crazy
+  a <- median(model.pars$ln_alpha[i,]) #median alpha informs SR fit
   b <- model.pars$beta[i]
   SR_pred[,i] <- (exp(a)*spw*exp(-b*spw))
 }
@@ -90,7 +90,7 @@ for(i in 1:dim(model.pars$ln_alpha)[2]){
 a_yrs <- cbind(data$year, a_yrs)
 colnames(a_yrs) <- c("brood_year", "lwr", "mid", "upr")
 
-rm(er.quant, rec.quant, spwn.quant, max_samples, percentiles, a,b, spw)
+rm(er.quant, rec.quant, spwn.quant, max_samples, a,b, spw)
 
 # INFERENCE ------------------------------------------------------------------------------
 #get DATA (not latent state) of avg run sizes for context/background section
@@ -167,7 +167,6 @@ ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
 
 my.ggsave(here("figure/hatchery-influence.png"))
 
-
 # plot HCRs ---
 p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
@@ -221,7 +220,7 @@ ggplot() +
     panel.grid.minor = element_blank(),
     legend.key.size = unit(0.4, "cm"),
     legend.title = element_text(size=9),
-    legend.text = element_text(size=8))+
+    legend.text = element_text(size=8)) +
   geom_abline(intercept = 0, slope = 1,col="dark grey")
 
 my.ggsave(here("figure/SRR.png"))
@@ -230,7 +229,7 @@ my.ggsave(here("figure/SRR.png"))
 ggplot(a_yrs) +
   geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "pink") +
   geom_line(aes(x = brood_year, y = mid), lwd = 2, color = "red") +
-  labs(title = "time varying alpha", y = "alpha (90th percentiles)", x = "brood year")
+  labs(title = "time varying alpha", y = "alpha (80th percentiles)", x = "brood year")
 
 my.ggsave(here("figure/tv-alpha.png"))
 
@@ -252,16 +251,6 @@ ggplot(resids, aes(x=year, y = mid)) +
   geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
 
 my.ggsave(here("figure/rec-resid.png"))
-
-ggplot(resids, aes(x=year, y = mid)) +
-geom_point() +
-  geom_line(lwd = 1.1) +
-  coord_cartesian(ylim=c(-2,2)) +
-  labs(x = "Return year",
-       y = "Recruitment residuals") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
 
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
@@ -297,7 +286,7 @@ d_start <- 2013
 d_end <- 2023
 
 #spawners---
-p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
+p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr, fill = HCR),alpha=0.2) +
   #draw the exsiting data
@@ -307,7 +296,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
-  geom_line(data = ind.sims, aes(x = year, y = spawners, lty = sim, color = HCR)) +
+  geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = spawners, lty = sim, color = HCR)) +
   annotate("text", x = 2021, y = benchmarks[2,1]+.4,
            label = expression(italic(paste("80%",S)[MSY])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
@@ -315,15 +304,15 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
            label = "italic(S[gen])", parse = TRUE, size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "Return year", y = "Escapement") +
+  labs(x = "", y = "Escapement") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+  scale_linetype_manual(values=c(1,2)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "none") +
   guides(lty = "none")
 
 #catch ---
-p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
+p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = C_lwr, ymax = C_upr, fill = HCR), alpha=0.2) +
   #draw the exsiting data
@@ -332,7 +321,7 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "baseline")) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
-  geom_line(data = ind.sims, aes(x = year, y = catch, lty = sim, color = HCR)) +
+  geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = d_start + 4, y = rel.catch.index+1,
            label = "catch index", size = 5) +
