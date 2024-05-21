@@ -307,7 +307,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   labs(x = "", y = "Escapement") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  scale_linetype_manual(values=c(1,2)) + #hack to get lines to stay the same since group arg is broken
+  scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "none") +
   guides(lty = "none")
 
@@ -330,7 +330,7 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   labs(x = "Return year", y = "Catch") +
   scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  scale_linetype_manual(values=c(1,1,1,1)) + #hack to get lines to stay the same since group arg is broken
+  scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
 
