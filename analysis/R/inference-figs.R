@@ -44,22 +44,25 @@ for(i in 1:max_samples){
   SR_pred[,i] <- (exp(a)*spw*exp(-b*spw))
 }
 
-SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred,c(1),quantile,probs=c(0.1,0.5,0.9),na.rm=T))))|>
+SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred, 1, quantile,probs=c(0.1,0.5,0.9), na.rm=T))))|>
   round(2)
 colnames(SR_pred) <- c("Spawn", "Rec_lwr","Rec_med","Rec_upr")
 
 #tv alpha spawner recruit relationship ---
-tv_SR_pred <- matrix(NA, dim = (length(spw), model.pars$ln_alpha[,i], max_samples))
+tv_SR_pred <- array(NA, dim = c(length(spw), ncol(model.pars$ln_alpha), max_samples))
+tv_SR_summary <- NULL
 
 for(i in 1:ncol(model.pars$ln_alpha)){
   ln_alpha_yr <- model.pars$ln_alpha[,i]
   for(j in 1:max_samples){
     a <- model.pars$ln_alpha[j,i]
     b <- model.pars$beta[j]
-    pred <- data.frame(SR.pred = (exp(a)*spw*exp(-b*spw)),
-                       year = rep(data$year[i], 100))
+    tv_SR_pred[,i,j] <- (exp(a)*spw*exp(-b*spw))
   }
+  tv_SR_summary <- rbind(tv_SR_summary, as.data.frame(cbind(rep(data$year[i], length(spw)), spw)) |>
+    cbind(as.data.frame(t(apply(tv_SR_pred[,i,], 1, quantile, probs = c(0.1, 0.5, 0.9))))))
 }
+colnames(tv_SR_summary) <- c("year", "Spawn", "Rec_lwr", "Rec_mid", "Rec_upr")
 
 #create spawner & esc df --- #should map() these...
 spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
@@ -225,7 +228,8 @@ ggplot() +
                  color=BroodYear),
              size = 3)+
   coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  scale_colour_viridis_c(name = "Brood Year")+
+  scale_colour_viridis_c(name = "Brood Year",
+                         labels = c("1961", "'81", "'01", "'21"))+
   labs(x = "Spawners (millions)",
       y = "Recruits (millions)") +
   theme(legend.position = "bottom",
@@ -265,6 +269,33 @@ ggplot(resids, aes(x=year, y = mid)) +
 
 my.ggsave(here("figure/rec-resid.png"))
 
+# then time varying alphas in the SR relationship ---
+ggplot() +
+  geom_line(data = tv_SR_summary, aes(x = Spawn, y = Rec_mid, color=year, group = year)) +
+  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
+                colour="grey", width=0, size=0.3) +
+  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
+                 height=0, colour = "grey", size = 0.3) +
+  geom_point(data = brood_t,
+             aes(x = S_med,
+                 y = R_med,
+                 color=BroodYear)) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  scale_colour_viridis_c(name = "Brood Year",
+                         labels = c("1961", "'81", "'01", "'21"))+
+  labs(x = "Spawners (millions)",
+       y = "Recruits (millions)") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.key.size = unit(0.4, "cm"),
+        legend.title = element_text(size=9),
+        legend.text = element_text(size=8)) +
+  geom_abline(intercept = 0, slope = 1,col)
+
+my.ggsave(here("figure/tv-SRR.png"))
+
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #draw data and error bars on final year
@@ -291,9 +322,23 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
 ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
 
-#plot the last 3 gens distribution of spawners and the posteriors of Sgen and Smsy
+# plot the last 3 gens distribution of spawners and the posteriors of Sgen and Smsy
+#just use full posteriors from model pars
+ggplot() +
+  geom_density(data = data.frame(model.pars$S[,33]), aes(x=model.pars.S...33.), fill = "grey", alpha = 0.2) +
+  geom_density(data = data.frame(Smsy.8.post), aes(x=Smsy.8.post), fill = "forestgreen", alpha = 0.2) +
+  geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred", alpha = 0.2)  +
+  annotate("text", x = 6, y = 0.1,
+           label = expression(italic(paste("80%",S)[MSY])), size = 5, color = "forestgreen") +
+  annotate("text", x = 2.5, y = 0.1,
+           label = "italic(S[gen])", parse = TRUE, size = 5, color = "darkred") +
+  annotate("text", x = 9.5, y = 0.1,
+           label = "italic(S[23])", parse = TRUE, size = 5) +
+  coord_cartesian(xlim=c(0,18)) +
+  labs(y = "Posterior density", x = "Spawners",
+       title = "Recent spawner distribution relative to benchmarks")
 
-#plot fwd sims of spawners & catch ---
+  #plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
 d_start <- 2013
 d_end <- 2023
