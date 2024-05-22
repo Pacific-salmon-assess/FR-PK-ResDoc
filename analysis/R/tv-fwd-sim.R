@@ -52,6 +52,11 @@ for(i in 1:1000){
 }
 
 bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
+
+#get some "posteriors" for plotting later
+Smsy.8.post <- bench[,2]
+Sgen.post <- bench[,1]
+
 bench.quant <- apply(bench, 2, quantile, probs=c(0.1,0.5,0.9), na.rm=T) |>
   t()
 
