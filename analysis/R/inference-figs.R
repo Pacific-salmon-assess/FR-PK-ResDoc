@@ -321,7 +321,6 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
 
 ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
-
 # plot the last 3 gens distribution of spawners and the posteriors of Sgen and Smsy
 #just use full posteriors from model pars
 ggplot() +
@@ -338,7 +337,9 @@ ggplot() +
   labs(y = "Posterior density", x = "Spawners",
        title = "Recent spawner distribution relative to benchmarks")
 
-  #plot fwd sims of spawners & catch ---
+my.ggsave(here("figure/recent-status.png"))
+
+#plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
 d_start <- 2013
 d_end <- 2023
