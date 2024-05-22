@@ -33,10 +33,10 @@ brood_t <- as.data.frame(cbind(data$year[1:32],t(spwn.quant), t(rec.quant))) |>
   round(2)
 colnames(brood_t) <- c("BroodYear","S_lwr","S_med","S_upr","R_lwr","R_med","R_upr")
 
-#SR relationship---
+#SR relationship based on median alpha ---
 spw <- seq(0,max(brood_t$S_upr),length.out=100)
 max_samples <- dim(model.pars$beta)
-SR_pred <- matrix(NA,100,max_samples)
+SR_pred <- matrix(NA,length(spw),max_samples)
 
 for(i in 1:max_samples){
   a <- median(model.pars$ln_alpha[i,]) #median alpha informs SR fit
@@ -47,6 +47,19 @@ for(i in 1:max_samples){
 SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred,c(1),quantile,probs=c(0.1,0.5,0.9),na.rm=T))))|>
   round(2)
 colnames(SR_pred) <- c("Spawn", "Rec_lwr","Rec_med","Rec_upr")
+
+#tv alpha spawner recruit relationship ---
+tv_SR_pred <- matrix(NA, dim = (length(spw), model.pars$ln_alpha[,i], max_samples))
+
+for(i in 1:ncol(model.pars$ln_alpha)){
+  ln_alpha_yr <- model.pars$ln_alpha[,i]
+  for(j in 1:max_samples){
+    a <- model.pars$ln_alpha[j,i]
+    b <- model.pars$beta[j]
+    pred <- data.frame(SR.pred = (exp(a)*spw*exp(-b*spw)),
+                       year = rep(data$year[i], 100))
+  }
+}
 
 #create spawner & esc df --- #should map() these...
 spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))

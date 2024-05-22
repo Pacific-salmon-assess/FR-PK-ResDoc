@@ -305,9 +305,9 @@ perf.metrics <- perf.metrics |>
 write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"))
 
 #take the trash out --
-rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant, HCR,
-   HCRs, i,j,k,last.S, last.yr, sub.data, n.sims, post_HCR, r, R, S, sigma_R_corr,
+rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
+   HCR, HCRs, i,j,k,last.S, last.yr, sub.data, n.sims, post_HCR, r, R, S, sigma_R_corr,
    sim.gens, states, below.Sgen, sub.pars, U, last.yr.ind, above.Smsy.8, over.Smsy.8,
    sub.Sgen, under.Sgen, par.quants, par.summary, pars, sub, scenario, scenarios,
-   alpha.summary, other.par.summary, single.sim, sub_sub, b, l, low.a.beta, low.a.ln.alpha,
-   low.a.rows, low.a.sigma_R_corr, mean, percentiles, r.2, sub.Smsy.8)
+   alpha.summary, other.par.summary, single.sim, sub_sub, b, l, low.a.beta,
+   low.a.ln.alpha, low.a.rows, low.a.sigma_R_corr, mean, percentiles, r.2, sub.Smsy.8)
