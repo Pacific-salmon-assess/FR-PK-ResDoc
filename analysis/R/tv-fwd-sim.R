@@ -14,9 +14,6 @@ data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv")) |>
 stan.fit <- readRDS(here("analysis/data/generated/SS-SR-TV-alpha.stan.fit.rds"))
 model.pars <- rstan::extract(stan.fit)
 
-for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize))
-
 # calc forecast error ---
   #using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
