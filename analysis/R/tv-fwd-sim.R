@@ -42,7 +42,7 @@ for(i in 1:1000){
 
   b <- model.pars$beta[r]
   bench[i,2] <- get_Smsy(ln_a, b) #S_MSY
-  bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2,bench[i,2]) #S_gen
+  bench[i,1] <- get_Sgen(exp(ln_a),b,-1,1/b*2, bench[i,2]) #S_gen
   bench[i,3] <- (1 - lambert_W0(exp(1 - ln_a))) #U_MSY
   bench[i,4] <- ln_a/b #S_eq
 }
@@ -135,7 +135,7 @@ recent.a.10th <- quantile(recent.a, .1)
 
 low.a.rows <- which(recent.a<recent.a.10th) #rows to subset later
 #overwrite low.a pop dynamics to subset later
-low.a.ln.alpha <- model.pars$ln_alpha[low.a.rows]
+low.a.ln.alpha <- recent.a[low.a.rows]
 low.a.beta <- model.pars$beta[low.a.rows]
 low.a.sigma_R_corr <- model.pars$sigma_R_corr[low.a.rows]
 
@@ -151,7 +151,7 @@ for(i in 1:length(scenarios)){
       #take a random correlated slice
       r <- sample(length(model.pars$beta), 1, replace = TRUE) #random draw
       #draw FULLY CORRELATED pars, states, and benchmarks for the sim
-      ln_alpha <- model.pars$ln_alpha[r]
+      ln_alpha <- recent.a[r]
       beta <- model.pars$beta[r]
       sigma_R_corr <- model.pars$sigma_R_corr[r]
       #estimate draw-specific benchmarks for relative performance measures later
