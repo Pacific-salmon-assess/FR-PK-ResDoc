@@ -8,8 +8,7 @@ library(readxl)
 source(here("analysis/R/tv-fwd-sim.R")) #toggle between tv and normal
 
 # read in data and fit -------------------------------------------------------------------
-HCRs <- read.csv(here("analysis/data/raw/HCRs.csv")) |>
-  filter(HCR != "alt.TAM.upper")
+HCRs <- read.csv(here("analysis/data/raw/HCRs.csv"))
 
 avg_mass <- read.csv(here("analysis/data/raw/bio/HistoricalPinkWeightDownload.csv"))
 colnames(avg_mass) <- c("year", "avg.weight", "reference")
@@ -184,7 +183,7 @@ ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
 my.ggsave(here("figure/hatchery-influence.png"))
 
 # plot HCRs ---
-p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = HCR)) +
+p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
   geom_vline(xintercept = R.Smsy.8) +
   annotate("text", x = R.Smsy.8+1.5, y = .7,
@@ -192,7 +191,8 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
   geom_vline(xintercept = Sgen) +
   annotate("text", x = Sgen+1, y = .7,
            label = "italic(S[gen])", parse = TRUE) +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  #scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  scale_color_viridis_d() +
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target ER") +
@@ -200,9 +200,10 @@ p1 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=ER, color = H
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
-p2 <- ggplot(filter(HCRs, HCR!="alt.TAM.lower"), aes(x=run_size, y=esc_goal, color = HCR)) +
+p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  #scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  scale_color_viridis_d() +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
@@ -244,8 +245,8 @@ my.ggsave(here("figure/SRR.png"))
 
 # time varying alpha ---
 ggplot(a_yrs) +
-  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "pink") +
-  geom_line(aes(x = brood_year, y = mid), lwd = 2, color = "red") +
+  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
+  geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
   labs(title = "time varying alpha", y = "alpha (80th percentiles)", x = "brood year")
 
 my.ggsave(here("figure/tv-alpha.png"))
@@ -325,8 +326,10 @@ ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 #just use full posteriors from model pars
 ggplot() +
   geom_density(data = data.frame(model.pars$S[,33]), aes(x=model.pars.S...33.), fill = "grey", alpha = 0.2) +
-  geom_density(data = data.frame(Smsy.8.post), aes(x=Smsy.8.post), fill = "forestgreen", alpha = 0.2) +
-  geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred", alpha = 0.2)  +
+  geom_density(data = data.frame(Smsy.8.post), aes(x=Smsy.8.post), fill = "forestgreen",
+               alpha = 0.2, color = "forestgreen") +
+  geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred",
+               alpha = 0.2, color = "darkred")  +
   annotate("text", x = 6, y = 0.1,
            label = expression(italic(paste("80%",S)[MSY])), size = 5, color = "forestgreen") +
   annotate("text", x = 2.5, y = 0.1,
@@ -355,7 +358,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
-  geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = spawners, lty = sim, color = HCR)) +
+  #geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = spawners, lty = sim, color = HCR)) +
   annotate("text", x = 2021, y = benchmarks[2,1]+.4,
            label = expression(italic(paste("80%",S)[MSY])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
@@ -364,8 +367,10 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "", y = "Escapement") +
-  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  #scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  #scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  scale_color_viridis_d() +
+  scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "none") +
   guides(lty = "none")
@@ -380,15 +385,17 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
-  geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = catch, lty = sim, color = HCR)) +
+  #geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = d_start + 4, y = rel.catch.index+1,
            label = "catch index", size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
-  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+#  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+#  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
+  scale_color_viridis_d() +
+  scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
@@ -397,7 +404,6 @@ p <- plot_grid(p1, p2, nrow = 2) #+ draw_grob(legend) #fix to make a single lege
 
 p
 ggsave(here("figure/fwd-SC.png"), width= 9, height = 9, dpi= 180)
-
 
 # Figs for FSRR --------------------------------------------------------------------------
 # HCR and realized harvest ---
@@ -481,119 +487,3 @@ ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2,
           align = "hv", common.legend = TRUE)
 
 my.ggsave(here("figure/4-panel.png"))
-
-# make objs to read into text ------------------------------------------------------------
-model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
-model.summary.93 <- as.data.frame(rstan::summary(stan.fit.93)$summary)
-
-rm(p, p1, p2, C_df, C.quant, R_df, R.quant, resid.quant, resids)
-
-# Kalman filter time-varying productivity estimates from point estimates of S and R ----
-
-source(here("analysis/R/kalman-code.R"))
-
-# plot estimate of time varying productivity
-lnRS<- log(brood_t$R_med/brood_t$S_med)
-bt_lnRS  <- cbind(seq(1,length(lnRS)),brood_t$S_med,lnRS)
-colnames(bt_lnRS) <- c("BY", "S", "lnRS")
-
-kalman_fit <- run.kalman.Ricker(as.data.frame(bt_lnRS))
-kalman_fit$df$brood_yr <- brood_t$BroodYear
-
-ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
-  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) +
-  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
-  theme(legend.position = "none") +
-  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
-  labs(x = "Brood year",
-       y = "Intrinsic productivity") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  theme(legend.position = "none") +
-  coord_cartesian(ylim=c(0,6))
-my.ggsave(here("figure/tv-prod.png"))
-
-# plot estimate of time varying productivity with base case productivity
-
-ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
-  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) +
-  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
-  theme(legend.position = "none") +
-  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
-  geom_hline(yintercept = 3.94, col = "dark green", lwd = 1) +
-  geom_hline(yintercept = 2.99, col = "dark green", lwd = 1, lty = 2) +
-  geom_hline(yintercept = 5.05, col = "dark green", lwd = 1, lty = 2) +
-  geom_text(x = 2000, y = 4.1,
-            label = "base case scenario",
-            color = 'dark green')+
-  labs(x = "Brood year",
-       y = "Intrinsic productivity") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  theme(legend.position = "none") +
-  coord_cartesian(ylim=c(0,6))
-my.ggsave(here("figure/tv-prod-w-base.png"))
-
-# plot estimate of time varying productivity with base case productivity and low productivity
-
-ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
-  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) +
-  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
-  theme(legend.position = "none") +
-  geom_abline(intercept = 1, slope = 0 ,col="dark grey", lty=2) +
-  geom_hline(yintercept = 3.94, col = "dark green", lwd = 1) +
-  geom_hline(yintercept = 2.99, col = "dark green", lwd = 1, lty = 2) +
-  geom_hline(yintercept = 5.05, col = "dark green", lwd = 1, lty = 2) +
-  geom_text(x = 2000, y = 4.1,
-            label = "base case scenario",
-            color = 'dark green')+
-  geom_hline(yintercept = 2.77, col = "dark red", lwd = 1) +
-  geom_hline(yintercept = 2.37, col = "dark red", lwd = 1, lty = 2) +
-  geom_hline(yintercept = 2.94, col = "dark red", lwd = 1, lty = 2) +
-  geom_text(x = 1975, y = 2.65,
-            label = "low productivity scenario",
-            color = 'dark red')+
-  geom_text(x = 1972, y = 1.2,
-            label = "replacement",
-            color = 'grey')+
-  labs(x = "Brood year",
-       y = "Intrinsic productivity") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  theme(legend.position = "none") +
-
-  coord_cartesian(ylim=c(0,6))
-my.ggsave(here("figure/tv-prod-w-base-and-low.png"))
-
-
-# plot recruitment residuals + time-varying productivity
-resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
-
-resids <- as.data.frame(cbind(data$year[1:33], t(resid.quant)))
-colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
-
-a <- ggplot(resids, aes(x=year, y = mid)) +
-  geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) +
-  geom_line(lwd = 1.1) +
-  coord_cartesian(ylim=c(-2,2)) +
-  labs(x = "Return year",
-       y = "Recruitment residuals") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
-
-b <- ggplot(kalman_fit$df, aes(x=brood_yr, y = exp(a.smooth) ), show.legend = F) +
-  geom_line(show.legend = F, color = rgb(1,0,0, alpha=0.4), lwd = 1.5) +
-  geom_ribbon(aes(ymin = exp(a.smooth-(a.smooth.var*6)), ymax = exp(a.smooth+(a.smooth.var*6))), show.legend = F, fill = rgb(1,0,0, alpha=0.2)) +
-  labs(x = "Brood year",
-       y = "Intrinsic productivity") +
-  theme(legend.position = "none",
-        panel.grid = element_blank()) +
-  theme(legend.position = "none") +
-  coord_cartesian(ylim=c(0,6))
-
-pp <- plot_grid(a, b, ncol = 2) #+ draw_grob(legend) #fix to make a single legend?
-
-pp
-my.ggsave.long(here("figure/rec-resid-tv-prod.png"))
