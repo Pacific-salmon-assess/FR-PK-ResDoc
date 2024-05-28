@@ -15,9 +15,8 @@ stan.fit <- readRDS(here("analysis/data/generated/SS-SR-TV-alpha.stan.fit.rds"))
 model.pars <- rstan::extract(stan.fit)
 
 # calc forecast error ---
-  #using mean absolute percent error approach (MAPE)
 for.error <- read.csv(here("analysis/data/raw/PinkSalmonPrediction&ObservationDataFile(from Merran).csv")) |>
-  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize))
+  mutate(error = (abs(PreSeasonForecast-FinalRunSize)/FinalRunSize)) #by year
 
 if(FALSE){ #check trends and distribution of error
   ggplot(for.error, aes(YearX, error)) +
@@ -31,7 +30,7 @@ if(FALSE){ #check trends and distribution of error
 
 for.error <- for.error |>
   pull(error) |>
-  mean()
+  mean() #mean of annual means (MAPE)
 
 # get benchmarks & pars ------------------------------------------------------------------
 bench <- matrix(NA,1000,4,
@@ -48,16 +47,17 @@ for(i in 1:1000){
   bench[i,4] <- ln_a/b #S_eq
 }
 
-bench[,2] <- bench[,2]*0.8 #correct to 80% Smsy
+bench[,2] <- bench[,2]*0.8 #make it 80% Smsy
 
 #get some "posteriors" for plotting later
+  #quotes because it's 1000 random not 4000; will generate the same plot...
 Smsy.8.post <- bench[,2]
 Sgen.post <- bench[,1]
 
 bench.quant <- apply(bench, 2, quantile, probs=c(0.1,0.5,0.9), na.rm=T) |>
   t()
 
-mean <- apply(bench,2,mean, na.rm=T)
+mean <- apply(bench,2,mean, na.rm=T) #get means of each
 
 benchmarks <- cbind(bench.quant, mean) |>
   as.data.frame() |>
@@ -304,4 +304,5 @@ rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.
    sim.gens, states, below.Sgen, U, last.yr.ind, above.Smsy.8, over.Smsy.8, catch.index,
    sub.Sgen, under.Sgen, par.quants, par.summary, pars, sub, scenario, scenarios,
    other.par.summary, single.sim, sub_sub, b, l, low.a.beta, low.a.ln.alpha, low.a.rows,
-   low.a.sigma_R_corr, mean, percentiles, r.2, sub.Smsy.8)
+   low.a.sigma_R_corr, mean, percentiles, r.2, sub.Smsy.8, stan.fit, recent.a, sub.Smsy,
+   yrs)
