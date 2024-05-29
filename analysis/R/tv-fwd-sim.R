@@ -126,7 +126,7 @@ n.sims <- 1000
 states <- c("R", "S", "C", "U", "under_Sgen", "over_Smsy") #don't THINK I need to track residual?
 last.yr.ind <- ncol(model.pars$lnR) #index the last year of data
 scenarios <- c("base", "low_prod")
-HCRs <- c("current", "PA_alt", "dynamic", "no_fishing")
+HCRs <- c("current", "PA_alt", "no_fishing")
 OU.CV <- 0.1 #assumed outcome uncertainty, did forecast error earlier
 
 #subset posterior for low productivity
@@ -138,8 +138,6 @@ low.a.rows <- which(recent.a<recent.a.10th) #rows to subset later
 low.a.ln.alpha <- recent.a[low.a.rows]
 low.a.beta <- model.pars$beta[low.a.rows]
 low.a.sigma_R_corr <- model.pars$sigma_R_corr[low.a.rows]
-
-recent.Umsy <- median(1 - lambert_W0(exp(1 - recent.a))) #for dynamic HCR
 
 fwd.states <- array(NA, dim = c(length(scenarios), length(HCRs), n.sims, sim.gens, length(states)))
 
@@ -175,14 +173,12 @@ for(i in 1:length(scenarios)){
       for(l in 2:sim.gens){
         #forward estimate recruits
         last.S <- fwd.states[i,j,k,l-1,2]
-        R <- exp(ln_alpha)*last.S*exp(-beta*last.S+log(sigma_R_corr)) #predict R
+        R <- exp(ln_alpha)*last.S*exp(-beta*last.S+sigma_R_corr) #predict R
         R <- R*rlnorm(1, 0, for.error) #add forecast error
         #then apply the HCR
         if(HCR == "current"){post_HCR <- current_HCR(R, OU=1+rnorm(1, 0, OU.CV))}
         if(HCR == "PA_alt"){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
                                                 Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=Umsy)}
-        if(HCR == "dynamic"){post_HCR <- PA_HCR(R, OU=1+rnorm(1, 0, OU.CV),
-                                                Sgen=Sgen, R.Smsy=R.Smsy.8, Umsy=recent.Umsy)}
         if(HCR == "no_fishing"){post_HCR <- c(R, 0, 0)}
         under.Sgen <- post_HCR[1] < sub.Sgen
         over.Smsy.8 <- post_HCR[1] > sub.Smsy.8
@@ -191,8 +187,9 @@ for(i in 1:length(scenarios)){
     }
   }
 }
+fwd.states[i,j,5,,]
 
-# pull some individual sims for plotting...
+# pull some random individual sims for plotting...
 ind.sims <- NULL
 
 for(i in 1:length(scenarios)){

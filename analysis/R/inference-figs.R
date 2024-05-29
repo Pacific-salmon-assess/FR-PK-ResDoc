@@ -146,21 +146,7 @@ ggplot(catch_esc, aes(x = year, y = n)) +
 
 my.ggsave(here("figure/catch-esc.png"))
 
-#plot avg mass through time---
-if(FALSE){
-  #can't figure out how to scale these using line and bar graph.
-  #Can't set limits easily with 2 axes. I get we want to spread the line but not sure how.
-  rescale <- function(x) (x-0)/(max(x) - 0) * max(compitetors$n_pink)
-  rescale(avg_mass$avg.weight)
-
-  ggplot(avg_mass, aes(year, rescale(avg.weight))) +
-    geom_col(data = compitetors, aes(x = return_yr, y = n_pink), fill = "pink", color = "pink") +
-    geom_line() +
-    geom_point() +
-    #scale_y_continuous(sec.axis = sec_axis(~.*200, name = "N. Pacific Pink abundance (millions)")) +
-    labs(x = "Year", y = "Average body mass (kg)")
-}
-
+# average body mass and competitors ---
 ggplot(avg_mass, aes(year, avg.weight)) +
   geom_col(data = compitetors, aes(x = return_yr, y = n_pink/200), fill = "pink", color = "pink") +
   geom_line() +
@@ -174,6 +160,7 @@ my.ggsave(here("figure/avg-mass.png"))
 ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   geom_point() +
   geom_line() +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   theme(legend.position = "bottom") +
   guides(color=guide_legend(title="release stage")) +
   labs(title = "Fraser Pink Hatchery Contribution",
@@ -191,8 +178,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   geom_vline(xintercept = Sgen) +
   annotate("text", x = Sgen+1, y = .7,
            label = "italic(S[gen])", parse = TRUE) +
-  #scale_color_manual(values = c("#E69F00", "#0072B2")) +
-  scale_color_viridis_d() +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target ER") +
@@ -202,8 +188,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  #scale_color_manual(values = c("#E69F00", "#0072B2")) +
-  scale_color_viridis_d() +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
@@ -269,64 +254,6 @@ ggplot(resids, aes(x=year, y = mid)) +
 
 my.ggsave(here("figure/rec-resid.png"))
 
-# then time varying alphas in the SR relationship ---
-ggplot() +
-  geom_line(data = tv_SR_summary, aes(x = Spawn, y = Rec_mid, color=year, group = year)) +
-  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
-                colour="grey", width=0, size=0.3) +
-  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
-                 height=0, colour = "grey", size = 0.3) +
-  geom_point(data = brood_t,
-             aes(x = S_med,
-                 y = R_med,
-                 color=BroodYear)) +
-  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  scale_colour_viridis_c(name = "Brood Year",
-                         labels = c("1961", "'81", "'01", "'21"))+
-  labs(x = "Spawners (millions)",
-       y = "Recruits (millions)") +
-  theme(legend.position = "bottom",
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        legend.key.size = unit(0.4, "cm"),
-        legend.title = element_text(size=9),
-        legend.text = element_text(size=8)) +
-  geom_abline(intercept = 0, slope = 1,col)
-
-my.ggsave(here("figure/tv-SRR.png"))
-
-# most recent year's SRR
-ggplot() +
-  geom_abline(intercept = 0, slope = 1,col) +
-  geom_ribbon(data = filter(tv_SR_summary, year == max(data$year)),
-              aes(x = Spawn, ymin = Rec_lwr, ymax = Rec_upr),
-              fill = "grey80", alpha=0.5, linetype=2, colour="gray46")+
-  geom_line(data = filter(tv_SR_summary, year == max(data$year)),
-            aes(x = Spawn, y = Rec_mid), size = 1) +
-  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
-                colour="grey", width=0, size=0.3) +
-  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
-                 height=0, colour = "grey", size = 0.3) +
-  geom_point(data = brood_t,
-             aes(x = S_med,
-                 y = R_med,
-                 color=BroodYear)) +
-  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  scale_colour_viridis_c(name = "Brood Year",
-                         labels = c("1961", "'81", "'01", "'21"))+
-  labs(x = "Spawners (millions)",
-       y = "Recruits (millions)") +
-  theme(legend.position = "bottom",
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        legend.key.size = unit(0.4, "cm"),
-        legend.title = element_text(size=9),
-        legend.text = element_text(size=8))
-
-my.ggsave(here("figure/recent-tv-SRR.png"))
-
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #draw data and error bars on final year
@@ -347,7 +274,7 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
 
 ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 
-# plot the last 3 gens distribution of spawners and the posteriors of Sgen and Smsy
+# plot the last distribution of spawners and the posteriors of Sgen and Smsy
 #just use full posteriors from model pars
 ggplot() +
   geom_density(data = data.frame(model.pars$S[,33]), aes(x=model.pars.S...33.), fill = "grey", alpha = 0.2) +
@@ -383,17 +310,14 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
-  #geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = spawners, lty = sim, color = HCR)) +
-  annotate("text", x = 2021, y = benchmarks[2,1]+.4,
+  annotate("text", x = 2016, y = benchmarks[2,1]+2.5,
            label = expression(italic(paste("80%",S)[MSY])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
-  annotate("text", x = 2021, y = 2.2,
+  annotate("text", x = 2019, y = 4.2,
            label = "italic(S[gen])", parse = TRUE, size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "", y = "Escapement") +
-  #scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-  #scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_color_viridis_d() +
   scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
@@ -410,15 +334,12 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_ribbon(data = filter(C_df, year >=d_start, year <= d_end),
               aes(x = year, ymin = lwr, ymax = upr), fill = "black", alpha=0.2) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
-  #geom_line(data = filter(ind.sims, scenario == "base"), aes(x = year, y = catch, lty = sim, color = HCR)) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
-  annotate("text", x = d_start + 4, y = rel.catch.index+1,
+  annotate("text", x = 2016, y = rel.catch.index+2.5,
            label = "catch index", size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
-#  scale_color_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
-#  scale_fill_manual(values = c("#E69F00", "#0072B2"), name = "HCR") +
   scale_color_viridis_d() +
   scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
@@ -445,7 +366,7 @@ ggplot(filter(HCRs, HCR=="current")) +
 
 my.ggsave(here("figure/realized-HCR.png"))
 
-# fig for AMH's FSRR ---
+# fig for AMH's FSRR ---------------------------------------------------------------------
 ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr),alpha=0.2) +
@@ -512,3 +433,63 @@ ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2,
           align = "hv", common.legend = TRUE)
 
 my.ggsave(here("figure/4-panel.png"))
+
+
+#misc figs - appendix? -------------------------------------------------------------------
+# then time varying alphas in the SR relationship ---
+ggplot() +
+  geom_line(data = tv_SR_summary, aes(x = Spawn, y = Rec_mid, color=year, group = year)) +
+  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
+                colour="grey", width=0, size=0.3) +
+  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
+                 height=0, colour = "grey", size = 0.3) +
+  geom_point(data = brood_t,
+             aes(x = S_med,
+                 y = R_med,
+                 color=BroodYear)) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  scale_colour_viridis_c(name = "Brood Year",
+                         labels = c("1961", "'81", "'01", "'21"))+
+  labs(x = "Spawners (millions)",
+       y = "Recruits (millions)") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.key.size = unit(0.4, "cm"),
+        legend.title = element_text(size=9),
+        legend.text = element_text(size=8)) +
+  geom_abline(intercept = 0, slope = 1,col)
+
+my.ggsave(here("figure/tv-SRR.png"))
+
+# most recent year's SRR
+ggplot() +
+  geom_abline(intercept = 0, slope = 1,col) +
+  geom_ribbon(data = filter(tv_SR_summary, year == max(data$year)),
+              aes(x = Spawn, ymin = Rec_lwr, ymax = Rec_upr),
+              fill = "grey80", alpha=0.5, linetype=2, colour="gray46")+
+  geom_line(data = filter(tv_SR_summary, year == max(data$year)),
+            aes(x = Spawn, y = Rec_mid), size = 1) +
+  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
+                colour="grey", width=0, size=0.3) +
+  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
+                 height=0, colour = "grey", size = 0.3) +
+  geom_point(data = brood_t,
+             aes(x = S_med,
+                 y = R_med,
+                 color=BroodYear)) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  scale_colour_viridis_c(name = "Brood Year",
+                         labels = c("1961", "'81", "'01", "'21"))+
+  labs(x = "Spawners (millions)",
+       y = "Recruits (millions)") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.key.size = unit(0.4, "cm"),
+        legend.title = element_text(size=9),
+        legend.text = element_text(size=8))
+
+my.ggsave(here("figure/recent-tv-SRR.png"))
