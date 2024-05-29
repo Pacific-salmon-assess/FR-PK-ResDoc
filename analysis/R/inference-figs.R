@@ -216,9 +216,10 @@ my.ggsave(here("figure/HCRs.png"))
 
 # plot SR relationship ---
 ggplot() +
+  geom_abline(intercept = 0, slope = 1,col="dark grey") +
   geom_ribbon(data = SR_pred, aes(x = Spawn, ymin = Rec_lwr, ymax = Rec_upr),
               fill = "grey80", alpha=0.5, linetype=2, colour="gray46") +
-  geom_line(data = SR_pred, aes(x = Spawn, y = Rec_med), color="black", size = 1) +
+  geom_line(data = SR_pred, aes(x = Spawn, y = Rec_med), size = 1) +
   geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
                 colour="grey", width=0, size=0.3) +
   geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
@@ -238,9 +239,7 @@ ggplot() +
     panel.grid.minor = element_blank(),
     legend.key.size = unit(0.4, "cm"),
     legend.title = element_text(size=9),
-    legend.text = element_text(size=8)) +
-  geom_abline(intercept = 0, slope = 1,col="dark grey")
-
+    legend.text = element_text(size=8))
 my.ggsave(here("figure/SRR.png"))
 
 # time varying alpha ---
@@ -297,11 +296,41 @@ ggplot() +
 
 my.ggsave(here("figure/tv-SRR.png"))
 
+# most recent year's SRR
+ggplot() +
+  geom_abline(intercept = 0, slope = 1,col) +
+  geom_ribbon(data = filter(tv_SR_summary, year == max(data$year)),
+              aes(x = Spawn, ymin = Rec_lwr, ymax = Rec_upr),
+              fill = "grey80", alpha=0.5, linetype=2, colour="gray46")+
+  geom_line(data = filter(tv_SR_summary, year == max(data$year)),
+            aes(x = Spawn, y = Rec_mid), size = 1) +
+  geom_errorbar(data = brood_t, aes(x= S_med, y = R_med, ymin = R_lwr, ymax = R_upr),
+                colour="grey", width=0, size=0.3) +
+  geom_errorbarh(data = brood_t, aes(y = R_med, xmin = S_lwr, xmax = S_upr),
+                 height=0, colour = "grey", size = 0.3) +
+  geom_point(data = brood_t,
+             aes(x = S_med,
+                 y = R_med,
+                 color=BroodYear)) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
+  scale_colour_viridis_c(name = "Brood Year",
+                         labels = c("1961", "'81", "'01", "'21"))+
+  labs(x = "Spawners (millions)",
+       y = "Recruits (millions)") +
+  theme(legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.key.size = unit(0.4, "cm"),
+        legend.title = element_text(size=9),
+        legend.text = element_text(size=8))
+
+my.ggsave(here("figure/recent-tv-SRR.png"))
+
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #draw data and error bars on final year
   geom_point(aes(color = year), size=3) +
-  #geom_path() + #if you want to connect the dots
   geom_errorbar(data = filter(kobe_df, year == max(kobe_df$year)),
                 aes(x = S_Smsy, ymin = U_Umsy_LCI, ymax = U_Umsy_UCI), width = 0) +
   geom_errorbarh(data = filter(kobe_df, year == max(kobe_df$year)),
@@ -309,10 +338,6 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #add "crosshairs"
   geom_vline(xintercept = 1, lty = 2) +
   geom_hline(yintercept = 1, lty = 2) +
-  #geom_vline(xintercept = 0.8, lty = 3) +
-  #add labels to 80% Smsy, first and last year of data
-  #annotate("text", x = 0.8, y = .4, hjust = 1,
-  #         label = expression(italic(paste("80%",S)[MSY]))) +
   geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
             aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
             hjust = 0-.2, vjust = 0-.2) +
