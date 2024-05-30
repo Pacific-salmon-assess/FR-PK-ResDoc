@@ -1,4 +1,8 @@
 # FIGURES  
+(ref:fig-hatch-cont) Number of Pink Fry released on the Fraser. Data only includes releases of fish that were manually stripped of eggs and eggs placed in holding boxes (i.e. does not include progeny of fish that naturally spawned in constructed spawning channels near hatcheries).
+```{r fig-hatch-cont, fig.cap= "(ref:fig-hatch-cont)"}
+knitr::include_graphics(here::here("figure/hatchery-influence.png"))
+```
 
 (ref:fig-catch-esc) Spawning escapement and catch from 1959 to present. Resulting exploitation rate is show in red on secondary y-axis.
 ```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
