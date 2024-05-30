@@ -194,7 +194,7 @@ ind.sims <- NULL
 
 for(i in 1:length(scenarios)){
   for(j in 1:length(HCRs)){
-    for(k in 1:2){
+    for(k in 1:2){ #can toggle number of sims here
       sub <- fwd.states[i,j,,,]
       r <- sample(n.sims, 1, replace = TRUE)
       single.sim <- sub[r,,] |>
