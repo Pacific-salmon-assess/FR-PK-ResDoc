@@ -113,9 +113,11 @@ rec_prop <- data |>
   mutate(recruits = harvest + spawn,
          ER = (harvest/recruits)*100)
 
-# what % of the last 3 gens of spawning escapement fall below Sgen or above Smsy?
-#take median of last 3 gens, see where it lies with if statements and make character vector of status.
+# what % of the last 3 gens of spawning escapement fall below Sgen or above Smsy medians?
+recent.S <- model.pars$S[,(ncol(model.pars$S)-2):ncol(model.pars$S)]
 
+recnet.S.below.Sgen <- length(which(recent.S < Sgen))/length(recent.S)
+recent.S.above.Smsy <- length(which(recent.S > Smsy.8))/length(recent.S)
 
 # FIGS & TABLES FOR RESDOC ---------------------------------------------------------------
 theme_set(theme_bw(base_size = 14))
@@ -160,12 +162,13 @@ my.ggsave(here("figure/avg-mass.png"))
 ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   geom_point() +
   geom_line() +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  scale_color_manual(values = c("#E69F00", "#0072B2"),
+                     labels = c("fed", "unfed")) +
   theme(legend.position = "bottom") +
-  guides(color=guide_legend(title="release stage")) +
+  guides(color=guide_legend(title="Release stage")) +
   labs(title = "Fraser Pink Hatchery Contribution",
-       x = "brood year",
-       y = "released fry (millions)")
+       x = "Brood year",
+       y = "Released fry (millions)")
 
 my.ggsave(here("figure/hatchery-influence.png"))
 
@@ -188,7 +191,8 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  scale_color_manual(values = c("#E69F00", "#0072B2"),
+                     labels = c("current", "PA alternate")) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
@@ -231,7 +235,7 @@ my.ggsave(here("figure/SRR.png"))
 ggplot(a_yrs) +
   geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
   geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
-  labs(title = "time varying alpha", y = "alpha (80th percentiles)", x = "brood year")
+  labs(y = "Productivity (Ricker alpha 80th percentiles)", x = "Brood year")
 
 my.ggsave(here("figure/tv-alpha.png"))
 
@@ -268,7 +272,8 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
             aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
             hjust = 0-.2, vjust = 0-.2) +
-  scale_colour_viridis_c(name="Year") +
+  scale_colour_viridis_c(name="Year",
+                         labels = c("1961", "'81", "'01", "'21")) +
   labs(y="U/Umsy", x= "S/Smsy") +
   theme(legend.position = "bottom")
 
@@ -279,7 +284,7 @@ ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 ggplot() +
   geom_density(data = data.frame(model.pars$S[,33]), aes(x=model.pars.S...33.), fill = "grey", alpha = 0.2) +
   geom_density(data = data.frame(Smsy.8.post), aes(x=Smsy.8.post), fill = "forestgreen",
-               alpha = 0.2, color = "forestgreen") +
+                alpha = 0.2, color = "forestgreen") +
   geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred",
                alpha = 0.2, color = "darkred")  +
   annotate("text", x = 6, y = 0.1,
@@ -288,8 +293,10 @@ ggplot() +
            label = "italic(S[gen])", parse = TRUE, size = 5, color = "darkred") +
   annotate("text", x = 9.5, y = 0.1,
            label = "italic(S[23])", parse = TRUE, size = 5) +
+  #annotate("text", x = 9.5, y = 0.1,
+  #         label = "italic(S[19-23])", parse = TRUE, size = 5) +
   coord_cartesian(xlim=c(0,18)) +
-  labs(y = "Posterior density", x = "Spawners",
+  labs(y = "Posterior density", x = "Spawners (millions)",
        title = "Recent spawner distribution relative to benchmarks")
 
 my.ggsave(here("figure/recent-status.png"))
@@ -340,8 +347,8 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
-  scale_color_viridis_d() +
-  scale_fill_viridis_d() +
+  scale_color_viridis_d(labels = c("current", "no fishing", "PA alternate")) +
+  scale_fill_viridis_d(labels = c("current", "no fishing", "PA alternate")) +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
