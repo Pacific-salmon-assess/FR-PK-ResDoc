@@ -14,8 +14,56 @@ stan.data <- list("T" = length(data$year),
                   "pSmax_mean" = (max(data$spawn)/1000000)*.75, #Smax prior - 75% of max spawners
                   "pSmax_sig" = (max(data$spawn)/1000000)*.75)
 
-# fit model ------------------------------------------------------------------------------
-stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-tv-alpha.stan"),
+# ----------------------------------------------------------------------------------------
+# fit model AR1 model used to calc benchmarks, estimate states, etc. ---------------------
+# ----------------------------------------------------------------------------------------
+AR1.stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
+                           model_name = "SS-SR-TV-alpha",
+                           data = stan.data,
+                           chains = 4,
+                           iter = 2000,
+                           seed = 1,
+                           thin = 1,
+                           control = list(adapt_delta = 0.99, max_treedepth = 20))
+
+#shinystan::launch_shinystan(AR1.stan.fit) #there if ya want it...
+saveRDS(AR1.stan.fit, file=here("analysis/data/generated/AR1-SS-SR.stan.fit.rds"))
+
+# basic diagnostics ----------------------------------------------------------------------
+AR1.model.summary <- as.data.frame(rstan::summary(AR1.stan.fit)$summary)
+
+# Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
+# values at zero can be ignored as these are unsampled parameters.
+min(AR1.model.summary$n_eff, na.rm = TRUE)/2000
+ggplot(AR1.model.summary, aes(n_eff/2000)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x = "ESS/iter") +
+  theme_minimal()
+
+# If chains have not mixed well (i.e., the between- and within-chain estimates don't agree),
+# R-hat is > 1. Only use the sample if R-hat is less than 1.05.
+ggplot(AR1.model.summary, aes(Rhat)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x =  expression(hat("R"))) +
+  theme_minimal()
+
+max(AR1.model.summary$Rhat, na.rm = T)
+
+# check the chains directly
+mcmc_combo(AR1.stan.fit, pars = c("beta", "ln_alpha", "sigma_R_corr", "phi"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
+
+# how do correlations in lnalpha and beta posteriors look?
+pairs(AR1.stan.fit, pars = c("beta", "ln_alpha", "sigma_R_corr", "phi"))
+
+
+# ----------------------------------------------------------------------------------------
+# fit time varying alpha model used to inform biological submodel in fwd sims ------------
+# ----------------------------------------------------------------------------------------
+TV.stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-tv-alpha.stan"),
                  model_name = "SS-SR-TV-alpha",
                  data = stan.data,
                  chains = 4,
@@ -24,16 +72,15 @@ stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-tv-alpha.stan"),
                  thin = 1,
                  control = list(adapt_delta = 0.99, max_treedepth = 20))
 
-#shinystan::launch_shinystan(stan.fit)
-saveRDS(stan.fit, file=here("analysis/data/generated/SS-SR-TV-alpha.stan.fit.rds"))
+saveRDS(TV.stan.fit, file=here("analysis/data/generated/TV-alpha-SS-SR.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
-model.summary <- as.data.frame(rstan::summary(stan.fit)$summary)
+TV.model.summary <- as.data.frame(rstan::summary(TV.stan.fit)$summary)
 
 # Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
   # values at zero can be ignored as these are unsampled parameters.
-min(model.summary$n_eff, na.rm = TRUE)/2000
-ggplot(model.summary, aes(n_eff/2000)) +
+min(TV.model.summary$n_eff, na.rm = TRUE)/2000
+ggplot(TV.model.summary, aes(n_eff/2000)) +
   geom_histogram() +
   labs(y = "frequency",
        x = "ESS/iter") +
@@ -41,19 +88,29 @@ ggplot(model.summary, aes(n_eff/2000)) +
 
 # If chains have not mixed well (i.e., the between- and within-chain estimates don't agree),
   # R-hat is > 1. Only use the sample if R-hat is less than 1.05.
-ggplot(model.summary, aes(Rhat)) +
+ggplot(TV.model.summary, aes(Rhat)) +
   geom_histogram() +
   labs(y = "frequency",
        x =  expression(hat("R"))) +
   theme_minimal()
 
-max(model.summary$Rhat, na.rm = T)
+max(TV.model.summary$Rhat, na.rm = T)
 
 # check the chains directly
-mcmc_combo(stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
+mcmc_combo(TV.stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 #want to see alpha but theres 33 of them...
 
 # how do correlations in lnalpha and beta posteriors look?
-pairs(stan.fit, pars = c("beta", "ln_alpha0",  "sigma_R", "sigma_alpha"))
+pairs(TV.stan.fit, pars = c("beta", "ln_alpha0",  "sigma_R", "sigma_alpha"))
+
+#how do parms compare to old AR1 fit?
+model.pars.AR1 <- rstan::extract(AR1.stan.fit)
+model.pars.TV <- rstan::extract(TV.stan.fit)
+
+median(model.pars.AR1$ln_alpha)
+median(model.pars.TV$ln_alpha)
+
+median(model.pars.AR1$beta)
+median(model.pars.TV$beta)
