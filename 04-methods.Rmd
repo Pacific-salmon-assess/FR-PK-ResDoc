@@ -31,27 +31,24 @@ State-space spawner-recruitment models tend to generate less biased estimates of
 
 The process model is intended to represent the true population dynamics (i.e., free of measurement error).
 This component of our state-space spawner-recruitment model specifies productivity and density-dependence.
-Recruitment abundances of adult Pinks ($R_y$) were treated as unobserved states and modeled as a function of spawner abundance in year $y$ ($S_y$) assuming a @rickerStockRecruitment1954 spawner-recruitment relationship with time-varying productivity.
-We chose to fit a Ricker so we could capture any over-compensation at high spawner abundances, and to make productivity time varying in hopes to capture signals from recolonization events in freshwater and evidence of competition in the marine environment.
-The model took the form:
+Recruitment abundances of adult Pinks ($R_y$) were treated as unobserved states and modeled as a function of spawner abundance in year $y$ ($S_y$) assuming a @rickerStockRecruitment1954 spawner-recruitment relationship with serially auto-correlated log-normal process variation:  
 
 \begin{equation}
-\ln(R_y) = \ln(S_y) + \ln(\alpha) - \beta S_y + \sigma_R
-\label{eq:ricker}
+\ln(R_y) = \ln(S_y) + \ln(\alpha) - \beta S_y + v_y
+\label{eq:AR1-ricker}
 \end{equation}
 
-where $\alpha$ is productivity (intrinsic rate of growth), $\beta$ is the magnitude of within brood year density-dependent effects, and $\sigma_R$ reflects inter-annual variation in survival from egg to adulthood, which we term "recruitment anomalies".
-The $\alpha$ parameter evolves through time where:
+where $\alpha$ is productivity (intrinsic rate of growth), $\beta$ is the magnitude of within brood year density-dependent effects, and $v_y$ reflects inter-annual variation in survival from egg to adulthood, which we term "recruitment anomalies".
+This variation was assumed to follow a lag-1 autoregressive process (correlation coefficient denoted by $\phi$) over time:
 
 \begin{equation}
 \begin{aligned}
-\alpha_y &= \alpha{y-1} + \varepsilon_y \\
+v_y &= \phi v_{y-1} + \varepsilon_y \\
 \varepsilon_y &\sim \mathcal{N}(0, \sigma_R)
 \end{aligned}
-\label{eq:tv-alpha}
+\label{eq:AR1}
 \end{equation}
 
-**EDIT**
 where $\varepsilon_y$ reflects the portion of the recruitment anomaly $v_y$ that is temporally independent (i.e., white noise).
 The first year of recruitment was not linked to observations of spawner abundance in the spawner-recruitment relationship (Eqn. \@ref(eq:ricker)) and were modeled as random draws from a log-normal distribution with mean $\ln(R_0)$ and standard deviation $\sigma_{R}^2$.
 Rather than estimating $\ln(R_0)$ as a free parameter as in @fleischmanAgestructuredStatespaceStock2013, we choose to follow @statonEvaluationMethodsSpawner2020 and inform its value using the expected recruitment under equilibrium unfished conditions $\ln(\alpha)/\beta$.
@@ -138,14 +135,28 @@ S_{eq} = ln(\alpha)/\beta
 
 ## CLOSED-LOOP SIMULATION MODEL   
 
-We developed a simple closed loop forward simulation, conditioned on our estimates of historical spawner abundance, intrinsic productivity, carrying capacity, and temporal variation in survival, illustrated in Figure  \@ref(fig:fig-schematic). 
-We used this simulation to project the Fraser Pink stock forward in time and evaluate the biological and fishery performance of the current, and an illustrative alternative, HCR. 
+We developed a simple closed loop forward simulation, conditioned on our estimates of historical spawner abundance, and biological benchmarks illustrated in Figure  \@ref(fig:fig-schematic). 
+We used this simulation to project the Fraser Pink stock forward in time and evaluate the biological and fishery performance of the current, and an illustrative alternative HCR. 
 Details on model components and calculation of performance are provided below.   
 
 
 ### BIOLOGICAL SUB-MODEL  
 
-We simulated future stock trajectories by iterating the process model in equations\@ref(eq:ricker)-\@ref(eq:AR1) forward in time for five Pink salmon generations (10 years), thereby generating a posterior predictive distribution of future states, conditioned on the historical data. 
+We chose to model population dynamics with time-varying productivity, rather than the stationary model used above to estimate benchmarks. 
+Changes in productivity within the 66 year time series could have arose from processes outlined in the ecosystem and climate section above. 
+Time-varying models can have issues with "chasing noise" and incorrectly estimating benchmarks, but are useful when trying to describe current dynamics (**cite Holt et al in prep?**). 
+We used a very similar model as used to estimate benchmarks, but removed the AR1 recruitment residuals in equations \@ref(eq:AR1-ricker) and \@ref(eq:AR1), then allowed the Ricker $\alpha$ parameter to evolve as a random walk, yielding annual estimates of productivity: 
+
+\begin{equation}
+\begin{aligned}
+\alpha_y &= \alpha_{y-1} + \varepsilon_y \\
+\varepsilon_y &\sim \mathcal{N}(0, \sigma_\alpha)
+\end{aligned}
+\label{eq:tv-alpha}
+\end{equation}
+
+We simulated future stock trajectories by iterating the process model forward in time for five Pink salmon generations (10 years), thereby generating a posterior predictive distribution of future states, conditioned on the historical data. 
+
 We used the median of the previous three generations of the $\alpha$ parameter when simulating forward to reflect current estimates of productivity. 
 This was done 1000 times to ensure that uncertainty in the spawner-recruitment relationships was propagated (i.e., by drawing for the joint posterior distributions of estimated parameters in each iteration of the simulation). 
  
@@ -153,7 +164,7 @@ This was done 1000 times to ensure that uncertainty in the spawner-recruitment r
 ### FISHERY SUB-MODEL  
 
 In each year of the simulation, forecasted total returns of Pink salmon were assumed to be estimated with error. 
-This error was assumed to be lognormally distributed with a mean equal to the true run size and CV of 64% based on retrospective assessment of pre-season forecasts provided by the PSC for years 1987-2021. 
+This error was assumed to be lognormally distributed with a mean equal to the true run size and CV of `r round(for.error*100, 0)`% based on retrospective assessment of pre-season forecasts provided by the PSC for years 1987-2021. 
 Forecasted returns were then used as an input into the HCR that specified target exploitation given the expected run-size. 
 Outcome uncertainty (i..e., deviations from targeted catch) was then applied to calculate realized harvest and spawning escapement. 
 We assumed this outcome uncertainty was normally distributed around the target catch with a CV of `r OU.CV*100`%.  

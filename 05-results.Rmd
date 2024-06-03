@@ -2,13 +2,13 @@
 
 ## MODEL FIT AND DIAGNOSTICS  
 Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), and all had effective sample sizes > 1,500 suggesting reasonable model convergence. 
-(See Appendix A for fully reproducible analysis).  
+(See Appendix A for fully reproducible analysis, an **supplement ?** for diagnostics).  
 
 ## BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS  
 
 Posterior means, medians and 80% credible intervals for leading spawner-recruitment parameters and biological benchmarks are summarized in Table \@ref(tab:tab-bench-parms). 
 We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be `r alpha.CI[2]` (`r alpha.CI[1]`-`r alpha.CI[3]` recruits per spawner; median and 80% credible interval) and equilibrium stock size $S_{eq}$, which is a function of intrinsic productivity ($\alpha$) and the strength of within stock density dependence ($\beta$), estimated to be `r benchmarks[4,1]`m (`r benchmarks[4,2]`m-`r benchmarks[4,3]`m). 
-Recruitment anomalies were estimated to be weakly positively correlated through time () with no strong time trend, though the most recent 4 brood years were all negative. (Figure \@ref(fig:fig-rec-resid)). 
+Recruitment anomalies were estimated to be weakly positively correlated through time `r phi.CI[2]` (`phi.CI[1]`-`phi.CI[3]`) with no strong time trend, though the most recent 4 brood years were all negative. (Figure \@ref(fig:fig-rec-resid)). 
 
 As a result of relatively weak density dependence, expected yield (i.e., “surplus” production above replacement) and recruitment was relatively flat across a wide range of spawner abundances (Figure \@ref(fig:fig-SRR)).
 Nonetheless, the spawner abundance expected to maximize long-term sustainable yield ($S_{MSY}$) was estimated to be `r benchmarks[2,1]*1.25`m and so the Upper Stock Reference Point of 80% $S_{MSY}$ was `r benchmarks[2,1]`m (`r benchmarks[2,2]`m-`r benchmarks[2,3]`m). The harvest rate expected to lead to maximum sustainable yield (Eqn. \@ref(eq:get-Umsy)), or maximum Removal Reference, was estimated to be `r benchmarks[3,1]` (`r benchmarks[3,2]`-`r benchmarks[3,3]`), and lastly, the Limit Reference Point $S_{gen}$ was estimated to be `r benchmarks[1,1]`m (`r benchmarks[1,2]`m-`r benchmarks[1,3]`m).  

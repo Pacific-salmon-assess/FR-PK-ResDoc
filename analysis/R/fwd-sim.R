@@ -112,7 +112,7 @@ bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
 bench.par.table[is.na(bench.par.table)] <- ""
 
 rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
-                               "$ln_\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
+                               "$ln(\\alpha)$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
 colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "Mean",
                                "$N_{eff}$", "$\\hat{R}$")
 
@@ -287,7 +287,9 @@ for(i in 1:length(scenarios)){
 perf.metrics <- perf.metrics |>
   pivot_wider(names_from = metric, values_from = value) |>
   as.data.frame() |>
-  mutate(catch.stability = ifelse(HCR == "no_fishing", "NA", catch.stability))
+  mutate(catch.stability = ifelse(HCR == "no_fishing", "NA", catch.stability),
+         scenario = gsub("_", " ", scenario),
+         HCR = gsub("_", " ", HCR))
 
 write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"), row.names = FALSE)
 

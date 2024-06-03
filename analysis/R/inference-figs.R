@@ -5,7 +5,7 @@ library(cowplot)
 library(scales) #for pretty_breaks() on fig axes
 library(ggpubr) #for ggarrange on the 4 panel FSRR plot
 library(readxl)
-source(here("analysis/R/tv-fwd-sim.R")) #toggle between tv and normal
+source(here("analysis/R/fwd-sim.R"))
 
 # read in data and fit -------------------------------------------------------------------
 HCRs <- read.csv(here("analysis/data/raw/HCRs.csv"))
@@ -25,8 +25,8 @@ hatchery <- read_xlsx(here("analysis/data/raw/hatchery/Fraser Pink Releases 1955
 
 #WRANGLING -------------------------------------------------------------------------------
 #latent states of spawners and recruits---
-spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.5,0.9))[,1:32]
-rec.quant <- apply(model.pars$R, 2, quantile, probs=c(0.1,0.5,0.9))[,2:33]
+spwn.quant <- apply(AR1.model.pars$S, 2, quantile, probs=c(0.1,0.5,0.9))[,1:32]
+rec.quant <- apply(AR1.model.pars$R, 2, quantile, probs=c(0.1,0.5,0.9))[,2:33]
 
 brood_t <- as.data.frame(cbind(data$year[1:32],t(spwn.quant), t(rec.quant))) |>
   round(2)
@@ -34,12 +34,12 @@ colnames(brood_t) <- c("BroodYear","S_lwr","S_med","S_upr","R_lwr","R_med","R_up
 
 #SR relationship based on median alpha ---
 spw <- seq(0,max(brood_t$S_upr),length.out=100)
-max_samples <- dim(model.pars$beta)
+max_samples <- dim(AR1.model.pars$beta)
 SR_pred <- matrix(NA,length(spw),max_samples)
 
 for(i in 1:max_samples){
-  a <- median(model.pars$ln_alpha[i,]) #median alpha informs SR fit
-  b <- model.pars$beta[i]
+  a <- AR1.model.pars$ln_alpha[i] #median alpha informs SR fit
+  b <- AR1.model.pars$beta[i]
   SR_pred[,i] <- (exp(a)*spw*exp(-b*spw))
 }
 
@@ -48,14 +48,14 @@ SR_pred <- as.data.frame(cbind(spw,t(apply(SR_pred, 1, quantile,probs=c(0.1,0.5,
 colnames(SR_pred) <- c("Spawn", "Rec_lwr","Rec_med","Rec_upr")
 
 #tv alpha spawner recruit relationship ---
-tv_SR_pred <- array(NA, dim = c(length(spw), ncol(model.pars$ln_alpha), max_samples))
+tv_SR_pred <- array(NA, dim = c(length(spw), ncol(TV.model.pars$ln_alpha), max_samples))
 tv_SR_summary <- NULL
 
-for(i in 1:ncol(model.pars$ln_alpha)){
-  ln_alpha_yr <- model.pars$ln_alpha[,i]
+for(i in 1:ncol(TV.model.pars$ln_alpha)){
+  ln_alpha_yr <- TV.model.pars$ln_alpha[,i]
   for(j in 1:max_samples){
-    a <- model.pars$ln_alpha[j,i]
-    b <- model.pars$beta[j]
+    a <- TV.model.pars$ln_alpha[j,i]
+    b <- TV.model.pars$beta[j]
     tv_SR_pred[,i,j] <- (exp(a)*spw*exp(-b*spw))
   }
   tv_SR_summary <- rbind(tv_SR_summary, as.data.frame(cbind(rep(data$year[i], length(spw)), spw)) |>
@@ -64,19 +64,19 @@ for(i in 1:ncol(model.pars$ln_alpha)){
 colnames(tv_SR_summary) <- c("year", "Spawn", "Rec_lwr", "Rec_mid", "Rec_upr")
 
 #create spawner & esc df --- #should map() these...
-spwn.quant <- apply(model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
+spwn.quant <- apply(AR1.model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 spwn_df <- as.data.frame(cbind(data$year, t(spwn.quant)))
 colnames(spwn_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-er.quant <- apply(model.pars$U, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
+er.quant <- apply(AR1.model.pars$U, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 er_df <- as.data.frame(cbind(data$year, t(er.quant)))
 colnames(er_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-R.quant <- apply(model.pars$R, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
+R.quant <- apply(AR1.model.pars$R, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 R_df <- as.data.frame(cbind(data$year, t(R.quant)))
 colnames(R_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
-C.quant <- apply(model.pars$C, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
+C.quant <- apply(AR1.model.pars$C, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 C_df <- as.data.frame(cbind(data$year, t(C.quant)))
 colnames(C_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
@@ -95,11 +95,12 @@ kobe_df <- data.frame(S = spwn_df$mid,
          S_Smsy_LCI = round(S_LCI/(Smsy.8*1.25), 2),
          S_Smsy_UCI = round(S_UCI/(Smsy.8*1.25), 2))
 
+
 #get alpha through time ---
 a_yrs <- NULL
-for(i in 1:dim(model.pars$ln_alpha)[2]){
+for(i in 1:dim(TV.model.pars$ln_alpha)[2]){
   a_yrs <- rbind(a_yrs,
-                 quantile(exp(model.pars$ln_alpha[,i]), probs = c(.1, .5, .9)))
+                 quantile(exp(TV.model.pars$ln_alpha[,i]), probs = c(.1, .5, .9)))
 }
 
 a_yrs <- cbind(data$year, a_yrs)
@@ -114,7 +115,7 @@ rec_prop <- data |>
          ER = (harvest/recruits)*100)
 
 # what % of the last 3 gens of spawning escapement fall below Sgen or above Smsy medians?
-recent.S <- model.pars$S[,(ncol(model.pars$S)-2):ncol(model.pars$S)]
+recent.S <- AR1.model.pars$S[,(ncol(AR1.model.pars$S)-2):ncol(AR1.model.pars$S)]
 
 recnet.S.below.Sgen <- length(which(recent.S < Sgen))/length(recent.S)
 recent.S.above.Smsy <- length(which(recent.S > Smsy.8))/length(recent.S)
@@ -240,7 +241,7 @@ ggplot(a_yrs) +
 my.ggsave(here("figure/tv-alpha.png"))
 
 # then residuals---
-resid.quant <- apply(model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
+resid.quant <- apply(AR1.model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
 
 resids <- as.data.frame(cbind(data$year[1:33], t(resid.quant)))
 colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
@@ -282,20 +283,20 @@ ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
 # plot the last distribution of spawners and the posteriors of Sgen and Smsy
 #just use full posteriors from model pars
 ggplot() +
-  geom_density(data = data.frame(model.pars$S[,33]), aes(x=model.pars.S...33.), fill = "grey", alpha = 0.2) +
+  geom_density(data = data.frame(AR1.model.pars$S[,33]), aes(x=AR1.model.pars.S...33.), fill = "grey", alpha = 0.2) +
   geom_density(data = data.frame(Smsy.8.post), aes(x=Smsy.8.post), fill = "forestgreen",
                 alpha = 0.2, color = "forestgreen") +
   geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred",
                alpha = 0.2, color = "darkred")  +
-  annotate("text", x = 6, y = 0.1,
+  annotate("text", x = 5, y = 0.1,
            label = expression(italic(paste("80%",S)[MSY])), size = 5, color = "forestgreen") +
-  annotate("text", x = 2.5, y = 0.1,
+  annotate("text", x = 2, y = 0.1,
            label = "italic(S[gen])", parse = TRUE, size = 5, color = "darkred") +
   annotate("text", x = 9.5, y = 0.1,
            label = "italic(S[23])", parse = TRUE, size = 5) +
   #annotate("text", x = 9.5, y = 0.1,
   #         label = "italic(S[19-23])", parse = TRUE, size = 5) +
-  coord_cartesian(xlim=c(0,18)) +
+  coord_cartesian(xlim=c(0,15)) +
   labs(y = "Posterior density", x = "Spawners (millions)",
        title = "Recent spawner distribution relative to benchmarks")
 
@@ -374,7 +375,7 @@ ggplot(filter(HCRs, HCR=="current")) +
 my.ggsave(here("figure/realized-HCR.png"))
 
 # fig for AMH's FSRR ---------------------------------------------------------------------
-ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
+ggplot(data = filter(fwd.sim, scenario == "base", HCR == "current")) +
   #draw the fwd.sim
   geom_ribbon(aes(x = year, ymin = S_lwr, ymax = S_upr),alpha=0.2) +
   #draw the exsiting data
@@ -384,7 +385,8 @@ ggplot(data = filter(fwd.sim, scenario == "baseline", HCR == "current")) +
               aes(x = year, ymin = mid_lwr, ymax = mid_upr), fill = "black", alpha=0.2) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S), lwd = 1.2) +
-  geom_line(data = filter(ind.sims, HCR == "current"), aes(x = year, y = spawners, lty = sim)) +
+  geom_line(data = filter(ind.sims, scenario == "base", HCR == "current"),
+            aes(x = year, y = spawners, lty = sim)) +
   annotate("text", x = 2021, y = benchmarks[2,1]+.4,
            label = expression(italic(paste("80%",S)[MSY]))) +
   geom_hline(yintercept = benchmarks[2,1]) +
@@ -440,7 +442,6 @@ ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2,
           align = "hv", common.legend = TRUE)
 
 my.ggsave(here("figure/4-panel.png"))
-
 
 #misc figs - appendix? -------------------------------------------------------------------
 # then time varying alphas in the SR relationship ---

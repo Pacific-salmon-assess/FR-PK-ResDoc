@@ -24,7 +24,8 @@ knitr::include_graphics(here::here("figure/avg-mass.png"))
 knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 ```
 
-(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest ra80 to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
+
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
@@ -152,19 +153,22 @@ csasdown::csas_table(bench.par.table,
 (ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
 
 ```{r tab-HCR-performance, results = "asis"}
-colnames(perf.metrics) <- c("HCR", "Scenario", "\\% below $S_{gen}$", "\\% above $S_{MSY}$", 
+if(TRUE){
+  colnames(perf.metrics) <- c("HCR", "Scenario", "\\% below $S_{gen}$", "\\% above $S_{MSY}$", 
                             "Median annual catch", "Catch stability", "\\% above catch index")
   perf.metrics |>  
-  mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
-   mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
-   mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
+  #mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
+  # mutate_all(function(x){gsub("%", "\\\\%", x)}) |>
+  # mutate_all(function(x){gsub("\\\\n","\n", x)}) |>
 csasdown::csas_table(format = "latex",
                      landscape = TRUE, #broken??
            caption = "(ref:tab-HCR-performance)",
            repeat_header = TRUE,
            align = "llccccc") |>
-  kableExtra::column_spec(1:4, width = "2cm") |>
-  kableExtra::column_spec(5:7, width = "3cm")
+  kableExtra::column_spec(c(1:4,7), width = "2cm") |>
+  kableExtra::column_spec(5:6, width = "3cm")
+}
+
 
 ```
 
