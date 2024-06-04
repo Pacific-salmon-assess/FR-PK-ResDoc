@@ -98,6 +98,10 @@ model{
   }
 }
 
-//could to posterior predicitive check in generated quantities block
-  //if sampling statement is y ~ normal(x, sig), you could generate y_rep = normal_rng(x, sig)
-  // from posteriors
+//posterior predicitive check ala <https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html>
+generated quantities{
+  array[T] real lnR_rep;
+
+  lnR_rep[1] = normal_rng(mean_ln_R0, sigma_R0);
+  lnR_rep[2:T] = normal_rng(lnRm_2[2:T], sigma_R_corr);
+}
