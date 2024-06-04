@@ -18,7 +18,7 @@ stan.data <- list("T" = length(data$year),
 # fit model AR1 model used to calc benchmarks, estimate states, etc. ---------------------
 # ----------------------------------------------------------------------------------------
 AR1.stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
-                           model_name = "SS-SR-TV-alpha",
+                           model_name = "SS-SR-AR1",
                            data = stan.data,
                            chains = 4,
                            iter = 2000,
@@ -31,6 +31,15 @@ saveRDS(AR1.stan.fit, file=here("analysis/data/generated/AR1-SS-SR.stan.fit.rds"
 
 # basic diagnostics ----------------------------------------------------------------------
 AR1.model.summary <- as.data.frame(rstan::summary(AR1.stan.fit)$summary)
+model.pars.AR1 <- rstan::extract(AR1.stan.fit)
+
+#trying to plot PPC
+R <- (data$harvest+data$spawn)/1000000 #recruit data
+R_rep <- model.pars.AR1$lnR_rep[1:200,]
+
+ppc_dens_overlay(R, R_rep)
+
+
 
 # Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
 # values at zero can be ignored as these are unsampled parameters.
@@ -105,10 +114,7 @@ mcmc_combo(TV.stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
 # how do correlations in lnalpha and beta posteriors look?
 pairs(TV.stan.fit, pars = c("beta", "ln_alpha0",  "sigma_R", "sigma_alpha"))
 
-#how do parms compare to old AR1 fit?
-model.pars.AR1 <- rstan::extract(AR1.stan.fit)
-model.pars.TV <- rstan::extract(TV.stan.fit)
-
+#how do parms compare? ---
 median(model.pars.AR1$ln_alpha)
 median(model.pars.TV$ln_alpha)
 
