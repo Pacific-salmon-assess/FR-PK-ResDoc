@@ -1,0 +1,167 @@
+---
+title: "Supplement: model fits and diagnostics"
+author:   "Dylan M. Glaser, Brendan M. Connors, Kaitlyn Dionne and Ann-Marie Huang"
+output: 
+  html_document:
+    collapsed: no
+    fig_caption: yes
+    highlight: espresso
+    number_sections: yes
+    smooth_scroll: yes
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+
+---
+
+```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(here)
+library(rstan)
+library(bayesplot)
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# read data/fits ---
+data <- read.csv(here("analysis/data/raw/fr_pk_spw_har.csv"))
+AR1.stan.fit <- readRDS(here("analysis/data/generated/AR1-SS-SR.stan.fit.rds"))
+TV.stan.fit <- readRDS(here("analysis/data/generated/TV-alpha-SS-SR.stan.fit.rds"))
+S_df <- read.csv(here("analysis/data/generated/spwn_df.csv"))
+C_df <- read.csv(here("analysis/data/generated/C_df.csv"))
+
+# extract things from fits ---
+AR1.model.summary <- as.data.frame(rstan::summary(AR1.stan.fit)$summary)
+TV.model.summary <- as.data.frame(rstan::summary(TV.stan.fit)$summary)
+AR1.model.pars <- rstan::extract(AR1.stan.fit)
+TV.model.pars <- rstan::extract(TV.stan.fit)
+```
+
+
+This document describes fits from both state-space Ricker spawner-recruit models used fit in the Research Document *Estimating Precautionary Approach reference points and assessing consequences of harvest control rules for Fraser River Pink Salmon (Oncorhynchus gorbuscha)*. Two Ricker models were fit in this paper that serve different purposes. First, a Ricker model with autoregressive (AR1) recruitment residuals was fit to estimate biological benchmarks ($S_{gen}$, $S_{MSY}$, and $U_{MSY}$), then a model with time-varying productivity (Ricker $\alpha$ parameter) was fit in order to condition out biological submodel in out closed-loop forward simulation on recent population dynamics. Data and code to reproduce the analysis and report is available in this [GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main), where you can see the [R code](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R) to run the models, and the [models](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main/analysis/Stan) themselves.   
+
+# Diagnostics  
+
+We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
+We sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. 
+We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ (potential scale reduction factor; @vehtari2021rank) was less than 1.01 and that the effective sample size was greater than 400. Posterior predictive checks were used to make sure the model returned known values, by simulating new datasets and checking how similar they were to our observed data.    
+
+## AR1  
+
+### Trace plots  
+These should be clearly mixed, with no single distribution deviating from others (left column), and no chains exploring a strange space for a few iteraitons (right column).  
+```{r AR1-trace}
+mcmc_combo(AR1.stan.fit, pars = c("beta", "ln_alpha", "sigma_R_corr", "phi"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
+```
+These appear well mixed.  
+
+### $\hat{R}$  
+These should all be less than 1.01.  
+```{r AR1-Rhat}
+ggplot(AR1.model.summary, aes(Rhat)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x =  expression(hat("R"))) +
+  annotate("text", x = 1.001, y = 30, 
+           label = paste("Max =", round(max(AR1.model.summary$Rhat, na.rm = T), 4))) +
+  theme_minimal()
+```
+
+### Effective sample size  
+We want these to be greater than 0.1, or 10% of the total iterations.  
+
+```{r AR1-ESS}
+ggplot(AR1.model.summary, aes(n_eff/2000)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x = "ESS/iter") +
+    annotate("text", x = 1.001, y = 30, 
+           label = paste("Min =", round(min(AR1.model.summary$n_eff, na.rm = T)/2000, 4))) +
+  theme_minimal()
+```
+
+### Posterior predictive check  
+Here we see if the parameters return data similar to ours by using random number generation in the `generated quantities` block of our Stan models. We want the random simulations (light blue lines), to fall near the distribution of our observed data (dark blue line).  
+```{r AR1-PPC}
+R <- (data$harvest+data$spawn)/1000000 #recruit data
+R_rep <- AR1.model.pars$H_rep[1:500,] + AR1.model.pars$S_rep[1:500,] #just too 500 random draws...
+
+ppc_dens_overlay(R, R_rep) +
+  xlim(0, 70) +
+  theme(legend.position = "none") +
+  labs(y = "density", x = "y_est")
+```
+
+## Time-varying productivity 
+
+### Trace plots  
+```{r TV-trace}
+mcmc_combo(TV.stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
+           combo = c("dens_overlay", "trace"),
+           gg_theme = legend_none())
+```
+
+### $\hat{R}$  
+```{r TV-Rhat}
+ggplot(TV.model.summary, aes(Rhat)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x =  expression(hat("R"))) +
+  annotate("text", x = 1.001, y = 30, 
+           label = paste("Max =", round(max(TV.model.summary$Rhat, na.rm = T), 4))) +
+  theme_minimal()
+```
+
+### Effective sample size  
+```{r TV-ESS}
+ggplot(TV.model.summary, aes(n_eff/2000)) +
+  geom_histogram() +
+  labs(y = "frequency",
+       x = "ESS/iter") +
+    annotate("text", x = 1.001, y = 30, 
+           label = paste("Min =", round(min(TV.model.summary$n_eff, na.rm = T)/2000, 4))) +
+  theme_minimal()
+```
+
+### Posterior predictive check 
+```{r TV-PPC}
+R <- (data$harvest+data$spawn)/1000000 #recruit data
+R_rep <- TV.model.pars$H_rep[1:500,] + TV.model.pars$S_rep[1:500,] #just too 500 random draws...
+
+ppc_dens_overlay(R, R_rep) +
+  xlim(0, 70) +
+  theme(legend.position = "none") +
+  labs(y = "density", x = "y_est")
+```
+
+# Fits  
+
+We already got an understanding of the posterior distributions by looking at how chains mixed above, and if you want to look at ALL the posteriors from each model you can run the lines with the `launch_shinystan()` function in the [R code](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R). 
+
+It can also be useful to look at the data, and predictions that were made in the observation model. 
+
+```{r data-obs}
+ggplot() +
+  geom_ribbon(data = C_df, aes(x = year, ymin=lwr, ymax=upr), fill = "grey80") +
+  geom_ribbon(data = C_df, aes(x = year, ymin=mid_lwr, ymax=mid_upr), fill = "darkgrey") +
+  geom_line(data= C_df, aes(year, mid)) +
+  geom_point(data=data, aes(year, harvest/1000000), color = "red") +
+  theme_minimal() +
+  labs(title = "Catch", y = "observations", x = "year")
+
+
+ggplot() +
+  geom_ribbon(data = S_df, aes(x = year, ymin=lwr, ymax=upr), fill = "grey80") +
+  geom_ribbon(data = S_df, aes(x = year, ymin=mid_lwr, ymax=mid_upr), fill = "darkgrey") +
+  geom_line(data= S_df, aes(year, mid)) +
+  geom_point(data=data, aes(year, spawn/1000000), color = "red") +
+  theme_minimal() +
+  geom_vline(xintercept=c(1961, 1991, 2001, 2007, 2009)) +
+  labs(title = "Spawners", y = "observations", x = "year")
+```
+
+## Annual productivity  
+This figure shows deterministic fits of Ricker $\alpha$ from the time-varying model. It compliments Figure **REF** by showing what the relationships would look like each year.  
+```{r TV-a}
+knitr::include_graphics(here::here("figure/tv-SRR.png"))
+```
