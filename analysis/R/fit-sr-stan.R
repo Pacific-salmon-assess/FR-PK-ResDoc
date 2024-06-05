@@ -35,10 +35,12 @@ model.pars.AR1 <- rstan::extract(AR1.stan.fit)
 
 #trying to plot PPC
 R <- (data$harvest+data$spawn)/1000000 #recruit data
-R_rep <- model.pars.AR1$lnR_rep[1:200,]
+R_rep <- model.pars.AR1$H_rep[1:500,] + model.pars.AR1$S_rep[1:500,]
 
-ppc_dens_overlay(R, R_rep)
-
+ppc_dens_overlay(R, R_rep) +
+  xlim(0, 70) +
+  theme(legend.position = "none") +
+  labs(y = "density", x = "y_est")
 
 
 # Ideally n_eff for individual parameters are > 0.1 (i.e., 10%) of the iter
@@ -113,10 +115,3 @@ mcmc_combo(TV.stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
 
 # how do correlations in lnalpha and beta posteriors look?
 pairs(TV.stan.fit, pars = c("beta", "ln_alpha0",  "sigma_R", "sigma_alpha"))
-
-#how do parms compare? ---
-median(model.pars.AR1$ln_alpha)
-median(model.pars.TV$ln_alpha)
-
-median(model.pars.AR1$beta)
-median(model.pars.TV$beta)
