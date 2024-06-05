@@ -80,6 +80,10 @@ C.quant <- apply(AR1.model.pars$C, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 C_df <- as.data.frame(cbind(data$year, t(C.quant)))
 colnames(C_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
 
+# write these to use in model supplement later
+write.csv(spwn_df, here("analysis/data/generated/spwn_df.csv"), row.names = FALSE)
+write.csv(C_df, here("analysis/data/generated/C_df.csv"), row.names = FALSE)
+
 kobe_df <- data.frame(S = spwn_df$mid,
                       S_LCI = spwn_df$lwr,
                       S_UCI = spwn_df$upr,
