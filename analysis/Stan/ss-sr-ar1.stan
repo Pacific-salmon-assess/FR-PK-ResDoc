@@ -86,7 +86,7 @@ model{
   sigma_R0 ~ inv_gamma(2,1);
 
   // Likelihoods
-  // State model
+  // Process model
   lnR[1] ~ normal(mean_ln_R0, sigma_R0);
   lnR[2:T] ~ normal(lnRm_2[2:T], sigma_R_corr);
 
@@ -100,8 +100,9 @@ model{
 
 //posterior predicitive check ala <https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html>
 generated quantities{
-  array[T] real lnR_rep;
+  array[T] real H_rep;
+  array[T] real S_rep;
 
-  lnR_rep[1] = normal_rng(mean_ln_R0, sigma_R0);
-  lnR_rep[2:T] = normal_rng(lnRm_2[2:T], sigma_R_corr);
+  H_rep = lognormal_rng(lnC, sqrt(log((H_cv^2) + 1)));
+  S_rep = lognormal_rng(lnS, sqrt(log((S_cv^2) + 1)));
 }

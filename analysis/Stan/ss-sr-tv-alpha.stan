@@ -105,4 +105,11 @@ model{
   }
 }
 
-// generate some posterior predictive checks
+//posterior predicitive check ala <https://mc-stan.org/docs/stan-users-guide/posterior-predictive-checks.html>
+generated quantities{
+  array[T] real H_rep;
+  array[T] real S_rep;
+
+  H_rep = lognormal_rng(lnC, sqrt(log((H_cv^2) + 1)));
+  S_rep = lognormal_rng(lnS, sqrt(log((S_cv^2) + 1)));
+}
