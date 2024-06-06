@@ -1,11 +1,12 @@
 library(tidyverse)
 library(here)
-library(gsl)
-library(cowplot)
-library(scales) #for pretty_breaks() on fig axes
-library(ggpubr) #for ggarrange on the 4 panel FSRR plot
 library(readxl)
+library(gsl)     #for calculating MSY
+library(cowplot) #for arranging plots
+library(scales)  #for pretty_breaks() on fig axes
+library(ggpubr)  #for ggarrange on the 4 panel FSRR plot
 source(here("analysis/R/fwd-sim.R"))
+set.seed(123)
 
 # read in data and fit -------------------------------------------------------------------
 HCRs <- read.csv(here("analysis/data/raw/HCRs.csv"))

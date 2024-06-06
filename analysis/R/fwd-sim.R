@@ -299,4 +299,4 @@ rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.
    sim.gens, states, below.Sgen, U, last.yr.ind, above.Smsy.8, over.Smsy.8, catch.index,
    sub.Sgen, under.Sgen, par.quants, par.summary, pars, sub, scenario, scenarios,
    single.sim, sub_sub, b, l, low.a.beta, low.a.ln.alpha, low.a.rows, low.a.sigma_R_corr,
-   mean, percentiles, r.2, sub.Smsy.8, TV.stan.fit, AR1.stan.fit, recent.a, sub.Smsy, yrs, sd)
+   mean, percentiles, r.2, sub.Smsy.8, TV.stan.fit, AR1.stan.fit, recent.a, sub.Smsy, yrs)
