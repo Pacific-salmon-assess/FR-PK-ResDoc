@@ -18,11 +18,11 @@ resdoc.tex
 
 *.aux
 *.jpg
-*.html
+#*.html #to keep model supplement in GitHub - commented out are changed from CSAS defaults
 *.knit.md
 *.log
 *.pdf
-#*.png
+#*.png #to keep my figures in GitHub
 *.rda
 *.rds
 *.Rproj

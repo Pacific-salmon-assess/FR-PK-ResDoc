@@ -11,7 +11,7 @@ output:
     theme: cerulean
     toc: yes
     toc_float: yes
-
+bibliography: bib/refs.bib
 ---
 
 ```{r setup, echo = FALSE, message = FALSE, warning = FALSE}
@@ -36,7 +36,7 @@ TV.model.pars <- rstan::extract(TV.stan.fit)
 ```
 
 
-This document describes fits from both state-space Ricker spawner-recruit models used fit in the Research Document *Estimating Precautionary Approach reference points and assessing consequences of harvest control rules for Fraser River Pink Salmon (Oncorhynchus gorbuscha)*. Two Ricker models were fit in this paper that serve different purposes. First, a Ricker model with autoregressive (AR1) recruitment residuals was fit to estimate biological benchmarks ($S_{gen}$, $S_{MSY}$, and $U_{MSY}$), then a model with time-varying productivity (Ricker $\alpha$ parameter) was fit in order to condition out biological submodel in out closed-loop forward simulation on recent population dynamics. Data and code to reproduce the analysis and report is available in this [GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main), where you can see the [R code](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R) to run the models, and the [models](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main/analysis/Stan) themselves.   
+This document describes fits from both state-space Ricker spawner-recruit models used fit in the Research Document *Estimating Precautionary Approach reference points and assessing consequences of harvest control rules for Fraser River Pink Salmon (Oncorhynchus gorbuscha)*. Two Ricker models were fit in this paper that serve different purposes. First, a Ricker model with autoregressive (AR1) recruitment residuals was fit to estimate biological benchmarks ($S_{gen}$, $S_{MSY}$, and $U_{MSY}$), then a model with time-varying productivity (Ricker $\alpha$ parameter) was fit in order to condition the biological submodel on recent population dynamics in the closed-loop forward simulation. Data and code to reproduce the analysis and report is available in this [GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main), where you can see the [R code](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R) to run the models, and the [models](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main/analysis/Stan) themselves.   
 
 # Diagnostics  
 
@@ -47,17 +47,20 @@ We assessed chain convergence visually via trace plots and by ensuring that $\ha
 ## AR1  
 
 ### Trace plots  
-These should be clearly mixed, with no single distribution deviating from others (left column), and no chains exploring a strange space for a few iteraitons (right column).  
-```{r AR1-trace}
+These should be clearly mixed, with no single distribution deviating from others (left column), and no chains exploring a strange space for a few iterations (right column).  
+```{r AR1-trace, fig.cap = "Density overlays (left) and trace plots (right) for leading parameters in the Ricker AR1 model."}
 mcmc_combo(AR1.stan.fit, pars = c("beta", "ln_alpha", "sigma_R_corr", "phi"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 ```
+
 These appear well mixed.  
 
 ### $\hat{R}$  
-These should all be less than 1.01.  
-```{r AR1-Rhat}
+
+We want our $\hat{R}$ values to be very close to 1 so we know our model converged on all parameters, so close that none should be less than 1.01.  
+
+```{r AR1-Rhat, fig.cap = "R-hat values from the Ricker AR1 model."}
 ggplot(AR1.model.summary, aes(Rhat)) +
   geom_histogram() +
   labs(y = "frequency",
@@ -68,9 +71,10 @@ ggplot(AR1.model.summary, aes(Rhat)) +
 ```
 
 ### Effective sample size  
-We want these to be greater than 0.1, or 10% of the total iterations.  
 
-```{r AR1-ESS}
+To know we are getting viable estimates, we want the effective sample size to be at least 10% of the total iterations.  
+
+```{r AR1-ESS, fig.cap = "Effective sample size from the Ricker AR1 model."}
 ggplot(AR1.model.summary, aes(n_eff/2000)) +
   geom_histogram() +
   labs(y = "frequency",
@@ -81,8 +85,10 @@ ggplot(AR1.model.summary, aes(n_eff/2000)) +
 ```
 
 ### Posterior predictive check  
-Here we see if the parameters return data similar to ours by using random number generation in the `generated quantities` block of our Stan models. We want the random simulations (light blue lines), to fall near the distribution of our observed data (dark blue line).  
-```{r AR1-PPC}
+
+Here we see if the parameters return data similar to ours by using random number generation in the `generated quantities` block of our Stan models. We want the random simulations (light blue lines), to fall near the distribution of our observed data (dark blue line). 
+
+```{r AR1-PPC, fig.cap = "Posterior predictive check from the Ricker AR1 model."}
 R <- (data$harvest+data$spawn)/1000000 #recruit data
 R_rep <- AR1.model.pars$H_rep[1:500,] + AR1.model.pars$S_rep[1:500,] #just too 500 random draws...
 
@@ -95,14 +101,15 @@ ppc_dens_overlay(R, R_rep) +
 ## Time-varying productivity 
 
 ### Trace plots  
-```{r TV-trace}
+
+```{r TV-trace, fig.cap = "Density overlays (left) and trace plots (right) for leading parameters in the time-varying productivity Ricker model."}
 mcmc_combo(TV.stan.fit, pars = c("beta", "ln_alpha0", "sigma_R", "sigma_alpha"),
            combo = c("dens_overlay", "trace"),
            gg_theme = legend_none())
 ```
 
 ### $\hat{R}$  
-```{r TV-Rhat}
+```{r TV-Rhat, fig.cap = "R-hat values from the time-varying productivity Ricker model."}
 ggplot(TV.model.summary, aes(Rhat)) +
   geom_histogram() +
   labs(y = "frequency",
@@ -113,7 +120,7 @@ ggplot(TV.model.summary, aes(Rhat)) +
 ```
 
 ### Effective sample size  
-```{r TV-ESS}
+```{r TV-ESS, fig.cap = "Effective sample size from the time-varying productivity Ricker model."}
 ggplot(TV.model.summary, aes(n_eff/2000)) +
   geom_histogram() +
   labs(y = "frequency",
@@ -124,7 +131,7 @@ ggplot(TV.model.summary, aes(n_eff/2000)) +
 ```
 
 ### Posterior predictive check 
-```{r TV-PPC}
+```{r TV-PPC, fig.cap = "Posterior predictive check from the time-varying productivity Ricker model."}
 R <- (data$harvest+data$spawn)/1000000 #recruit data
 R_rep <- TV.model.pars$H_rep[1:500,] + TV.model.pars$S_rep[1:500,] #just too 500 random draws...
 
@@ -140,28 +147,34 @@ We already got an understanding of the posterior distributions by looking at how
 
 It can also be useful to look at the data, and predictions that were made in the observation model. 
 
-```{r data-obs}
-ggplot() +
-  geom_ribbon(data = C_df, aes(x = year, ymin=lwr, ymax=upr), fill = "grey80") +
-  geom_ribbon(data = C_df, aes(x = year, ymin=mid_lwr, ymax=mid_upr), fill = "darkgrey") +
-  geom_line(data= C_df, aes(year, mid)) +
-  geom_point(data=data, aes(year, harvest/1000000), color = "red") +
-  theme_minimal() +
-  labs(title = "Catch", y = "observations", x = "year")
-
-
+```{r data-Sobs, fig.cap = "Spawner data (red dots) and latent (i.e. hidden or estimated) states for spawners in the Ricker AR1 model, where vertical lines mark changes in sampling regimes."}
 ggplot() +
   geom_ribbon(data = S_df, aes(x = year, ymin=lwr, ymax=upr), fill = "grey80") +
   geom_ribbon(data = S_df, aes(x = year, ymin=mid_lwr, ymax=mid_upr), fill = "darkgrey") +
   geom_line(data= S_df, aes(year, mid)) +
   geom_point(data=data, aes(year, spawn/1000000), color = "red") +
   theme_minimal() +
-  geom_vline(xintercept=c(1961, 1991, 2001, 2007, 2009)) +
-  labs(title = "Spawners", y = "observations", x = "year")
+  geom_vline(xintercept=c(1962, 1992, 2002, 2008)) +
+  labs(title = "Spawner observations and hidden states", y = "observations", x = "year")
 ```
 
+
+```{r data-Cobs, fig.cap = "Catch data (red dots) and latent (i.e. hidden or estimated) states for spawners in the Ricker AR1 model."}
+ggplot() +
+  geom_ribbon(data = C_df, aes(x = year, ymin=lwr, ymax=upr), fill = "grey80") +
+  geom_ribbon(data = C_df, aes(x = year, ymin=mid_lwr, ymax=mid_upr), fill = "darkgrey") +
+  geom_line(data= C_df, aes(year, mid)) +
+  geom_point(data=data, aes(year, harvest/1000000), color = "red") +
+  theme_minimal() +
+  labs(title = "Catch observations and hidden states", y = "observations", x = "year")
+```
+
+Notice how the bands around catch are much tighter than the spawners, this is because we assumed a relatively narrow CV of 5% for this data, rather than spawner estimates that varied between 10 to 50% CVs.  
+
 ## Annual productivity  
-This figure shows deterministic fits of Ricker $\alpha$ from the time-varying model. It compliments Figure **REF** by showing what the relationships would look like each year.  
-```{r TV-a}
+
+```{r TV-a, fig.cap = "Deterministic fits from annual estimates of Ricker alpha parameter in the time-varying model."}
 knitr::include_graphics(here::here("figure/tv-SRR.png"))
 ```
+
+# References  
