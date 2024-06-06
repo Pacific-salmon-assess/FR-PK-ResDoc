@@ -326,7 +326,7 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   annotate("text", x = 2016, y = benchmarks[2,1]+2.5,
            label = expression(italic(paste("80%",S)[MSY])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
-  annotate("text", x = 2019, y = 4.2,
+  annotate("text", x = 2019, y = 3,
            label = "italic(S[gen])", parse = TRUE, size = 5) +
   scale_x_continuous(breaks= pretty_breaks(),
                      expand = expansion(mult = c(0, .01))) +
