@@ -64,7 +64,7 @@ for(i in 1:ncol(TV.model.pars$ln_alpha)){
 }
 colnames(tv_SR_summary) <- c("year", "Spawn", "Rec_lwr", "Rec_mid", "Rec_upr")
 
-#create spawner & esc df --- #should map() these...
+#create spawner & esc df --- #should've map()'d these...
 spwn.quant <- apply(AR1.model.pars$S, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))
 spwn_df <- as.data.frame(cbind(data$year, t(spwn.quant)))
 colnames(spwn_df) <- c("year","lwr","mid_lwr","mid","mid_upr","upr")
@@ -119,9 +119,9 @@ rec_prop <- data |>
   mutate(recruits = harvest + spawn,
          ER = (harvest/recruits)*100)
 
-# what % of the last 3 gens of spawning escapement fall below Sgen or above Smsy medians?
-recent.S <- AR1.model.pars$S[,(ncol(AR1.model.pars$S)-2):ncol(AR1.model.pars$S)]
-
+# what % of the spawning escapement fall below Sgen or above Smsy medians?
+#recent.S <- AR1.model.pars$S[,(ncol(AR1.model.pars$S)-2):ncol(AR1.model.pars$S)] #3 gens
+recent.S <- AR1.model.pars$S[,ncol(AR1.model.pars$S)] #1 gen
 recnet.S.below.Sgen <- length(which(recent.S < Sgen))/length(recent.S)
 recent.S.above.Smsy <- length(which(recent.S > Smsy.8))/length(recent.S)
 
@@ -237,14 +237,6 @@ ggplot() +
     legend.text = element_text(size=8))
 my.ggsave(here("figure/SRR.png"))
 
-# time varying alpha ---
-ggplot(a_yrs) +
-  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
-  geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
-  labs(y = "Productivity (Ricker alpha 80th percentiles)", x = "Brood year")
-
-my.ggsave(here("figure/tv-alpha.png"))
-
 # then residuals---
 resid.quant <- apply(AR1.model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
 
@@ -253,7 +245,7 @@ colnames(resids) <- c("year","lwr","midlwr","mid","midupr","upr")
 
 ggplot(resids, aes(x=year, y = mid)) +
   geom_ribbon(aes(ymin = lwr, ymax = upr),  fill = "darkgrey", alpha = 0.5) +
-  geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) +
+  #geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) + #dump mid for consistency?
   geom_line(lwd = 1.1) +
   coord_cartesian(ylim=c(-2,2)) +
   labs(x = "Return year",
@@ -263,6 +255,14 @@ ggplot(resids, aes(x=year, y = mid)) +
   geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
 
 my.ggsave(here("figure/rec-resid.png"))
+
+# time varying alpha ---
+ggplot(a_yrs) +
+  geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
+  geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
+  labs(y = "Productivity (Ricker alpha 80th percentiles)", x = "Brood year")
+
+my.ggsave(here("figure/tv-alpha.png"))
 
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +

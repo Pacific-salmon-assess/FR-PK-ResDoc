@@ -112,7 +112,7 @@ bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
 bench.par.table[is.na(bench.par.table)] <- ""
 
 rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
-                               "$ln(\\alpha)$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
+                               "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
 colnames(bench.par.table) <- c("Median", "10th percentile", "90th percentile", "Mean",
                                "$N_{eff}$", "$\\hat{R}$")
 
@@ -128,6 +128,7 @@ OU.CV <- 0.1 #assumed outcome uncertainty, did forecast error earlier
 
 #subset posterior for low productivity
 recent.a <- apply(TV.model.pars$ln_alpha[,(last.yr.ind-2):last.yr.ind], 1, median) #median of last 3 gens
+recent.a.CIs <- exp(quantile(recent.a, probs = c(.1, .5, .9))) #CIs for reporting
 recent.a.10th <- quantile(recent.a, .1)
 
 low.a.rows <- which(recent.a<recent.a.10th) #rows to subset later
