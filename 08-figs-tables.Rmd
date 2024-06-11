@@ -24,7 +24,7 @@ knitr::include_graphics(here::here("figure/avg-mass.png"))
 knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 ```
 
-(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target harvest to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target catch to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
 
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
 knitr::include_graphics(here::here("figure/HCRs.png"))
@@ -35,6 +35,11 @@ knitr::include_graphics(here::here("figure/HCRs.png"))
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
 
+(ref:fig-tv-alpha) Time-varying productivity (Ricker $\alpha$ parameter) fit from the model used to project population dynamics forward in the closed-loop simulation.  
+```{r fig-tv-alpha, fig.cap = "(ref:fig-tv-alpha)"}
+knitr::include_graphics(here::here("figure/tv-alpha.png"))
+```
+
 (ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
@@ -43,6 +48,11 @@ knitr::include_graphics(here::here("figure/SRR.png"))
 (ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 80% credible intervals are included for the last year of assessment. 
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
 knitr::include_graphics(here::here("figure/kobe.png"))
+```
+
+(ref:fig-status) Posterior distributions of candidate reference points $S_{gen}$, the LRP (red), $S_{MSY}$, the USR (green) and the latent state of spawners in the most recent generation (2023, black). 
+```{r fig-status, fig.cap = "(ref:fig-status)"}
+knitr::include_graphics(here::here("figure/recent-status.png"))
 ```
 
 (ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons and dashed lines are 80% credible intervals. Thin lines are 2 randomly selected simulations from each HCR to highlight variability. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
@@ -81,9 +91,9 @@ df <- data.frame(Metric = c("% replicate simulations < LRP", "% replicate simula
                             "relative catch metric"), 
                  Description = c("Probability the stock spawner abundance falls below the Limit Reference Point across replicate simulations and years, where $n$ rep is the number of replicate simulations and $t_1$ and $t_2$ are the first and last years over which the metric is calculated ",
                                  "Probability the stock spawner abundance falls above the Upper Stock Reference Point across replicate simulations and years ",
-                                 "Average harvest across replicate simulations and years",
-                                 "Stability in average harvest across replicate simulations and years($\\mu_C$), where is $\\sigma_C$ the standard deviation in harvest",
-                                 "Probability annual harvest is greater than the average of the top 3 years of harvest since 2000 ($C_{top}$), a semi-arbitrary indicator of a ‘good year’ "),
+                                 "Average catch across replicate simulations and years",
+                                 "Stability in average catch across replicate simulations and years($\\mu_C$), where is $\\sigma_C$ the standard deviation in catch",
+                                 "Probability annual catch is greater than the average of the top 3 years of catch since 2000 ($C_{top}$), a semi-arbitrary indicator of a ‘good year’ "),
                  Equation = c("$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_t<S_{gen}} {t_2-t_1+1}$", 
                               "$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_t>0.8S_{MSY}} {t_2-t_1+1}$", 
                               "$\\frac{\\sum_{\\substack{n_{rep}\\\\s\n=1}}\\sum_{\\substack{t_1\\\\s\t_2}}S_tC_t} {t_2-t_1+1}$", 

@@ -4,7 +4,7 @@
 
 In this working paper we briefly review our current understanding of Fraser River Pink salmon stock structure and distribution, assessment history, and ecosystem and climate factors affecting the stock. 
 We then fit a state-space spawner-recruitment model to available to data to characterize stock dynamics, and derive estimates of biological benchmarks to assess stock status. 
-Lastly, we developed a simple closed-loop simulation model to quantify future expected biological and fishery performance of the current and an illustrative alternative harvest control rule.  
+Lastly, we developed a simple closed-loop simulation model based on recent productivity estimates to quantify future expected biological and fishery performance of the current and an illustrative alternative HCR.  
 
 Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hells Gate). 
 Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide in 2019. 
@@ -12,14 +12,18 @@ Fraser Pink salmon survival is associated with sea-surface temperatures during e
 Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size.  
 
 We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be `r bench.par.table[5,1]` (`r bench.par.table[5,2]`-`r bench.par.table[5,3]` recruits per spawner) and equilibrium stock size $S_{EQ}$ equal to `r benchmarks[4,1]`m (`r benchmarks[4,2]`m-`r benchmarks[4,3]`m). 
-We estimated the Upper Stock Reference Point of 80% $S_{MSY}$ to be `r benchmarks[2,1]`m (`r benchmarks[2,2]`m - `r benchmarks[2,3]`m), and the Limit Reference Point $S_{gen}$ to be `r benchmarks[1,1]`m (`r benchmarks[1,2]`m-`r benchmarks[1,3]`m). 
-The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is 9.58m which is well above the upper bound on the estimate of the Upper Stock Reference Point suggesting the stock is in a “healthy” state which is consistent with a formal Wild Salmon Policy status assessment that has assessed the stock as in the “green” Wild Salmon Policy status zone with high confidence.  
+We estimated the USR of 80% $S_{MSY}$ to be `r benchmarks[2,1]`m (`r benchmarks[2,2]`m - `r benchmarks[2,3]`m), and the Limit Reference Point $S_{gen}$ to be `r benchmarks[1,1]`m (`r benchmarks[1,2]`m-`r benchmarks[1,3]`m). 
+The most recent (2023) estimate of spawner abundance for Fraser Pink salmon is 9.58m which is well above the upper bound on the estimate of the USR suggesting the stock is in a “healthy” state which is consistent with a formal Wild Salmon Policy status assessment that has assessed the stock as in the “green” Wild Salmon Policy status zone with high confidence.  
 
-We found that the existing HCR for Fraser Pinks has a very low probability (`r perf.metrics[1,3]`%) of the stock falling below the Limit Reference Point, and a relatively high probability (`r perf.metrics[1,4]`) of spawner abundance being above the Upper Stock Reference Point, over the next 10 years. 
-Assuming fisheries fully utilize allowable harvest, which may not be the case if the Pink fishery is constrained, for example, to limit impacts on non-target species, average annual harvest is projected to 1.28m over the same time period. 
-Assessment of an illustrative alternative HCR which is more strictly compliant with DFO’s Precautionary Approach Framework had slightly better fishery performance but at the cost of poorer biological performance.     
+The time-varying productivity model used to condition the forward simulation showed that productivity of Fraser Pinks has been declining since the 1980s, with current productivity nearly half of what it was historically. 
+This, paired with the recent negative residuals in the static model, highlights how depressed the recent productivity is.  
 
-Two robustness tests of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR may have an unacceptably high probability of the stock falling below the Limit Reference Point and hence being at risk of serious and irreversible biological harm.  
+We found that the existing HCR for Fraser Pinks has a very low probability (`r perf.metrics[1,3]`%) of the stock falling below the Limit Reference Point, and a relatively high probability (`r perf.metrics[1,4]`) of spawner abundance being above the USR, over the next 10 years. 
+Assuming fisheries fully utilize allowable catch, which may not be the case if the Pink fishery is constrained, for example, to limit impacts on non-target species, average annual catch is projected to 10.3m over the same time period. 
+Assessment of an illustrative alternative HCR which is more strictly compliant with DFO’s Precautionary Approach Framework had similar biological performance with slightly less catch.
+A no-fishing HCR showed about 5% more simulations being above $S_{MSY}$ and not much change in the percentage of stocks falling below $S_{gen}$ (only 0.3% less risky). 
+
+The robustness test of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR would have ~5% more in a "red" zone and  ~14% more in "amber" zone, with ~7 million less fish caught.  
 
 
 ## CAVEATS AND ASSUMPTIONS  
@@ -30,7 +34,7 @@ Second, we made the simplifying assumption that forecast error and outcome uncer
 When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments [@hagueImprovementsFraserRiver2022]. 
 Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program [@hagueMovingTargetsAssessing2021]. 
 Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption error is consistent among run sizes. 
-Outcome uncertainty (i.e., how close you are toward target exploitation) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). 
+Outcome uncertainty (i.e., how close you are toward the target exploitation rate) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). 
 This reduction in fishing effort may make the shape of true outcome uncertainty right skewed. 
 In addition the price of Pink salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate. 
 Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-performance) as relative performance measures and not absolutes; catches may not be realized due to various management considerations.  
@@ -41,9 +45,9 @@ Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-per
 Exceptional circumstances are assessment triggers intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. 
 In addition to routine re-assessment every 2 generations to ensure stock status can be updated and captures contemporary fishery and biological processes, we recommend a re-assessment be triggered if any of the following occur:   
 
-- Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., three more generations of negative recruitment residuals such that there are seven consecutive generations of them);  
+- *Stock productivity declines sharply and stays depressed for more than 3 generations (e.g., three more generations of negative recruitment residuals such that there are seven consecutive generations of them);*  
 
-- New information becomes available that results in changes to the historical time-series of spawner abundance and harvests used in this working paper; and
+- New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this working paper; and
 
 - New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics; 
 
@@ -52,18 +56,16 @@ Lastly, should Fisheries Management consider changes to the existing HCR and/or 
 
 ## AREAS OF POTENTIAL FUTURE WORK  
 
-- *Develop a Fraser Pink salmon life cycle model.* Out migrating Fraser Pink fry abundance has been enumerated near Mission since 1984 
-Development of a life cycle model that partitions freshwater and marine dynamics, and explicitly accounts for changing reproductive potential (due to declines in body size), would enable more explicit consideration of ecosystem and climate drivers of stock dynamics and enable them to be accounted for when estimating benchmarks and assessing stock status. 
-When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance.     
-
--	*Evaluate evidence for, and consequences of, non-stationarity in stock dynamics.* 
-In light of recolonization of spawning habitat following the Hells Gate slide, and potential for declines in marine survival, evidence for non-stationarity in productivity and carrying capacity could be evaluated using models that allow either productivity or carrying capacity to vary over time as a random walk or regime shift(s). 
-If there is evidence of time varying spawner-recruitment dynamics, then the closed loop simulation framework we have developed could be used to explore their implications for characterization of stock status and evaluation of HCR performance.
+- *Develop a Fraser Pink salmon life cycle model.* Out migrating Fraser Pink fry abundance has been enumerated near Mission since 1984, and coarse methods have been used to estimate annual migration. 
+Development of a life cycle model that partitions freshwater and marine dynamics, and explicitly accounts for changing reproductive potential (due to declines in body size, changing marine survival or egg to fry survival), would enable more explicit consideration of ecosystem and climate drivers of stock dynamics and enable them to be accounted for when estimating benchmarks and assessing stock status. 
+When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance.
+Adding time-varying productivity to these models will allow exploration of stage-specific trends in survival. 
 
 -	*Improve understanding of changes in spatial distribution of adult spawners.* 
 The last detailed assessment of changes in the spatial distribution Fraser Pink salmon was conducted by @pessInfluencePopulationDynamics2012 with tributary level data through 1947-87. 
 Since that time there has not been formal tributary level assessment of spawner abundance, but there has been anecdotal evidence of continued changes in the spatial distribution of spawning Pink salmon. 
 This information could be compiled, along with observations from assessment projects focused on other species, to critically re-examine our understanding of spatial dynamics of Fraser Pink salmon and their implication for stock status and expectations of future production.  
+Emerging methods using eDNA could be an efficient way to gather this information, and a funding application is in development by the authors.  
 
 - *Adapt closed-loop simulation model to better capture contemporary fishery dynamics.* 
 The fishery sub-model we developed is extremely simple and does not capture a number of potentially important process that have the potential to influence fishery outcomes. 
