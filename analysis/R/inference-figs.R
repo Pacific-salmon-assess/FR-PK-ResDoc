@@ -190,8 +190,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   scale_color_manual(values = c("#E69F00", "#0072B2")) +
   ylim(c(0,1)) +
   labs(x = NULL,
-       y = "Target ER") +
-  guides(color = "none") +
+       y = "Target exp. rate") +
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
@@ -202,11 +201,10 @@ p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
-       y = "Target escapement") +
-  theme(legend.position = "bottom")
+       y = "Target spawners")
 
-p <- plot_grid(p1, p2, nrow = 2)
-p
+ggarrange(p1, p2, nrow = 2,
+          align = "hv", common.legend = TRUE, legend = "bottom")
 my.ggsave(here("figure/HCRs.png"))
 
 # plot SR relationship ---
