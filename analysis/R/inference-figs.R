@@ -148,6 +148,7 @@ ggplot(catch_esc, aes(x = year, y = n)) +
   geom_line(data = data, aes(x=year, y = ER*30), color = "red", lwd = 1) +   #ADD ER to plot
   scale_fill_manual(values = c("darkgrey", "black"), name = "Return type") +
   scale_y_continuous(sec.axis = sec_axis(~(./30)*100, name = "Exploitation Rate (%)")) +
+  scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
   theme(legend.position = "bottom") +
   labs(x = "Return year",
        y = "Total return (millions of fish)")
@@ -245,6 +246,7 @@ ggplot(resids, aes(x=year, y = mid)) +
   #geom_ribbon(aes(ymin = midlwr, ymax = midupr),  fill = "black", alpha=0.2) + #dump mid for consistency?
   geom_line(lwd = 1.1) +
   coord_cartesian(ylim=c(-2,2)) +
+  scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
   labs(x = "Return year",
        y = "Recruitment residuals") +
   theme(legend.position = "none",
@@ -257,6 +259,7 @@ my.ggsave(here("figure/rec-resid.png"))
 ggplot(a_yrs) +
   geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
   geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
+  scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
   labs(y = "Productivity (Ricker alpha 80th percentiles)", x = "Brood year")
 
 my.ggsave(here("figure/tv-alpha.png"))
@@ -325,9 +328,9 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_hline(yintercept = benchmarks[2,1]) +
   annotate("text", x = 2019, y = 3,
            label = "italic(S[gen])", parse = TRUE, size = 5) +
-  scale_x_continuous(breaks= pretty_breaks(),
-                     expand = expansion(mult = c(0, .01))) +
-  labs(x = "", y = "Escapement") +
+  scale_x_continuous(breaks = c(2015, 2019, 2023, 2027, 2031),
+                       expand = expansion(mult = c(0, .01))) +
+  labs(x = "", y = "Spawners") +
   scale_color_viridis_d() +
   scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
@@ -347,8 +350,8 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = 2016, y = rel.catch.index+2.5,
            label = "catch index", size = 5) +
-  scale_x_continuous(breaks= pretty_breaks(),
-                     expand = expansion(mult = c(0, .01))) +
+  scale_x_continuous(breaks = c(2015, 2019, 2023, 2027, 2031),
+                       expand = expansion(mult = c(0, .01))) +
   labs(x = "Return year", y = "Catch") +
   scale_color_viridis_d(labels = c("current", "no fishing", "PA alternate")) +
   scale_fill_viridis_d(labels = c("current", "no fishing", "PA alternate")) +

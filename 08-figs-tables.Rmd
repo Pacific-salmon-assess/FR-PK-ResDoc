@@ -30,7 +30,7 @@ knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
 knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
-(ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is median estimates while shaded bands are 50th and 95th percentiles.
+(ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is the median estimates while the shaded band is the 80th percentile.
 ```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
 knitr::include_graphics(here::here("figure/rec-resid.png"))
 ```
@@ -55,7 +55,7 @@ knitr::include_graphics(here::here("figure/kobe.png"))
 knitr::include_graphics(here::here("figure/recent-status.png"))
 ```
 
-(ref:fig-fwd-SC) Projected Fraser Pink escapement and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons and dashed lines are 80% credible intervals. Thin lines are 2 randomly selected simulations from each HCR to highlight variability. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
+(ref:fig-fwd-SC) Projected Fraser Pink spawners and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons are 80% credible intervals and solid lines are medians. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```
@@ -83,6 +83,7 @@ csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",
   kableExtra::column_spec(2, width = "8cm") #fix width of 2nd col so it wraps
 
 ```
+\clearpage
 
 (ref:tab-perf-metrics-descriptions) Biological and fishery performance measures used in the closed-loop simulations to assess HCR performance.
 
@@ -107,8 +108,9 @@ df|>
                      format = "latex",
                      repeat_header = TRUE, 
                      align = "llc")|>
-  kableExtra::column_spec(2, width = "8cm")
+  kableExtra::column_spec(2, width = "6.5cm")
 ```
+\clearpage
 
 (ref:tab-priors) Prior probability distributions for parameters.
 
@@ -147,8 +149,9 @@ priors.df |>
                      caption = "(ref:tab-priors)", 
                      repeat_header = TRUE) |>
     kableExtra::column_spec(4, width = "5cm") |>
-    kableExtra::column_spec(2, width = "7cm")
+    kableExtra::column_spec(2, width = "6cm")
 ```
+\clearpage
 
 (ref:tab-bench-parms) Posterior means, medians and credible intervals for leading spawner-recruitment parameters and associated biological reference points. Also shown are estimates of the effective sample size ($N_{eff}$) and potential scale reduction factor ($\hat{R}$)for parameters estimated by the model.
 
@@ -158,7 +161,6 @@ csasdown::csas_table(bench.par.table,
            font_size = 7,
            align = "lccc")
 ```
-\clearpage
 
 (ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
 
@@ -175,7 +177,7 @@ csasdown::csas_table(format = "latex",
            caption = "(ref:tab-HCR-performance)",
            repeat_header = TRUE,
            align = "llccccc") |>
-  kableExtra::column_spec(c(1:4,7), width = "2cm") |>
+  kableExtra::column_spec(c(1:4,7), width = "1.5cm") |>
   kableExtra::column_spec(5:6, width = "3cm")
 }
 

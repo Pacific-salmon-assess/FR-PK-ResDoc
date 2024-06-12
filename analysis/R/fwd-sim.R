@@ -129,6 +129,7 @@ OU.CV <- 0.1 #assumed outcome uncertainty, did forecast error earlier
 #subset posterior for low productivity
 recent.a <- apply(TV.model.pars$ln_alpha[,(last.yr.ind-2):last.yr.ind], 1, median) #median of last 3 gens
 recent.a.CIs <- exp(quantile(recent.a, probs = c(.1, .5, .9))) #CIs for reporting
+recent.a.50s <- exp(quantile(recent.a, probs = c(.25, .75))) #range to trigger reassessment
 recent.a.10th <- quantile(recent.a, .1)
 
 low.a.rows <- which(recent.a<recent.a.10th) #rows to subset later
