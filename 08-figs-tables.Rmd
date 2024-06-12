@@ -4,6 +4,12 @@
 knitr::include_graphics(here::here("figure/hatchery-influence.png"))
 ```
 
+(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target catch to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
+
+```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
+knitr::include_graphics(here::here("figure/HCRs.png"))
+```
+
 (ref:fig-catch-esc) Spawning escapement and catch from 1959 to present. Resulting exploitation rate is show in red on secondary y-axis.
 ```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
 knitr::include_graphics(here::here("figure/catch-esc.png"))
@@ -22,12 +28,6 @@ knitr::include_graphics(here::here("figure/avg-mass.png"))
 (ref:fig-schematic) Illustration of steps in the forward simulation highlighting alternate scenarios in population dynamics and harvest control rules.  
 ```{r fig-schematic, fig.cap = "(ref:fig-schematic)"}
 knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
-```
-
-(ref:fig-HCRs) Current and alternative (PA alternate) harvest control rules (HCRs). The top panel is the HCR relating target catch to run-size while the bottom panel illustrates the resulting target escapement as a function of run-size. Vertical lines denote Limit ($S_{GEN}$) and Upper Stock (80%$S_{MSY}$) reference points, in run-size units.  
-
-```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
-knitr::include_graphics(here::here("figure/HCRs.png"))
 ```
 
 (ref:fig-rec-resid) Recruitment residuals from the Fraser Pink spawner-recruitment relationship over time. Thick black line is the median estimates while the shaded band is the 80th percentile.

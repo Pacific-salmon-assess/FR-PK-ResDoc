@@ -26,7 +26,7 @@ Data on catch and spawner abundance (i.e., escapement) has been collected for we
 
 ### Enhancement  
 
-Enhancement of Fraser Pinks is limited and has primarily occurred via spawning channels to create additional high quality spawning habitat. Records dating back to brood year 1955 show estimates of several million Pink fry migrating out of spawning channels (see data in supplement). 
+Enhancement of Fraser Pinks is limited and has primarily occurred via spawning channels to create additional high quality spawning habitat. Records dating back to brood year 1955 show estimates of several million Pink fry migrating out of spawning channels (see data in the reposity linked in Supplement A). 
 Estimates of outmigration varied in precision with monitoring programs primarily designed for other species.  
 Rotary screw trap sampling and or egg to fry survival estimates were used to generate release numbers.
 Prior to the establishment of the Salmonid Enhancement Program (SEP), salmonid enhancement facilities on the Fraser were managed by the IPSFC and production was limited to incidental stocking in spawning channels (i.e. Seaton, Jones, and Weaver). 
