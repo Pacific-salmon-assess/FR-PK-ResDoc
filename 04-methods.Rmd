@@ -142,10 +142,7 @@ Details on model components and calculation of performance are provided below.
 
 ### BIOLOGICAL SUB-MODEL  
 
-We chose to model population dynamics with time-varying productivity, rather than the stationary model used above to estimate benchmarks. 
-Changes in productivity within the 66 year (i.e 33 odd-year generations) time series could have arose from processes affecting survival outlined in the ecosystem and climate section above. 
-Time-varying models can have issues with "chasing noise" and incorrectly estimating benchmarks, but are useful when trying to describe current dynamics (**Holt et. al. in prep - will cite later?**). 
-We used a very similar model as used to estimate benchmarks, but removed the AR1 recruitment residuals in equations \@ref(eq:AR1-ricker) and \@ref(eq:AR1), since they are accounting for the same time-varying process described in the new model, but in a different way. In the time-varying Ricker model used here, the $\alpha$ parameter evolves through time as a random walk, yielding annual estimates of productivity: 
+Because recruitment residuals tended to be negative in recent generations (Figure \@ref(fig:fig-rec-resid)), and reproductive potential has likely declined through time due to declining size (Figure \@ref(fig:fig-avg-mass)), we chose to refit a version of the model described in equation \@ref(eq:AR1) with time-varying intrinsic productivity that could then be used to condition the biological sub-model for the forward simulation. Specifically, we allowed the $\alpha$ parameter to evolve through time as a random walk, yielding annual estimates of productivity: 
 
 \begin{equation}
 \begin{aligned}
@@ -155,8 +152,7 @@ We used a very similar model as used to estimate benchmarks, but removed the AR1
 \label{eq:tv-alpha}
 \end{equation}
 
-Where everything is similar to equation \@ref(eq:AR1); with $\alpha$ substituted for $v$ and no $\phi$ parameter.
-
+and where recruitment anomalies were no longer modelled as being auto-correlated but all other parameters in equation \@ref(eq:AR1) otherwise remained the same.
 We simulated future stock trajectories by starting with the most recent estimate (i.e. latent state) of spawners and the median estimate of productivity in the last 3 generations, then iterating the process model forward in time for five Pink salmon generations (10 years) 
 This was done 1000 times to ensure that uncertainty in the spawner-recruitment relationships was propagated by drawing for the joint posterior distributions of estimated parameters in each iteration of the simulation. 
  
@@ -189,7 +185,5 @@ Fishery objectives included maximizing average catch and inter-annual stability 
 
 ### ROBUSTNESS TEST  
 
-We used a robustness test to evaluate the sensitivity of HCR performance to a low productivity scenario. 
-This test assumed future intrinsic productivity of the Fraser Pink stock dramatically declined due to, for example, large changes in marine or freshwater survival. 
-To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of Ricker parameters (i.e. $\alpha$, $\beta$, $\sigma$) associated with the lower tenth percentile of the median posterior distribution of the last 3 generations of the productivity parameter ($\alpha$), while draws from the starting state (i.e. spawners in 2023) and benchmarks were sampled from the full posterior distribution.  
+We used a robustness test to evaluate the sensitivity of HCR performance to a potential situation where future intrinsic productivity of the Fraser Pink stock dramatically further declined due to, for example, large changes in marine or freshwater survival. To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of Ricker parameters (i.e. $\alpha$, $\beta$, $\sigma$) associated with the lower tenth percentile of the median posterior distribution of the last 3 generations of the productivity parameter ($\alpha$), while draws from the starting state (i.e. spawners in 2023) and benchmarks were sampled from the full posterior distribution.  
 

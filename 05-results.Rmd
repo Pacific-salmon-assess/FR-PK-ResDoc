@@ -2,14 +2,14 @@
 
 ## MODEL FIT AND DIAGNOSTICS  
 Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), effective sample sizes > 10% of draws (minimum 39% in time-varying model) suggesting reasonable model convergence, and posterior predictive checks that resembled data that was used to fit the model. 
-(See Appendix A for fully reproducible analysis, and a [supplement](https://pacific-salmon-assess.github.io/FR-PK-ResDoc/Supplement-model-check.html) describing model fits).  
+(See Appendix A for details of computing environment and details on reproducing analysis, and a [supplement](https://pacific-salmon-assess.github.io/FR-PK-ResDoc/Supplement-model-check.html) describing model fits).  
 
 ## BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS  
 
 Posterior means, medians and 80% credible intervals for leading spawner-recruitment parameters and biological benchmarks are summarized in Table \@ref(tab:tab-bench-parms). 
 We found that the Fraser Pink stock is moderately productive with intrinsic productivity ($\alpha$) estimated to be `r alpha.CI[2]` (`r alpha.CI[1]`-`r alpha.CI[3]` recruits per spawner; median and 80% credible interval) and equilibrium stock size $S_{eq}$, which is a function of intrinsic productivity ($\alpha$) and the strength of within stock density dependence ($\beta$), estimated to be `r benchmarks[4,1]`m (`r benchmarks[4,2]`-`r benchmarks[4,3]`m). 
 Recruitment anomalies were estimated to be weakly positively correlated through time with $\phi$ estimated to be `r phi.CI[2]` (`r phi.CI[1]`-`r phi.CI[3]`) with no strong time trend, though the most recent 4 brood years were all negative. (Figure \@ref(fig:fig-rec-resid)). 
-The time-varying model used in the forward simulation showed a decline in productivity beginning in the 1980's (Figure \@ref(fig:fig-tv-alpha)), with the median productivity in the last 3 generations estimated at `r recent.a.CIs[2]` (`r recent.a.CIs[1]`-`r recent.a.CIs[3]`).  
+Estimates of time varying productivity suggest a decline beginning in the 1980's (Figure \@ref(fig:fig-tv-alpha)) with the median productivity in the last 3 generations estimated at `r recent.a.CIs[2]` (`r recent.a.CIs[1]`-`r recent.a.CIs[3]`).  
 
 As a result of relatively weak density dependence, expected yield (i.e., “surplus” production above replacement) and recruitment was relatively flat across a wide range of spawner abundances (Figure \@ref(fig:fig-SRR)).
 Nonetheless, the spawner abundance expected to maximize long-term sustainable yield ($S_{MSY}$) was estimated to be `r benchmarks[2,1]*1.25`m and so the USR of 80% $S_{MSY}$ was `r benchmarks[2,1]`m (`r benchmarks[2,2]`-`r benchmarks[2,3]`m). The RR, $U_{MSY}$ (Eqn. \@ref(eq:get-Umsy)) was estimated to be `r benchmarks[3,1]` (`r benchmarks[3,2]`-`r benchmarks[3,3]`), and lastly, the LRP $S_{gen}$ was estimated to be `r benchmarks[1,1]`m (`r benchmarks[1,2]`-`r benchmarks[1,3]`m).  
@@ -25,14 +25,14 @@ The stock being considered healthy is consistent with the formal Wild Salmon Pol
 
 ## HARVEST CONTROL RULE PERFORMANCE  
 
-The existing HCR for Fraser Pinks has a very low probability of the stock falling below the LRP ($S_{gen}$, `r perf.metrics[1,3]`%), and a relatively high probability of spawner abundance being above the USR (80% $S_{MSY}$, `r perf.metrics[1,4]`%), over the next 10 years (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
+We found that the existing HCR for Fraser Pinks has a very low probability of the stock falling below the LRP ($S_{gen}$, `r perf.metrics[1,3]`%), and a relatively high probability of spawner abundance being above the USR (80% $S_{MSY}$, `r perf.metrics[1,4]`%), over the next 10 years (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
 Assuming fisheries fully utilize allowable catch, which may not be the case if the Pink fishery is constrained to limit impacts on non-target species, the median annual catch is projected to 10.3m fish. 
 Approximately `r perf.metrics[1,7]`% of years are expected to result in catches greater than the "good catch" index (`r rel.catch.index`m; a semi-arbitrary indicator of a ‘good year’ based on the average of the top 3 catches since the year 2000). 
 In contrast, the alternative, illustrative Precautionary Approach compliant HCR had a slightly higher probability of the stock falling below the LRP (`r perf.metrics[2,3]`% vs `r perf.metrics[1,3]`%) and a negligible difference in spawner abundance being above the USR (`r perf.metrics[2,4]`% vs `r perf.metrics[1,4]`%) (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)). 
 These slightly increased biological risks came with hardly any differences in catch performance, with about 1.5 million less fish being caught in the alternate HCR. 
-The no fishing scenario was the least risky to conservation, but not by much; the probability of being below $S_{gen}$ was only `r as.numeric(perf.metrics[1,3]) - as.numeric(perf.metrics[3,3])`% lower than the current HCR, and the probability of being above $S_{MSY}$ was `r as.numeric(perf.metrics[3,4]) - as.numeric(perf.metrics[1,4])`% higher (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)).  
+The no fishing scenario was the least risky to conservation, but not by much; the probability of being below $S_{gen}$ was only `r as.numeric(perf.metrics[1,3]) - as.numeric(perf.metrics[3,3])`% lower than the current HCR, and the probability of being above 80% $S_{MSY}$ was `r as.numeric(perf.metrics[3,4]) - as.numeric(perf.metrics[1,4])`% higher (Table \@ref(tab:tab-HCR-performance); Figure \@ref(fig:fig-fwd-SC)).  
 
 Performance in the low productivity scenario, where recent productivity was reduced to its lower 10th percentile, showed the different HCRs perform in relatively the same way, but with increased biological risk and less catch. 
-Percentage of simulations below $S_{gen}$ or above $S_{MSY}$ changed into riskier zones by up to approximately 15%, and catch was less than half of what it was in the base scenario (Table \@ref(tab:tab-HCR-performance)). 
+Percentage of simulations below $S_{gen}$ or above 80% $S_{MSY}$ changed into riskier zones by up to approximately 15%, and catch was less than half of what it was in the base scenario (Table \@ref(tab:tab-HCR-performance)). 
 The alternate HCR performed relatively worse than the current HCR under the low productivity scenario.
-In the alternate HCR the number of simulations going below $S_{gen}$ quadrupled and the number above $S_{MSY}$ was reduced to 72% of it was in the base scenario, compared to the current HCR doubling the number below $S_{gen}$ and a 84% reduction in the number of simulations above $S_{MSY}$.  
+In the alternate HCR the number of simulations with spawner abundance below $S_{gen}$ quadrupled and the number above 80% $S_{MSY}$ was reduced to 72% of it was in the base scenario, compared to the current HCR doubling the number below $S_{gen}$ and a 84% reduction in the number of simulations above $S_{MSY}$.  
