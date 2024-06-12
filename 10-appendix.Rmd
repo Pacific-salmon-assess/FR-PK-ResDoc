@@ -6,6 +6,9 @@
 
 This document aims to be transparent and reproducible. 
 All data and code to reproduce the analysis in the report, and generate it, is available in [this GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc). 
+The document describing model diagnostics and some additional figures can be found within the repository [here](https://pacific-salmon-assess.github.io/FR-PK-ResDoc/Supplement-model-check.html), and hatchery data referenced in the intro [here](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/data/raw/hatchery/Fraser%20Pink%20Releases%201955-2021.xlsx).  
+
+
 To reproduce this report, clone the repository, make sure you have the required software installed, run [`fit-sr-stan.R`](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R) to fit the models, then [`index.Rmd`](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/index.Rmd) to create the document. 
 Look at documentation on the `README` on the main page of the repository for more details.  
 
