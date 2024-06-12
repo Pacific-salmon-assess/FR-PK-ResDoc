@@ -196,8 +196,7 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  scale_color_manual(values = c("#E69F00", "#0072B2"),
-                     labels = c("current", "PA alternate")) +
+  scale_color_manual(values = c("#E69F00", "#0072B2")) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
   labs(x = "Run size (millions)",
