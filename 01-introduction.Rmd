@@ -27,11 +27,11 @@ Data on catch and spawner abundance (i.e., escapement) has been collected for we
 ### Enhancement  
 
 Enhancement of Fraser Pinks is limited and has primarily occurred via spawning channels to create additional high quality spawning habitat. Records dating back to brood year 1955 show estimates of several million Pink fry migrating out of spawning channels (see data in the reposity linked in Supplement A). 
-Estimates of outmigration varied in precision with monitoring programs primarily designed for other species.  
+Estimates of outmigration varied in precision with monitoring programs primarily designed for other species. 
 Rotary screw trap sampling and or egg to fry survival estimates were used to generate release numbers.
 Prior to the establishment of the Salmonid Enhancement Program (SEP), salmonid enhancement facilities on the Fraser were managed by the IPSFC and production was limited to incidental stocking in spawning channels (i.e. Seaton, Jones, and Weaver). 
 Following the establishment of SEP in 1977 Fraser Pink began to be enhanced in hatcheries where fish would be incubated and reared in a facility to maximize incubation, egg, and fry survivals. 
-Due to their limited time spent in freshwater, Pinks require less resources to enhance relative to other Pacific salmon; a characteristic that has made them a popular fish to raise for marine catch.  
+Due to their limited time spent in freshwater, Pinks require less resources to enhance relative to other Pacific salmon; a characteristic that has made them a popular fish to raise for marine catch. 
 SEP is currently re-evaluating stocking practices, and has reduced the number of fed fry produced since the late 2000’s (Figure \@ref(fig:fig-hatch-cont)), partly due to reduced catch opportunities, and evolving priorities.  
 
 ### Current Management and Trends  
@@ -40,7 +40,7 @@ The current harvest control rule (HCR) for Fraser Pink salmon was first implemen
 It consists of three management zones: 1) at run sizes below 7.059 million Pinks, the the maximum allowable exploitation rate increases from 0% when there are no Pink salmon to 15% at 7.059 million Pinks, 2) at run sizes between 7.059 and 20 million Pinks, there is a fixed spawner abundance goal of 6 million spawners, and 3) at run sizes greater than 20 million Pinks, the maximum exploitation rate is 70%. 
 Documentation of the rationale for the current HCR has been difficult to locate, but a handwritten International Pacific Salmon Fisheries Commission memo from 1983 appears to calculate an egg deposition target of 5 billion eggs that would generate desired production and associated adult spawner target, assuming an average weight, that would meet the egg deposition target (S. Latham, PSC, Vancouver, British Columbia, pers. comm.), @rickerHistoryPresentState1989 also estimates $U_{MSY}$ at 70% which may have supported the current target Removal Reference rate (RR)(Figure \@ref(fig:fig-HCRs)).  
 
-Commercial Pink fisheries are typically limited by protecting Fraser Sockeye, are not currently a preferred food source for First Nations (though interest is increasing as access to preferred species ins limited), but are desired by recreational fishers (M. Veilleux & C. Schwindt, DFO, pers. comm.).
+Additional management measures are often taken during fisheries directed on Fraser Pink salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not. 
 Measures taken to reduce Sockeye bycatch have included: time and area closures (e.g., Interior Fraser Coho fishing window closure), gear requirements (e.g., use of beach seines or shallow seines instead of drift gill nets, bait ban for recreational fisheries), and operational changes (e.g., brailing requirements and maximum recommended set sizes for purse seines).  
 
 In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3m, average spawner abundance was 2.5m, and the average exploitation rate was 69%. 

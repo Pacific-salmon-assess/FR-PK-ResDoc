@@ -13,5 +13,5 @@ Fraser Pink salmon are assumed to comprise a single Conservation Unit [@holtbyCo
 However, there is some evidence for life history differences between Pinks that spawn above and below Hells Gate. 
 For example, Pink salmon from above Hells Gate have higher maximum swimming speeds, allowing them to negotiate the Hells Gate rapids [@rickerHistoryPresentState1989; @williams1983EarlyRun1986], which may be based on genetic differences [@beachamVariationBodySize1988]. 
 In addition, Pink salmon returning to areas upstream and downstream of Hells Gate have slightly different return timing as evidenced through recent sampling for genetic stock identification in lower Fraser test fisheries (S. Latham, PSC, Vancouver, British Columbia, pers. comm). 
-The differences suggest that there may be more genetic and life history differences between spawning populations above and below Hells Gate that previously thought. 
+The differences suggest that there may be more genetic and life history differences between spawning populations above and below Hells Gate than previously thought. 
 The Committee on the Status of Endangered Wildlife in Canada (COSEWIC) is currently reviewing Pink salmon population structure in Canada including in the Fraser River (B. Leaman, COSEWIC, Duncan British Columbia, pers. comm.).  

@@ -69,7 +69,7 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```{r tab-spawner-est-methods, results = "asis"}
 df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-present"), 
                  "Assessment Method" = c("Early International Pacific Salmon Fishing Commission (IPSFC, currently known as the Pacific Salmon Commission, PSC) system specific mark-recapture: low tagging effort", 
-                            "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: high precision methods in larger systems (90 of stock) and lower precision in the remainder", 
+                            "IPSFC ('63-'85) and DFO ('87-'91) system specific mark-recapture: high precision methods in larger systems (90% of stock) and lower precision in the remainder", 
                             "DFO mainstem mark-recapture assessment downstream of major spawning grounds", 
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
                             "PSC Mission sonar"), 

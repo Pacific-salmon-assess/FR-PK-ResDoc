@@ -24,7 +24,7 @@ A no-fishing HCR showed about 5% more simulations being above the USR and not mu
 
 The robustness test of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR would have ~5% greater probability of falling below the LRP,  ~14% greater probability of falling below USR in "amber" zone, and ~7m less fish caught than under the baselien scenario. 
 The alternative, strictly PA compliant, HCR performed relatively worse than the current HCR under the robistness test, possibly due to the higher allowable exploitation rates at intermediate run sizes under this HCR. 
-To mitigate these risks, one option could be to use a dynamic version of our alternate HCR, where the removal reference $U_{MSY}$ changes in relation to current estimates of time-varying productivity.  
+To mitigate these risks, one option to explore in teh future could be to use a dynamic version of our alternate HCR, where the removal reference $U_{MSY}$ changes in relation to current estimates of time-varying productivity.  
 
 
 ## CAVEATS AND ASSUMPTIONS  
@@ -43,12 +43,12 @@ Therefore, it is important to consider the values in table \@ref(tab:tab-HCR-per
 
 ## EXCEPTIONAL CIRCUMSTANCES OR ASSESSMENT TRIGGERS FOR THE STOCK  
 
-Exceptional circumstances are assessment triggers intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed. 
+Exceptional circumstances are assessment triggers intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed (i.e. reassess model assumptions). 
 In addition to routine re-assessment every 2 generations to ensure stock status can be updated and captures contemporary fishery and biological processes, we recommend a re-assessment be triggered if any of the following occur:   
 
 - Stock productivity changes drastically, where the median estimate of time-varying productivity (annual Ricker $\alpha$) falls outside the 50th percentile (i.e. `r recent.a.50s[[1]]`-`r recent.a.50s[[2]]`), of the 3 generation median productivity used to condition our forward simulation;    
 
-- New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this working paper; and
+- New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this working paper; or
 
 - New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics. 
 
