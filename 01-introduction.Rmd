@@ -2,21 +2,21 @@
 
 ## BACKGROUND  
 
-### Fraser River Pink salmon  
+### Fraser River Pink Salmon  
 
 The Fraser River is a large free-flowing river that is 1375 kilometers long and drains 233,000 square kilometers. 
 The basin has a wide diversity of habitats that have been divided into several distinct regions including two on the mainstem of the Fraser, one in Lillooet, and three in the Thompson drainage [@holtbyConservationUnitsPacific2008]. 
-The Fraser River is home to all five species of Pacific Salmon and most of their life history variants. The environmental complexity of the Fraser River, and the diversity of the salmon populations within it, has underpinned indigenous food security for millennia [@nesbittSpeciesPopulationDiversity2016] and likely contributed to the resilience of salmon populations to environmental disturbances through time. 
+The Fraser River is home to all five species of Pacific salmon and most of their life history variants. The environmental complexity of the Fraser River, and the diversity of the salmon populations within it, has underpinned indigenous food security for millennia [@nesbittSpeciesPopulationDiversity2016] and likely contributed to the resilience of salmon populations to environmental disturbances through time. 
 
-Fraser River Pink salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. 
+Fraser River Pink Salmon (*Oncorhynchus gorbuscha*) spawn on odd years in the Fraser River at great abundances. 
 Currently, the largest aggregate of Pink Salmon spawns in the lower Fraser watershed.
-However, prior to the slide at Hells Gate, Fraser River Pink salmon spawned at greater abundances in the upper Fraser watershed with significant populations in the Thompson and Seton systems [@pessInfluencePopulationDynamics2012]. 
-Pink salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from mid-August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
-This obligate 2 year life cycle exhibited by Pink salmon results in even and odd year cohorts that are reproductively isolated from each other and density-dependent interactions between odd and even lineages likely often contributes to one cycle line being numerically dominant over the other [@krkosek2011cycles]. The even year Pink return to the Fraser is negligible, not assessed, and not part of this CU.    
+However, prior to the slide at Hells Gate, Fraser River Pink Salmon spawned at greater abundances in the upper Fraser watershed with significant populations in the Thompson and Seton systems [@pessInfluencePopulationDynamics2012]. 
+Pink Salmon fry migrate to the ocean in the spring, adults spend approximately 18 months at sea, then return to the Fraser River from mid-August to early October to spawn [@dfoSouthernSalmonIntegrated2023]. 
+This obligate 2 year life cycle exhibited by Pink Salmon results in even and odd year cohorts that are reproductively isolated from each other and density-dependent interactions between odd and even lineages likely often contributes to one cycle line being numerically dominant over the other [@krkosek2011cycles]. The even year Pink return to the Fraser is negligible, not assessed, and not part of this CU.    
 
-Fraser River Pink salmon migrate to the Fraser River estuary shortly after emergence and spend several months feeding in the Strait of Georgia before migrating as far north as the Gulf of Alaska where they reside for approximately one year [@dfoFraserRiverSalmon1998]. 
+Fraser River Pink Salmon migrate to the Fraser River estuary shortly after emergence and spend several months feeding in the Strait of Georgia before migrating as far north as the Gulf of Alaska where they reside for approximately one year [@dfoFraserRiverSalmon1998]. 
 When Fraser Pinks return to the Fraser River from the North Pacific, a portion of the run migrates around the northern tip of Vancouver Island through Johnstone Strait, while others move around the southern tip through the Strait of Juan de Fuca; this ratio of northern to southern migration is known as the diversion rate [@folkesEvaluatingModelsForecast2018]. 
-This diversion rate is increasingly dominated by Pink salmon taking the northern migration route, which affects the accuracy of run size estimates as a result of differential encounters with test fisheries [@hagueMovingTargetsAssessing2021]. 
+This diversion rate is increasingly dominated by Pink Salmon taking the northern migration route, which affects the accuracy of run size estimates as a result of differential encounters with test fisheries [@hagueMovingTargetsAssessing2021]. 
 Changes in diversion rate could also have implications for survival via encounters with prey, predators, pathogens, and co-occurring species as a result of differing densities of fish farms on either side of Vancouver Island [@grantSummaryFraserRiver2018]. 
 
 
@@ -26,33 +26,33 @@ Data on catch and spawner abundance (i.e., escapement) has been collected for we
 
 ### Enhancement  
 
-Enhancement of Fraser Pinks is limited and has primarily occurred via spawning channels to create additional high quality spawning habitat. Records dating back to brood year 1955 show estimates of several million Pink fry migrating out of spawning channels (see data in the reposity linked in Supplement A). 
+Enhancement of Fraser Pinks is limited and has primarily occurred via spawning channels to create additional high quality spawning habitat. Records dating back to brood year 1955 show estimates of several million Pink fry migrating out of spawning channels (see data in the repository linked in Supplement A). 
 Estimates of outmigration varied in precision with monitoring programs primarily designed for other species. 
 Rotary screw trap sampling and or egg to fry survival estimates were used to generate release numbers.
-Prior to the establishment of the Salmonid Enhancement Program (SEP), salmonid enhancement facilities on the Fraser were managed by the IPSFC and production was limited to incidental stocking in spawning channels (i.e. Seaton, Jones, and Weaver). 
+Prior to the establishment of the Salmonid Enhancement Program (SEP), salmonid enhancement facilities on the Fraser were managed by the International Pacific Salmon Fishing Commission (IPSFC) and production was limited to incidental stocking in spawning channels (i.e. Seaton, Jones, and Weaver). 
 Following the establishment of SEP in 1977 Fraser Pink began to be enhanced in hatcheries where fish would be incubated and reared in a facility to maximize incubation, egg, and fry survivals. 
 Due to their limited time spent in freshwater, Pinks require less resources to enhance relative to other Pacific salmon; a characteristic that has made them a popular fish to raise for marine catch. 
 SEP is currently re-evaluating stocking practices, and has reduced the number of fed fry produced since the late 2000’s (Figure \@ref(fig:fig-hatch-cont)), partly due to reduced catch opportunities, and evolving priorities.  
 
 ### Current Management and Trends  
 
-The current harvest control rule (HCR) for Fraser Pink salmon was first implemented in 1987. 
-It consists of three management zones: 1) at run sizes below 7.059 million Pinks, the the maximum allowable exploitation rate increases from 0% when there are no Pink salmon to 15% at 7.059 million Pinks, 2) at run sizes between 7.059 and 20 million Pinks, there is a fixed spawner abundance goal of 6 million spawners, and 3) at run sizes greater than 20 million Pinks, the maximum exploitation rate is 70%. 
-Documentation of the rationale for the current HCR has been difficult to locate, but a handwritten International Pacific Salmon Fisheries Commission memo from 1983 appears to calculate an egg deposition target of 5 billion eggs that would generate desired production and associated adult spawner target, assuming an average weight, that would meet the egg deposition target (S. Latham, PSC, Vancouver, British Columbia, pers. comm.), @rickerHistoryPresentState1989 also estimates $U_{MSY}$ at 70% which may have supported the current target Removal Reference rate (RR)(Figure \@ref(fig:fig-HCRs)).  
+The current harvest control rule (HCR) for Fraser Pink Salmon was first implemented in 1987. 
+It consists of three management zones: 1) at run sizes below 7.059 million (M) Pinks, the the maximum allowable exploitation rate increases from 0% when there are no Pink Salmon to 15% at 7.059M Pinks, 2) at run sizes between 7.059 and 20M Pinks, there is a fixed spawner abundance goal of 6M, and 3) at run sizes greater than 20M Pinks, the maximum exploitation rate is 70%. 
+Documentation of the rationale for the current HCR has been difficult to locate, but a handwritten International Pacific Salmon Fisheries Commission memo from 1983 appears to calculate an egg deposition target of 5 billion eggs that would generate desired production and associated adult spawner target, assuming an average weight, that would meet the egg deposition target (S. Latham, Pacific Salmon Commission [PSC], Vancouver, British Columbia, pers. comm.), @rickerHistoryPresentState1989 also estimates $U_{MSY}$ at 70% which may have supported the current target Removal Reference rate (RR)(Figure \@ref(fig:fig-HCRs)).  
 
-Additional management measures are often taken during fisheries directed on Fraser Pink salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not. 
+Additional management measures are often taken during fisheries directed on Fraser Pink Salmon to avoid stocks of concern where possible and to reduce impacts on co-migrating stocks of concern when it is not. 
 Measures taken to reduce Sockeye bycatch have included: time and area closures (e.g., Interior Fraser Coho fishing window closure), gear requirements (e.g., use of beach seines or shallow seines instead of drift gill nets, bait ban for recreational fisheries), and operational changes (e.g., brailing requirements and maximum recommended set sizes for purse seines).  
 
-In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3m, average spawner abundance was 2.5m, and the average exploitation rate was 69%. 
-In the 19 years of Fraser Pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR exploitation rate limit was exceeded (1987 and 1997), the average run size was 12.9m, the average spawner abundance was 9.4m, and the average exploitation rate was 25%. 
+In the 14 returns of Fraser Pinks prior to implementation of the 1987 HCR (i.e., spanning 1959-1985), the average run size was 9.3M, average spawner abundance was 2.5M, and the average exploitation rate was 69%. 
+In the 19 years of Fraser Pinks returns since the implementation of the HCR (1987-2023), there have been two years when the HCR exploitation rate limit was exceeded (1987 and 1997), the average run size was 12.9M, the average spawner abundance was 9.4M, and the average exploitation rate was 25%. 
 Overall, Fraser Pink returns may be characterized as “variable, but stable”. 
-In the last five generations (10 years, 5 returns), the run size and spawner abundance have been slightly increasing with low interannual variability, with an average run size of `r mean(filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)`m, average spawner abundances of `r mean(filter(data, year >=2015)$spawn)`m, and an average exploitation rate of `r round(mean(filter(data, year >=2015)$harvest/ ((filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)))*100, 0)`% (Figure \@ref(fig:fig-catch-esc)).  
+In the last five generations (10 years, 5 returns), the run size and spawner abundance have been slightly increasing with low interannual variability, with an average run size of `r mean(filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)`M, average spawner abundances of `r mean(filter(data, year >=2015)$spawn)`M, and an average exploitation rate of `r round(mean(filter(data, year >=2015)$harvest/ ((filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)))*100, 0)`% (Figure \@ref(fig:fig-catch-esc)).  
 
-### Fraser Pink Fisheries and Fish Stock Provisions  
+### Fraser Pink Fisheries and Fish Stocks Provisions  
 
 Canada’s *Fisheries Act* was amended in June 2019. 
-It included new requirements under the  Fish Stock Provisions (FSP), which states that "*the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock*" [@DFO1985Act]. 
-Fraser Pink salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference point (USR) and the maximum Removal Reference point (RR). 
+It included new requirements under the  Fish Stocks Provisions (FSP), which states that "*the Minister shall implement measures to maintain major fish stocks at or above the level necessary to promote the sustainability of the stock, taking into account the biology of the fish and the environmental conditions affecting the stock*" [@DFO1985Act]. 
+Fraser Pink Salmon has been identified as a major fish stock and to assist with the implementation of the FSP, the authors working in conjunction with DFO Fisheries Management have identified candidate values for the aggregate-based component of the Limit Reference Point (LRP), the Upper Stock Reference point (USR) and the maximum Removal Reference point (RR). 
 Increasing concern about potential impacts from climate change (e.g. warming ocean temperature, freshwater flooding events; @macdonaldStateCanadianPacific2023), potential for increasing inter- and intra-specific competition in the ocean [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018], and evidence of changing demographics [@pacificsalmoncommissionPSCBiologicalData2023] all underscore the need to update our understanding of stock dynamics and status. 
 The relationship between Fraser Pink population dynamics and management haven't been assessed in over 30 years (last DFO assessment @rickerHistoryPresentState1989), partly due to concerns about calibration among spawner assessment methodologies [@grantFraserRiverPink2014]. 
 The new FSP requirements necessitate a careful re-examination of population dynamics and the sustainability of the current HCR. 
@@ -60,9 +60,9 @@ The new FSP requirements necessitate a careful re-examination of population dyna
 
 ## OBJECTIVES  
 
-As the Fraser Pink salmon Stock Management Unit (SMU) is comprised of a single Conservation Unit, we use DFO’s Wild Salmon Policy benchmarks, which should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009], to identify candidate FSP reference points. 
+As the Fraser Pink Salmon Stock Management Unit (SMU) is comprised of a single Conservation Unit, we use DFO’s Wild Salmon Policy benchmarks, which should be biologically based and explicitly account for uncertainty [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009], to identify candidate FSP reference points. 
 
-The objectives of this working paper are to:  
+The objectives are to:  
 
 1. describe current understanding of: (a) stock structure and distribution, (b) stock status and trends, and (c) ecosystem and climate factors affecting the stock;   
 

@@ -15,12 +15,12 @@ knitr::include_graphics(here::here("figure/HCRs.png"))
 knitr::include_graphics(here::here("figure/catch-esc.png"))
 ```
 
-(ref:fig-map) Fraser River Basin, extent of Pink salmon spawning distribution (red), and approximate locations of the Mission hydroacoustics site, Hells Gate and Big Bar. Map adapted from [@grantFraserRiverPink2014].  
+(ref:fig-map) Fraser River Basin, extent of Pink Salmon spawning distribution (red), and approximate locations of the Mission hydroacoustics site, Hells Gate and Big Bar. Map adapted from [@grantFraserRiverPink2014].  
 ```{r fig-map, fig.cap = "(ref:fig-map)"}
 knitr::include_graphics(here::here("figure/map.png"))
 ```
 
-(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks over time and total returns of Pink salmon across the North Pacific, 1925-present. Body mass data were taken from @pacificsalmoncommissionPSCBiologicalData2023 and time series of North Pacific wide Pink salmon abundance are from [@ruggeroneNumbersBiomassNatural2018] and updated through present.  
+(ref:fig-avg-mass) Average body mass (kg) for Fraser Pinks over time and total returns of Pink Salmon across the North Pacific, 1925-present. Body mass data were taken from @pacificsalmoncommissionPSCBiologicalData2023 and time series of North Pacific wide Pink Salmon abundance are from [@ruggeroneNumbersBiomassNatural2018] and updated through present.  
 ```{r fig-avg-mass, fig.cap = "(ref:fig-avg-mass)"}
 knitr::include_graphics(here::here("figure/avg-mass.png"))
 ```
@@ -40,7 +40,7 @@ knitr::include_graphics(here::here("figure/rec-resid.png"))
 knitr::include_graphics(here::here("figure/tv-alpha.png"))
 ```
 
-(ref:fig-SRR) Fraser Pink salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
+(ref:fig-SRR) Fraser Pink Salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
 ```
@@ -180,7 +180,5 @@ csasdown::csas_table(format = "latex",
   kableExtra::column_spec(c(1:4,7), width = "1.5cm") |>
   kableExtra::column_spec(5:6, width = "3cm")
 }
-
-
 ```
 

@@ -5,7 +5,7 @@
 # COMPUTING ENVIRONMENT {#app:a}  
 
 This document aims to be transparent and reproducible. 
-All data and code to reproduce the analysis in the report, and generate it, is available in [this GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc). 
+All data and code to reproduce the analysis in the report, and generate it, is available in [this GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc). ***to be changed to Zenodo link after editing, so it is archived in time and version of document.***
 The document describing model diagnostics and some additional figures can be found within the repository [here](https://pacific-salmon-assess.github.io/FR-PK-ResDoc/Supplement-model-check.html), and hatchery data referenced in the intro [here](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/data/raw/hatchery/Fraser%20Pink%20Releases%201955-2021.xlsx).  
 
 
@@ -33,5 +33,3 @@ devtools::session_info()$packages %>%
   dplyr::rename(Package = package, Version = loadedversion, Date = date) %>%
   csasdown::csas_table()
 ```
-
-The specific version used to this report is located in the commit secure hash algorithm (SHA) ***add SHAs once finalized***.

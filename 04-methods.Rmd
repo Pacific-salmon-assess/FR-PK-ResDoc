@@ -1,6 +1,6 @@
 # METHODS  
 
-We compiled available data on Fraser Pink salmon spawner abundance and catch, then developed and fit a state-space spawner-recruitment model to these data to describe stock dynamics and population characteristics. 
+We compiled available data on Fraser Pink Salmon spawner abundance and catch, then developed and fit a state-space spawner-recruitment model to these data to describe stock dynamics and population characteristics. 
 We then derived estimates of biological reference points to assess stock status. 
 Lastly, we developed a closed-loop simulation model conditioned on recent estimates of productivity to quantify future expected biological and fishery performance of the current HCR, an alternative HCR and a no fishing scenario for the stock. 
 Each of these steps is described in detail below. 
@@ -13,10 +13,10 @@ It should be noted that no calibration was done when switching between spawner a
 These approaches have varied in their precision but, based on conversations with area staff and other analysts familiar with the data, were assumed to account for the vast majority of the spawning population in any given year, and to not be systematically biased.  
 
 Commercial catch has typically been estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stock to the coastal catch, where the contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and genetic stock identification methodologies (1987-present). 
-Methods used to estimate catch vary by fishery type (i.e. commercial, recreational, aboriginal) and country.
+Methods used to estimate catch vary by fishery type (i.e., commercial, recreational, First Nations) and country.
 The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon.
 Data prior to `r min(rec_prop$year)` were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in `r min(rec_prop$year)`.
-Recreational catch is estimated through agency creel surveys (e.g., effort surveys of CPUE paired with flights or other counts) in both countries. 
+Recreational catch is estimated through agency creel surveys (e.g., effort surveys of catch per unit effort paired with flights or other counts) in both countries. 
 First Nations Economic Opportunity catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Social, and Ceremonial catch (FSC) is estimated using methods that differ by fishery and location. The total return (or recruitment) in any given year was assumed to be the sum of catch and spawner abundance.  
 
 See @grantFraserRiverPink2014 for a detailed overview of the Fraser River Pink data landscape including methodologies used to collect spawner abundance, catch, and biological data. 
@@ -28,7 +28,7 @@ State-space models allow for the separation of observation (e.g., sampling) erro
 State-space spawner-recruitment models tend to generate less biased estimates of leading parameters (e.g., intrinsic productivity and density dependence) than traditional regression based approaches that do not separate observation error and process variation and hence can be vulnerable to errors-in-variables and time series biases [@adkisonReviewSalmonSpawnerRecruitment2021; @statonEvaluationMethodsSpawner2020; @suPerformanceBayesianStatespace2012].  
 
 
-### PROCESS MODEL  
+### Process model  
 
 The process model is intended to represent the true population dynamics (i.e., free of measurement error).
 This component of our state-space spawner-recruitment model specifies productivity and density-dependence.
@@ -69,7 +69,7 @@ S_y = R_y (1 - U_y)
 \end{equation}
 
 
-### OBSERVATION MODEL  
+### Observation model  
 
 We assumed that observation error in spawning abundance varied among assessment regimes, $r$ (Table \@ref(tab:tab-spawner-est-methods)):   
 
@@ -78,7 +78,7 @@ S_y = S_{obs_y} + \sigma^2_{r,y}
 \label{eq:get-S}
 \end{equation}
 
-and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the CVs converted to log-normal variance following [@forbes_statistical_2011]:
+and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the coefficient of variation (CV) converted to log-normal variance following [@forbes_statistical_2011]:
 
 \begin{equation}
 \sigma^2_{r,y} = \ln\left(\mathrm{CV}_{r,y}^2 + 1\right)
@@ -88,7 +88,7 @@ and then directly accounted for this by assuming observed spawner abundance was 
 We assumed that catch had a 5% CV and so catch observations were also assumed to be log-normally distributed with the CV converted to log-normal variance as per Eqn. \@ref(eq:get-sigma), then substituting catch, $C$, for spawners, $S$, into Eqn. \@ref(eq:get-S) and dropping the regime script, $r$.     
 
 
-### MODEL FITTING AND DIAGNOSTICS  
+### Model fitting and diagnostics  
 
 We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
 We sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. 
@@ -140,7 +140,7 @@ We used this simulation to project the stock forward in time and evaluate the bi
 Details on model components and calculation of performance are provided below.   
 
 
-### BIOLOGICAL SUB-MODEL  
+### Biological sub-model  
 
 Because recruitment residuals tended to be negative in recent generations (Figure \@ref(fig:fig-rec-resid)), and reproductive potential has likely declined through time due to declining size (Figure \@ref(fig:fig-avg-mass)), we chose to refit a version of the model described in equation \@ref(eq:AR1) with time-varying intrinsic productivity that could then be used to condition the biological sub-model for the forward simulation. Specifically, we allowed the $\alpha$ parameter to evolve through time as a random walk, yielding annual estimates of productivity: 
 
@@ -152,14 +152,14 @@ Because recruitment residuals tended to be negative in recent generations (Figur
 \label{eq:tv-alpha}
 \end{equation}
 
-and where recruitment anomalies were no longer modelled as being auto-correlated but all other parameters in equation \@ref(eq:AR1) otherwise remained the same.
-We simulated future stock trajectories by starting with the most recent estimate (i.e. latent state) of spawners and the median estimate of productivity in the last 3 generations, then iterating the process model forward in time for five Pink salmon generations (10 years) 
+and where recruitment anomalies were no longer modeled as being auto-correlated but all other parameters in equation \@ref(eq:AR1) otherwise remained the same.
+We simulated future stock trajectories by starting with the most recent estimate (i.e., latent state) of spawners and the median estimate of productivity in the last 3 generations, then iterating the process model forward in time for five Pink Salmon generations (10 years) 
 This was done 1000 times to ensure that uncertainty in the spawner-recruitment relationships was propagated by drawing for the joint posterior distributions of estimated parameters in each iteration of the simulation. 
  
 
-### FISHERY SUB-MODEL  
+### Fishery sub-model  
 
-In each odd-year of the simulation, forecasted total returns of Pink salmon were assumed to be estimated with error. 
+In each odd-year of the simulation, forecasted total returns of Pink Salmon were assumed to be estimated with error. 
 This error was assumed to be lognormally distributed with a mean equal to the true run size and CV of `r round(for.error*100, 0)`% based on retrospective assessment of pre-season forecasts provided by the PSC for years 1987-2021. 
 Forecasted returns were then used as an input into the HCR that specified target exploitation rate given the expected run-size. 
 Outcome uncertainty (i..e., deviations from targeted catch) was then applied to calculate realized catch and spawning abundance 
@@ -173,17 +173,17 @@ An unintended consequence of this alternative is that the associated target spaw
 To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye [@pestalUpdatedMethodsAssessing2012].  
 
 
-### PERFORMANCE MEASURES  
+### Performance measures  
 
 We quantified the expected performance of the HCRs against biological and fishery objectives and associated quantitative performance measures (Table \@ref(tab:tab-perf-metrics-descriptions)).
 Biological objectives included minimizing the probability spawner abundances fall below the LRP ($S_{gen}$), and maximizing the probability the stock maintains spawner abundances above the USR (80% $S_{MSY}$) and is hence in a “healthy” or desirable state. 
 The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty in these reference points was explicitly accounted for in the performance measure calculations. 
 The percentages reported are simply the percentage of simulation-years that fall above or below a reference point (e.g. if a single year of spawners within a simulation is above or below the reference point it is counted).  
 
-Fishery objectives included maximizing average catch and inter-annual stability in catch, and maximizing the probability annual catch fall above a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2001 (i.e. an indicator of a "good" fishing year).  
+Fishery objectives included maximizing average catch and inter-annual stability in catch, and maximizing the probability annual catch fall above a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2001 (i.e., an indicator of a "good" fishing year).  
 
 
-### ROBUSTNESS TEST  
+### Robustness test  
 
-We used a robustness test to evaluate the sensitivity of HCR performance to a potential situation where future intrinsic productivity of the Fraser Pink stock dramatically further declined due to, for example, large changes in marine or freshwater survival. To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of Ricker parameters (i.e. $\alpha$, $\beta$, $\sigma$) associated with the lower tenth percentile of the median posterior distribution of the last 3 generations of the productivity parameter ($\alpha$), while draws from the starting state (i.e. spawners in 2023) and benchmarks were sampled from the full posterior distribution.  
+We used a robustness test to evaluate the sensitivity of HCR performance to a potential situation where future intrinsic productivity of the Fraser Pink stock dramatically further declined due to, for example, large changes in marine or freshwater survival. To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of Ricker parameters (i.e., $\alpha$, $\beta$, $\sigma$) associated with the lower tenth percentile of the median posterior distribution of the last 3 generations of the productivity parameter ($\alpha$), while draws from the starting state (i.e., spawners in 2023) and benchmarks were sampled from the full posterior distribution.  
 

@@ -1,6 +1,6 @@
 ---
 title: |
-    "Estimating Precautionary Approach reference points and assessing consequences of harvest control rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
+    "Estimating Precautionary Approach Reference Points and Assessing Consequences of Harvest Control Rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
 french_title: "Titre ici (*Nom latin de l'espèce*)"
 author: |
   Dylan M. Glaser^1^
@@ -31,7 +31,7 @@ french_address: |
   \smallskip
   ^2^Loin, très loin\
      Une autre galaxie
-month: "May"
+month: "June"
 french_month: "Mois"
 year: 2024
 report_number: nnn
@@ -42,12 +42,12 @@ cat_no: "Fs70-6/2021-012E-PDF"
 citation_other_language: "Last, F.M. et Smith, A.B. Title Here (*Latin Species Name*). DFO Secr. can. des avis sci. du MPO. Doc. de rech 2019/nnn. iv + 13 p."
 
 abstract: |
- Fraser River Pink salmon spawn throughout the Fraser Basin in odd-numbered years and the Stock Management Unit is comprised of a single Conservation Unit. Landslides have occurred causing migratory impediments to returning adults at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide discovered in 2019. Fraser Pink salmon marine survival is associated with sea-surface temperatures during early marine life, spring bloom timing, and the North Pacific Current, all of which are expected to change as the North Pacific warms as a result of climate change. Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size. We fit a state-space spawner-recruitment model to available data to characterize stock dynamics and derive estimates of biological reference points to assess stock status. We then developed a simple closed-loop simulation model based on recent estimates of productivity to quantify future expected biological and fishery performance of the current harvest control rule (HCR), an illustrative alternative HCR and a no fishing scenario. We estimated the proposed Upper Stock Reference (USR) point of 80% $S_{MSY}$ to be 4.6 million (m) fish (3.64-6.11m; median and 80th percentiles), the Limit Reference Point (LRP) $S_{gen}$ to be 1.72m (1.10-2.70m), and the maximum removal reference rate (RR), $U_{MSY}$ to be 0.56 (0.47-0.63). The most recent (2023) observed estimate of spawner abundance for Fraser Pink salmon is 9.58m suggesting the Stock Management Unit is in a “healthy” state. The existing HCR for Fraser Pinks has a very low probability (< 5%) of the stock falling below its LRP, and a relatively high probability (87.5%) of spawner abundance being above the USR over the next 10 years. Assuming fisheries fully utilize allowable catch, median annual catch is projected to 10.3m over the same time period. Assessment of an illustrative alternative HCR, which is strictly compliant with DFO’s Precautionary Approach Framework, had similar biological performance and slightly worse fishery performance. A robustness test, where productivity was reduced to 10% of its recent estimate, indicated the current and alternatie HCRs had a 9% and 20% chance, respectively, of the stock falling below its LRPs over the next 10 years. We conclude with recommendations on re-assessment triggers and potential areas to focus future work.
+ Fraser River Pink Salmon spawn throughout the Fraser Basin in odd-numbered years and the Stock Management Unit is comprised of a single Conservation Unit. Landslides have occurred causing migratory impediments to returning adults at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide discovered in 2019. Fraser Pink Salmon marine survival is associated with sea-surface temperatures during early marine life, spring bloom timing, and the North Pacific Current, all of which are expected to change as the North Pacific warms as a result of climate change. Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size. We fit a state-space spawner-recruitment model to available data to characterize stock dynamics and derive estimates of biological reference points to assess stock status. We then developed a simple closed-loop simulation model based on recent estimates of productivity to quantify future expected biological and fishery performance of the current harvest control rule (HCR), an illustrative alternative HCR and a no fishing scenario. We estimated the proposed Upper Stock Reference (USR) point of 80% $S_{MSY}$ to be 4.6 million (M) fish (3.64-6.11M; median and 80th percentiles), the Limit Reference Point (LRP) $S_{gen}$ to be 1.72M (1.10-2.70M), and the maximum removal reference rate (RR), $U_{MSY}$ to be 0.56 (0.47-0.63). The most recent (2023) observed estimate of spawner abundance for Fraser Pink Salmon is 9.58M suggesting the Stock Management Unit is in a “healthy” state. The existing HCR for Fraser Pinks has a very low probability (< 5%) of the stock falling below its LRP, and a relatively high probability (87.5%) of spawner abundance being above the USR over the next 10 years. Assuming fisheries fully utilize allowable catch, median annual catch is projected to 10.3M over the same time period. Assessment of an illustrative alternative HCR, which is strictly compliant with DFO’s Precautionary Approach Framework, had similar biological performance and slightly worse fishery performance. A robustness test, where productivity was reduced to 10% of its recent estimate, indicated the current and alternatie HCRs had a 9% and 20% chance, respectively, of the stock falling below its LRPs over the next 10 years. We conclude with recommendations on re-assessment triggers and potential areas to focus future work.
   
 french_abstract: |
   Voici 
   
-header: "Draft working paper --- Do not cite or circulate" # or "" to omit
+header: # "Draft working paper --- Do not cite or circulate" # or "" to omit
 show_continued_text: true #added b/c of render error
 output:
  csasdown::resdoc_pdf:
@@ -57,7 +57,7 @@ output:
    # will remain between compilations. If true, your changes will be lost when you compile
    copy_sty: true
    # line_nums is a toggle to show line numbers on the left side of the page. 
-   line_nums: true
+   line_nums: false
    # line_nums_mod represents showing every Nth line if line_nums is true
    line_nums_mod: 1
    # lot_lof is a toggle to show/not show the lists of tables and figures at the
