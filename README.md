@@ -5,10 +5,11 @@ CSAS Research Document for Fraser Pink Salmon. This repository contains all the 
 The root directory contains all files produced when running [csasdown](https://github.com/pbs-assess/csasdown)'s `draft("sr")` function. In addition to the csasdown files, 📁`analysis` contains:  
 - 📁`data`  
   -📁`generated` data generated from analyses  
-  -📁`raw ` data used in the analysis or to show the HCR  
-    -📁`bio` biological data used to add information in the context section of the SR     
-- 📁`R` `.R` files to fit the model (`fir-sr-stan.R`), run the forward simulation (`fwd-sim.R`), and create figures/tables (`inference-figs.R`)  
-- 📁`Stan` Stan code to run the state-space spawner-recruit model
+  -📁`raw ` data used in the analysis or to show the HCR with subfolders:  
+      -📁`bio` biological data used to add information in the context section of the SR
+      -📁`hatchery` with hatchery supplementation data from SEP       
+- 📁`R` `.R` files to fit the model (`fir-sr-stan.R`), run the forward simulation (`fwd-sim.R`), create figures/tables (`inference-figs.R`) and some helper functions  
+- 📁`Stan` Stan code to run the state-space spawner-recruit models
 - [The model validation supplement](https://pacific-salmon-assess.github.io/FR-PK-ResDoc/Supplement-model-check.html)
 
 To reproduce this document: 
