@@ -256,7 +256,7 @@ ggplot(resids, aes(x=year, y = mid)) +
 my.ggsave(here("figure/rec-resid.png"))
 
 # time varying alpha ---
-ggplot(a_yrs) +
+ggplot(as.data.frame(a_yrs)) +
   geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
   geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
   scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
@@ -368,7 +368,7 @@ ggsave(here("figure/fwd-SC.png"), width= 9, height = 9, dpi= 180)
 # HCR and realized harvest ---
 ggplot(filter(HCRs, HCR=="current")) +
   geom_line(aes(x=run_size, y = ER)) +
-  geom_segment(x = 22, y = .7, xend = 25) +
+  geom_segment(x = 22, y = .7, xend = 25,yend = .7) +
   geom_point(data = filter(data, year >= 1987),
              aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
              size =2) +
@@ -447,6 +447,19 @@ ggarrange(catch_ryear, esc_ryear, ER_ryear, recruits_ryear, nrow = 2, ncol = 2,
           align = "hv", common.legend = TRUE)
 
 my.ggsave(here("figure/4-panel.png"))
+
+#Trend calcs for FSRR  -------------------------------------------------------------------
+
+ten_gen_spw <- spwn_df[24:33,4] #last 10 gens
+all_gen_spw <- spwn_df[,4] #all gens
+
+ten_gen_model <- lm(log(ten_gen_spw) ~ c(1:10))
+all_gen_model <- lm(log(all_gen_spw) ~ c(1:33))
+
+# % change is calculated as (exp(slope*[# years-1])-1)*100
+
+per_10_gen_change <- (exp(ten_gen_model$coefficients[2]*9)-1)*100
+per_all_gen_change <- (exp(all_gen_model$coefficients[2]*32)-1)*100
 
 #misc figs - appendix? -------------------------------------------------------------------
 # then time varying alphas in the SR relationship ---
