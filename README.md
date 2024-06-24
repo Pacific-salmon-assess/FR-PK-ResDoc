@@ -18,4 +18,4 @@ To reproduce this document:
   -  [running the forward simulation](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fwd-sim.R),
   -  [generating the figures](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/inference-figs.R),
   -  and finally knit the [index.Rmd](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/index.Rmd) file to generate the document.
-- Flag problems relating to the analysis and structure of this repo in [issues](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/issues) or reach out to dylan.glaser@dfo-mpo.gc.ca for help. We can't help too much with [csasdown](https://github.com/pbs-assess/csasdown) issues! 
+- Flag problems relating to the analysis and structure of this repo in [issues](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/issues) or reach out to dylan.glaser@dfo-mpo.gc.ca for help. 
