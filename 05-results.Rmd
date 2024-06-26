@@ -21,7 +21,7 @@ Since then, catch has been reduced and the stock has rebounded to higher levels 
 Overall, the Kobe plot suggests the stock is currently being under fished, but attaining the catch goal defined in the HCR can be difficult due to other management considerations.  
 
 The most recent (2023) observation of spawner abundance for Fraser Pink Salmon is `r filter(data, year==2023)$spawn`M, which is well above the USR of 80% $S_{MSY}$ suggesting the stock is in a “healthy” state (Figure \@ref(fig:fig-status)). 
-The stock being considered healthy is consistent with the Wild Salmon Policy rapid status assessment tool that takes data quality and multiple metrics into account [@pestalStateSalmonRapid2023], and which has assessed the stock as in the green with high confidence (see **LIMIT REFERENCE POINTS AND WILD SALMON POLICY RAPID STATUS SUMMARY: FRASER PINK STOCK MANAGEMENT UNIT - to add citation/appendix after guidance for how to link from CSAS office**).  
+The stock being considered healthy is consistent with the Wild Salmon Policy rapid status assessment tool that takes data quality and multiple metrics into account [@pestalStateSalmonRapid2023], and which has assessed the stock as in the green with high confidence ([Supplement A](https://zenodo.org/records/12549905)).  
 
 ## HARVEST CONTROL RULE PERFORMANCE  
 
