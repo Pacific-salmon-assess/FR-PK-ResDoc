@@ -40,12 +40,12 @@ knitr::include_graphics(here::here("figure/rec-resid.png"))
 knitr::include_graphics(here::here("figure/tv-alpha.png"))
 ```
 
-(ref:fig-SRR) Fraser Pink Salmon spawner-recruitment relationship. Error bars around points, which are color coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
+(ref:fig-SRR) Fraser Pink Salmon spawner-recruitment relationship. Error bars around points, which are colour coded by brood year, and relationship are 80% credible interval while the thick black line is the expected relationship.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
 knitr::include_graphics(here::here("figure/SRR.png"))
 ```
 
-(ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are color coded and the first and last ones are labelled. 80% credible intervals are included for the last year of assessment. 
+(ref:fig-kobe) Kobe plot of Fraser Pink status overtime. Years are colour coded and the first and last ones are labelled. 80% credible intervals are included for the last year of assessment. 
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
 knitr::include_graphics(here::here("figure/kobe.png"))
 ```
@@ -55,7 +55,7 @@ knitr::include_graphics(here::here("figure/kobe.png"))
 knitr::include_graphics(here::here("figure/recent-status.png"))
 ```
 
-(ref:fig-fwd-SC) Projected Fraser Pink spawners and catch (both in millions of fish; shaded and colored lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons are 80% credible intervals and solid lines are medians. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
+(ref:fig-fwd-SC) Projected Fraser Pink spawners and catch (both in millions of fish; shaded and coloured lines) over next 10 years when either the current or alternative illustrative HCRs are applied. Historical escapement and catch (black) are included for reference. Shaded polygons are 80% credible intervals and solid lines are medians. The catch index in right hand panel is defined as the average of the top 3 years of catch from 2001 to present.  
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
 knitr::include_graphics(here::here("figure/fwd-SC.png"))
 ```
@@ -74,6 +74,10 @@ df <- data.frame(Years = c("1957-61", "1963-91", "1993-01", "2003-07", "2009-pre
                             "PSC test fishery: escapement derived from seine boats in marine and catch data", 
                             "PSC Mission sonar"), 
                  CV = c("35%", "25%", "20%", "50%", "10%"))
+
+#hack to make sure "assessment method" looks good
+colnames(df) <- c("Years", "Assessment Method", "CV") 
+
 df |>
 mutate_all(function(x){gsub("%", "\\\\%", x)}) |> #to escape special char latex doesn't like 
 csasdown::csas_table(caption = "(ref:tab-spawner-est-methods)",

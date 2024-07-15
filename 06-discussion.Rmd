@@ -2,7 +2,7 @@
 
 ## SUMMARY OF KEY FINDINGS  
 
-In this working paper we briefly review our current understanding of Fraser River Pink Salmon stock structure and distribution, assessment history, and ecosystem and climate factors affecting the stock. 
+In this research document we briefly review our current understanding of Fraser River Pink Salmon stock structure and distribution, assessment history, and ecosystem and climate factors affecting the stock. 
 We then fit a state-space spawner-recruitment model to available to data to characterize stock dynamics, and derive estimates of biological benchmarks to assess stock status. 
 Lastly, we developed a simple closed-loop simulation model based on recent productivity estimates to quantify future expected biological and fishery performance of the current, an illustrative alternative HCR, and a no fishing scenario.  
 
@@ -48,7 +48,7 @@ In addition to routine re-assessment every 2 generations to ensure stock status 
 
 - Stock productivity changes drastically, where the median estimate of time-varying productivity (annual Ricker $\alpha$) falls outside the 50th percentile (i.e., `r recent.a.50s[[1]]`-`r recent.a.50s[[2]]`), of the 3 generation median productivity used to condition our forward simulation;    
 
-- New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this working paper; or
+- New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this research document; or
 
 - New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics. 
 
