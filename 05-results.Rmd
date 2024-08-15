@@ -2,7 +2,7 @@
 
 ## MODEL FIT AND DIAGNOSTICS  
 Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat < 1.01 (maximum of 1.003), effective sample sizes > 10% of draws (minimum 39% in time-varying model) suggesting reasonable model convergence, and posterior predictive checks that resembled data that was used to fit the model. 
-(See Appendix A for details of computing environment and details on reproducing analysis, and a Zenodo link with a supplement describing model fits).  
+(See Appendix A for details of computing environment and details on reproducing analysis, and a link to a supplement describing model fits).  
 
 ## BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS  
 
@@ -17,7 +17,7 @@ Nonetheless, the spawner abundance expected to maximize long-term sustainable yi
 The history of the status of the Fraser Pink stock can be visualized as a “Kobe plot”, a common way to visualize stock status over time relative to biomass (or abundance) and exploitation rate based reference points. 
 The Kobe plot for Fraser Pinks (Figure \@ref(fig:fig-kobe)) highlights that the stock was overfished and experiencing overfishing (i.e., catch above $U_{MSY}$, with spawners below $S_{MSY}$) at the beginning of the time series in 1959 and that this generally continued until the current management regime was adopted in 1987. 
 Overfishing may have been due, at least in part, to the troll fishery learning to catch Pinks in outside waters; and this overfishing was recognized in 1957 when the IPSFC was put in charge to manage Fraser Pink fisheries shared by the US and Canada [@rickerHistoryPresentState1989]. 
-Since then, catch has been reduced and the stock has rebounded to higher levels of spawner abundance (Figure \@ref(fig:fig-catch-esc)), with some years being intermediate where the stock was over fished at high abundances (top right quadrant, Figure \@ref(fig:fig-kobe)), and under fished at low abundances bottom left quadrant, Figure \@ref(fig:fig-kobe)). 
+Since then, catch has been reduced and the stock has rebounded to higher levels of spawner abundance (Figure \@ref(fig:fig-catch-esc)), with some years being intermediate where the stock was over fished at high abundances (top right quadrant, Figure \@ref(fig:fig-kobe)), and under fished at low abundances (bottom left quadrant, Figure \@ref(fig:fig-kobe)). 
 Overall, the Kobe plot suggests the stock is currently being under fished, but attaining the catch goal defined in the HCR can be difficult due to other management considerations.  
 
 The most recent (2023) observation of spawner abundance for Fraser Pink Salmon is `r filter(data, year==2023)$spawn`M, which is well above the USR of 80% $S_{MSY}$ suggesting the stock is in a “healthy” state (Figure \@ref(fig:fig-status)). 

@@ -27,13 +27,13 @@ AR1.stan.fit <- rstan::stan(file = here("analysis/Stan/ss-sr-ar1.stan"),
                            control = list(adapt_delta = 0.99, max_treedepth = 20))
 
 #shinystan::launch_shinystan(AR1.stan.fit) #there if ya want it...
-saveRDS(AR1.stan.fit, file=here("analysis/data/generated/AR1-SS-SR.stan.fit.rds"))
+#saveRDS(AR1.stan.fit, file=here("analysis/data/generated/AR1-SS-SR.stan.fit.rds"))
 
 # basic diagnostics ----------------------------------------------------------------------
 AR1.model.summary <- as.data.frame(rstan::summary(AR1.stan.fit)$summary)
 model.pars.AR1 <- rstan::extract(AR1.stan.fit)
 
-#trying to plot PPC
+#plot PPC
 R <- (data$harvest+data$spawn)/1000000 #recruit data
 R_rep <- model.pars.AR1$H_rep[1:500,] + model.pars.AR1$S_rep[1:500,]
 

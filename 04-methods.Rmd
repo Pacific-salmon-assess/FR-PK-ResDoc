@@ -7,7 +7,7 @@ Each of these steps is described in detail below.
 
 ## DATA SOURCES  
 
-Spawner and catch data from 1959 to present were provided by the Pacific Salmon Commission (available at @pacificsalmoncommissionFraserRiverPanel2024). 
+Spawner and catch data from 1959 to present were provided by the PSC [@pacificsalmoncommissionFraserRiverPanel2024]. 
 Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table \@ref(tab:tab-spawner-est-methods)). 
 It should be noted that no calibration was done when switching between spawner abundance estimation methods, but methods prior to the extensive data review by @andrewReviewAssessmentAdult1987 have had corrections made, and more recent estimation methods benefited from lessons in that review and methodological advances. 
 These approaches have varied in their precision but, based on conversations with area staff and other analysts familiar with the data, were assumed to account for the vast majority of the spawning population in any given year, and to not be systematically biased.  
@@ -90,7 +90,7 @@ We assumed that catch had a 5% CV and so catch observations were also assumed to
 
 ### Model fitting and diagnostics  
 
-We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo algorithm [@hoffman2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
+We fit the spawner-recruitment model in a Bayesian estimation framework with Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023], which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo (MCMC) algorithm [@hoffman2014] for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. 
 We sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. 
 We assessed chain convergence visually via trace plots and by ensuring that $\hat{R}$ (potential scale reduction factor; @vehtari2021rank) was less than 1.01 and that the effective sample size was greater than 200, or 10% or the iterations. 
 Posterior predictive checks were used to make sure that the model returned data similar to the data used to fit parameters.  
