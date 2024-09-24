@@ -33,7 +33,7 @@ brood_t <- as.data.frame(cbind(data$year[1:32],t(spwn.quant), t(rec.quant))) |>
   round(2)
 colnames(brood_t) <- c("BroodYear","S_lwr","S_med","S_upr","R_lwr","R_med","R_upr")
 
-#SR relationship based on median alpha ---
+#SR relationship based on median alpha ---F
 spw <- seq(0,max(brood_t$S_upr),length.out=100)
 max_samples <- dim(AR1.model.pars$beta)
 SR_pred <- matrix(NA,length(spw),max_samples)
@@ -267,7 +267,7 @@ my.ggsave(here("figure/tv-alpha.png"))
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   #draw data and error bars on final year
-  geom_point(aes(color = year), size=3) +
+  geom_point(aes(color = year), size=4) +
   geom_errorbar(data = filter(kobe_df, year == max(kobe_df$year)),
                 aes(x = S_Smsy, ymin = U_Umsy_LCI, ymax = U_Umsy_UCI), width = 0) +
   geom_errorbarh(data = filter(kobe_df, year == max(kobe_df$year)),
@@ -371,7 +371,7 @@ ggplot(filter(HCRs, HCR=="current")) +
   geom_segment(x = 22, y = .7, xend = 25,yend = .7) +
   geom_point(data = filter(data, year >= 1987),
              aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
-             size =2) +
+             size =3) +
   scale_color_viridis_c(breaks = c(1987, 2023)) +
   labs(x = "run size", y = "target exploitation rate") +
   theme(legend.position = "bottom",
