@@ -371,7 +371,7 @@ ggplot(filter(HCRs, HCR=="current")) +
   geom_segment(x = 22, y = .7, xend = 25,yend = .7) +
   geom_point(data = filter(data, year >= 1987),
              aes(x=(harvest+spawn), y = harvest/(harvest+spawn), color = year),
-             size =3) +
+             size =4, alpha= 0.8) +
   scale_color_viridis_c(breaks = c(1987, 2023)) +
   labs(x = "run size", y = "target exploitation rate") +
   theme(legend.position = "bottom",
