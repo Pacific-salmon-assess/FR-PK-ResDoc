@@ -295,6 +295,14 @@ perf.metrics <- perf.metrics |>
 
 write.csv(perf.metrics, here("analysis/data/generated/perf-metrics.csv"), row.names = FALSE)
 
+perf.metrics.fr <- perf.metrics |>
+  mutate(scenario = case_when(scenario == "base" ~ "de base",
+                              scenario == "low prod" ~ "faible prod"),
+         HCR = case_when(HCR == "current" ~ "actuelle",
+                         HCR == "PA alt" ~ "autre, AP",
+                         HCR == "no fishing" ~ "Pas de peche"),
+         catch.stability = ifelse(catch.stability== "NA", "S. O.", catch.stability))
+
 #take the trash out --
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,
    HCR, HCRs, i,j,k,last.S, last.yr, sub.data, n.sims, post_HCR, r, R, S, sigma_R_corr,
