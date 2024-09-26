@@ -1,7 +1,7 @@
 ---
 title: |
     "Estimating Precautionary Approach Reference Points and Assessing Consequences of Harvest Control Rules for Fraser River Pink Salmon (*Oncorhynchus gorbuscha*)"
-french_title: "Titre ici (*Nom latin de l'espèce*)"
+french_title: "Estimation des points de référence de l’approche de précaution et évaluation des conséquences des règles de contrôle des prises pour le saumon rose (*Oncorhynchus gorbuscha*) du Fraser"
 author: |
   Dylan M. Glaser^1^
   Brendan M. Connors^2^
@@ -39,19 +39,19 @@ region: "Pacific Region"
 french_region: "Région du Pacifique"
 isbn: "978-0-660-38322-4"
 cat_no: "Fs70-6/2021-012E-PDF"
-citation_other_language: "Glaser, D.M., Connors, B.M., Dionne, K., et Huang, A.M. Estimation de précaution Points de référence d’approche et évaluation des conséquences des règles de contrôle des prises pour Saumon rose du fleuve Fraser (*Oncorhynchus gorbuscha*). DFO Secr. can. des avis sci. du MPO. Doc. de rech 2024/nnn. iv + 13 p."
+citation_other_language: "Glaser, D.M., Connors, B.M., Dionne, K., et Huang, A.M. Estimation des points de référence de l’approche de précaution et évaluation des conséquences des règles de contrôle des prises pour le saumon rose (*Oncorhynchus gorbuscha*) du Fraser. DFO Secr. can. des avis sci. du MPO. Doc. de rech 2024/nnn. iv + 13 p."
 
 abstract: |
  Fraser River Pink Salmon spawn throughout the Fraser Basin in odd-numbered years and the Stock Management Unit is comprised of a single Conservation Unit. Landslides have occurred causing migratory impediments to returning adults at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide discovered in 2019. Fraser Pink Salmon marine survival is associated with sea-surface temperatures during early marine life, spring bloom timing, and the North Pacific Current, all of which are expected to change as the North Pacific warms as a result of climate change. Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size. We fit a state-space spawner-recruitment model to available data to characterize stock dynamics and derive estimates of biological reference points to assess stock status. We then developed a simple closed-loop simulation model based on recent estimates of productivity to quantify future expected biological and fishery performance of the current harvest control rule (HCR), an illustrative alternative HCR and a no fishing scenario. We estimated the proposed Upper Stock Reference (USR) point of 80% $S_{MSY}$ to be 4.6 million (M) fish (3.64-6.11M; median and 80th percentiles), the Limit Reference Point (LRP) $S_{gen}$ to be 1.72M (1.10-2.70M), and the maximum removal reference rate (RR), $U_{MSY}$ to be 0.56 (0.47-0.63). The most recent (2023) observed estimate of spawner abundance for Fraser Pink Salmon is 9.58M and we conclude that the Stock Management Unit is in a “healthy” state. The existing HCR for Fraser Pinks has a very low probability (< 5%) of the stock falling below its LRP, and a relatively high probability (87.5%) of spawner abundance being above the USR over the next 10 years. Assuming fisheries fully utilize allowable catch, median annual catch is projected to be 10.3M over the same time period. Assessment of an illustrative alternative HCR, which is strictly compliant with DFO’s Precautionary Approach Framework, had similar biological performance and slightly worse fishery performance. The results of a robustness test, where productivity was reduced to 10% of its recent estimate, showed that the current and alternate HCRs had a 9% and 20% chance, respectively, of the stock falling below its LRPs over the next 10 years. We conclude with recommendations on re-assessment triggers and potential areas to focus future work.
   
 french_abstract: |
-  Voici 
+  Le saumon rose du Fraser fraye dans tout le bassin du Fraser les années impaires, et la zone de gestion des stocks est composée d’une seule unité de conservation. Des glissements de terrain ont causé des obstacles à la montaison des adultes à différentes périodes, le plus notable étant celui de Hells Gate en 1914 et, plus récemment, le glissement de terrain de Big Bar découvert en 2019. La survie en mer du saumon rose du Fraser est influencée par la température de la surface de la mer au début de la vie marine, par le moment de l’efflorescence printanière et par le courant du Pacifique Nord, qui devraient tous changer à mesure que le Pacifique Nord se réchauffe sous l’effet des changements climatiques. La taille des adultes a diminué au fil du temps, ce qui coïncide avec l’augmentation de l’abondance des saumons dans le Pacifique Nord, qui pourrait avoir une incidence sur le taux de reproduction puisque la fécondité est proportionnelle à la taille des femelles. Nous avons ajusté un modèle géniteurs recrutement de type état-espace aux données disponibles afin de caractériser la dynamique des stocks et d’estimer des points de référence biologiques pour évaluer l’état des stocks. Nous avons ensuite élaboré un modèle simple de simulation en boucle fermée fondé sur des estimations récentes de la productivité afin de quantifier le rendement biologique et halieutique futur prévu de la règle actuelle de contrôle des prises (RCP), d’une autre RCP à titre indicatif et d’un scénario sans pêche. Nous avons estimé que le point de référence supérieur (PRS) du stock proposé de 80 % de S_RMD était de 4,6 millions (M) de poissons (de 3,64 à 6,11 M; médiane et 80e centiles), que le point de référence limite (PRL), S_gén, était de 1,72 M (de 1,10 à 2,70 M) et que le taux d’exploitation de référence maximal (TE), U_RMD, était de 0,56 (de 0,47 à 0,63). L’estimation la plus récente (2023) de l’abondance des géniteurs pour le saumon rose du Fraser est de 9,58 M et nous en concluons que la zone de gestion des stocks est dans un état « sain ». La RCP existante pour le saumon rose du Fraser présente une très faible probabilité (< 5 %) que le stock tombe sous son PRL et une probabilité relativement élevée (87,5 %) que l’abondance des géniteurs soit supérieure au PRS dans les 10 prochaines années. En supposant que les pêches utilisent pleinement la prise permissible, la prise annuelle médiane devrait être de 10,3 M au cours de la même période. L’évaluation d’une autre RCP à titre indicatif, qui est strictement conforme au Cadre de l’approche de précaution de Pêches et Océans Canada (MPO), a donné un rendement biologique semblable et un rendement halieutique légèrement inférieur. Les résultats d’un test de robustesse, dans lequel la productivité a été réduite à 10 % de son estimation récente, ont montré que la probabilité que le stock tombe en dessous de ses PRL dans les 10 prochaines années était de 9 % pour la RCP actuelle et de 20 % pour la RCP de rechange. Nous terminons en formulant des recommandations sur les déclencheurs de réévaluation et les domaines possibles où concentrer les travaux futurs. 
   
 header: # "Draft working paper --- Do not cite or circulate" # or "" to omit
 show_continued_text: true #added b/c of render error
 output:
  csasdown::resdoc_pdf:
-   french: false
+   french: true
    # copy_sty is a toggle to copy the style file from the csasdown package every time you compile
    # the document. If false, any changes you have made to the style file in your project
    # will remain between compilations. If true, your changes will be lost when you compile
@@ -81,9 +81,9 @@ output:
    # To change background color, change the RGB values in the line containing 'shadecolor'
    highlight: tango
 # ------------
-# End of options to set
+# End of options to set, BUT change suffix below to include "_fr" if doing french version
 knit: (function(input, ...) {
-       csasdown::render('_bookdown.yml')
+       csasdown::render('_bookdown_fr.yml')
       })
 link-citations: true
 bibliography: bib/refs.bib
