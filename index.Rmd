@@ -83,7 +83,7 @@ output:
 # ------------
 # End of options to set, BUT change suffix below to include "_fr" if doing french version
 knit: (function(input, ...) {
-       csasdown::render('_bookdown_fr.yml')
+       csasdown::render('_bookdown-fr.yml')
       })
 link-citations: true
 bibliography: bib/refs.bib
