@@ -1,6 +1,6 @@
-\babel@toc {english}{}\relax 
+\babel@toc {french}{}\relax 
 \thispagestyle {fancy}
-\contentsline {section}{ABSTRACT}{iv}{section*.1}%
+\contentsline {section}{R\'ESUM\'E}{iv}{section*.1}%
 \contentsline {section}{\numberline {1}INTRODUCTION}{1}{section.0.1}%
 \contentsline {subsection}{\numberline {1.1}BACKGROUND}{1}{subsection.0.1.1}%
 \contentsline {subsubsection}{\numberline {1.1.1}Fraser River Pink Salmon}{1}{subsubsection.0.1.1.1}%
@@ -35,6 +35,6 @@
 \contentsline {section}{\numberline {7}ACKNOWLEDGEMENTS}{14}{section.0.7}%
 \contentsline {section}{\numberline {8}FIGURES}{14}{section.0.8}%
 \contentsline {section}{\numberline {9}TABLES}{23}{section.0.9}%
-\contentsline {section}{\numberline {10}REFERENCES CITED}{27}{section.0.10}%
+\contentsline {section}{\numberline {10}RÉFÉRENCES CITÉES}{27}{section.0.10}%
 \setcounter {tocdepth}{0}
-\contentsline {chapter}{APPENDIX~A. COMPUTING ENVIRONMENT}{31}{section*.3}%
+\contentsline {chapter}{ANNEXE~A. COMPUTING ENVIRONMENT}{31}{section*.3}%

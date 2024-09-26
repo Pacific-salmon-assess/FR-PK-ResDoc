@@ -1,0 +1,147 @@
+# MÉTHODES  
+
+Nous avons compilé les données disponibles sur l’abondance des géniteurs et les prises de saumon rose du Fraser, puis nous avons élaboré et ajusté un modèle géniteurs-recrutement de type état-espace à ces données afin de décrire la dynamique des stocks et les caractéristiques des populations. Nous avons ensuite dérivé des estimations des points de référence biologiques pour évaluer l’état des stocks. Enfin, nous avons mis au point un modèle de simulation en boucle fermée conditionné par les estimations récentes de la productivité afin de quantifier le rendement biologique et halieutique futur prévu de la RCP actuelle, d’une autre RCP et d’un scénario sans pêche pour le stock. Chacune de ces étapes est décrite en détail ci après.  
+
+## SOURCES DES DONNÉES  
+
+La CSP a fourni les données sur les géniteurs et les prises de 1959 à aujourd’hui [@pacificsalmoncommissionFraserRiverPanel2024]. Durant cette période, on a utilisé diverses approches, allant des méthodes de marquage-recapture dans les affluents de fraie ou le cours principal du Fraser au dénombrement par sonar dans le bas Fraser ces dernières années, pour estimer l’abondance des géniteurs (Tableau \@ref(tab:tab-spawner-est-methods)). Il convient de noter qu’aucun étalonnage n’a été effectué lorsqu’on a changé de méthode d’estimation de l’abondance des géniteurs, mais que des corrections ont été apportées aux méthodes antérieures à l’examen approfondi des données mené par @andrewReviewAssessmentAdult1987 et que les méthodes d’estimation plus récentes ont bénéficié des leçons tirées de cet examen et des progrès méthodologiques. La précision de ces approches était variable mais, d’après des conversations avec le personnel du secteur et d’autres analystes qui connaissent bien les données, on a supposé qu’elles représentaient la grande majorité de la population reproductrice d’une année donnée et qu’elles n’étaient pas systématiquement biaisées.
+
+Pour estimer les prises commerciales, en général, on multipliait le total des prises côtières de saumon rose (Canada et États-Unis) par la contribution estimée des stocks du Fraser aux prises côtières, la contribution des stocks du Fraser étant estimée en fonction de reconstitutions des remontes (de 1959 à 1985) et de méthodes d’identification génétique des stocks (depuis 1987). Les méthodes utilisées pour estimer les prises varient selon le type de pêche (commerciale, récréative, des Premières Nations) et le pays. Les prises commerciales canadiennes sont estimées au moyen d’un programme de bordereaux de vente qui a commencé en 1951, et les prises américaines au moyen d’une déclaration obligatoire des prises aux ministères des Pêches des États de Washington et de l’Oregon. Les données antérieures à 1959 n’étaient pas disponibles parce que les débarquements commerciaux ne répartissaient pas les prises entre les stocks; c’est pourquoi notre série chronologique commence en 1959. Les prises dans les pêches récréatives sont estimées au moyen de relevés par interrogation de pêcheurs (p. ex. les relevés sur les captures par unité d’effort jumelées à des vols ou à d’autres dénombrements) dans les deux pays. Les prises des possibilités économiques des Premières Nations sont déclarées selon des méthodes semblables d’estimation des prises commerciales, et les prises à des fins alimentaires, sociales et rituelles selon des méthodes qui diffèrent selon la pêche et l’emplacement. On a supposé que la remonte totale (ou le recrutement) une année donnée était la somme des prises et de l’abondance des géniteurs.
+
+Voir dans @grantFraserRiverPink2014 un aperçu détaillé du paysage des données sur le saumon rose du Fraser, y compris les méthodologies utilisées pour recueillir les données sur l’abondance des géniteurs, les prises et les données biologiques.
+
+
+## MODÈLE GÉNITEURS-RECRUES  
+
+Nous avons modélisé les données géniteurs-recrutement dans un cadre d’espace d’état, en suivant l’approche décrite dans @fleischmanAgestructuredStatespaceStock2013. Les modèles de type état-espace permettent de séparer l’erreur d’observation (p. ex. d’échantillonnage) et la variation réelle du processus sous-jacent et sont devenus de plus en plus courants dans la modélisation écologique [@auger-metheGuideStateSpace2021]. Les modèles géniteurs-recrutement de type état-espace ont tendance à produire des estimations moins biaisées des paramètres principaux (p. ex. la productivité intrinsèque et la dépendance à la densité) que les approches traditionnelles fondées sur la régression, qui ne séparent pas l’erreur d’observation et la variation du processus et peuvent donc être vulnérables à des erreurs sur les variables et à des biais dans les séries chronologiques [@adkisonReviewSalmonSpawnerRecruitment2021; @statonEvaluationMethodsSpawner2020; @suPerformanceBayesianStatespace2012].  
+
+
+### Process model  
+
+Le modèle de processus vise à représenter la dynamique réelle des populations (c.-à-d. sans erreur de mesure). Cette composante de notre modèle géniteurs-recrutement de type état-espace précise la productivité et la dépendance à la densité. Les abondances du recrutement des saumons roses adultes ($R_y$) l’année impaire $y$ ont été traitées comme des états non observés et modélisées comme une fonction de l’abondance des géniteurs l’année ($S_{y-1}$) en supposant une relation géniteurs-recrutement de @rickerStockRecruitment1954 avec une variation du processus log-normale autocorrélée en série:
+
+\begin{equation}
+\ln(R_y) = \ln(S_{y-2}) + \ln(\alpha) - \beta S_{y-2} + v_y
+\label{eq:AR1-ricker}
+\end{equation}
+
+où $\alpha$ est la productivité (taux de croissance intrinsèque), $\beta$ est l’ampleur des effets dépendants de la densité dans l’année d’éclosion et $v_y$ reflète la variation interannuelle de la survie de l’œuf à l’âge adulte, que nous appelons les « anomalies de recrutement ». Cette variation est présumée suivre un processus autorégressif avec un décalage de 1 (AR1) dans le temps :
+
+\begin{equation}
+\begin{aligned}
+v_y &= \phi v_{y-2} + \varepsilon_y \\
+\varepsilon_y &\sim \mathcal{N}(0, \sigma_R)
+\end{aligned}
+\label{eq:AR1}
+\end{equation}
+
+où $\phi$ est le coefficient de corrélation et $\varepsilon_y$ reflète la partie de l’anomalie de recrutement $v_y$ qui est temporellement indépendante (c.-à-d. le bruit blanc). La première année de recrutement n’a pas été liée aux observations de l’abondance des géniteurs dans la relation géniteurs-recrutement (équation \@ref(eq:AR1-ricker)) et ont été modélisées comme des tirages aléatoires à partir d’une distribution log-normale avec la moyenne $\ln(R_0)$ et l’écart-type $\sigma_{R}^2$. Plutôt que d’estimer $\ln(R_0)$ comme un paramètre libre comme dans @fleischmanAgestructuredStatespaceStock2013, nous avons choisi de suivre @statonEvaluationMethodsSpawner2020 et de fonder sa valeur sur le recrutement prévu dans des conditions d’équilibre sans exploitation $\ln(\alpha)/\beta$.  
+
+La prise une année impaire donnée ($C_y$) a été modélisée comme le produit de la remonte totale et du taux de prise ($U_y$) de l’année en question:
+
+\begin{equation}
+ C_y = R_y U_y
+\label{eq:harvest}
+\end{equation}
+
+et l’abondance des géniteurs ($S_y$) a été modélisée comme la portion du reste $R_y$ après la prise $C_y$:
+
+\begin{equation}
+S_y = R_y (1 - U_y)
+\label{eq:get-S}
+\end{equation}
+
+
+### Modèle d’observation  
+Nous avons supposé que l’erreur d’observation dans l’abondance des géniteurs variait d’un régime d’évaluation à l’autre, $r$ (tableau \@ref(tab:tab-spawner-est-methods)):
+
+\begin{equation}
+S_y = S_{obs_y} + \sigma^2_{r,y}
+\label{eq:get-S}
+\end{equation}
+
+puis nous en avons tenu compte directement en supposant que l’abondance observée des géniteurs avait une distribution log-normale et que le coefficient de variation (CV) était converti en variance log-normale conformément à [@forbes_statistical_2011]:
+
+\begin{equation}
+\sigma^2_{r,y} = \ln\left(\mathrm{CV}_{r,y}^2 + 1\right)
+\label{eq:get-sigma}
+\end{equation}
+
+Nous avons supposé un CV de 5 % pour la prise et que les observations de la prise avaient donc également une distribution log-normale, le CV étant converti en variance log-normale selon l’équation \@ref(eq:get-sigma), puis nous avons remplacé la prise, $C$, par les géniteurs, $S$, dans l’équation \@ref(eq:get-S) et abandonné le script, $r$.
+
+
+### Ajustement et diagnostics du modèle  
+Nous avons intégré le modèle géniteurs-recrutement dans un cadre d’estimation bayésien avec Stan [@carpenter_stan_2017; @standevelopmentteamRstanInterfaceStan2023] qui met en œuvre l’algorithme hamiltonien de demi-tour interdit de la méthode de Monte Carlo par chaînes de Markov (MCCM; @hoffman2014) pour l’inférence statistique bayésienne afin de générer la distribution de probabilité a posteriori conjointe de toutes les inconnues du modèle. Nous avons échantillonné 4 chaînes avec 2 000 itérations chacune et éliminé la première moitié comme rodage. Nous avons évalué la convergence des chaînes visuellement au moyen de tracés et en nous assurant que $\hat{R}$ (facteur de réduction d’échelle potentiel; @vehtari2021rank) était inférieur à 1,01 et que la taille effective de l’échantillon était supérieure à 200, ou 10 %, des itérations. Nous avons utilisé des contrôles prédictifs a posteriori pour nous assurer que le modèle renvoyait des données similaires aux données utilisées pour ajuster les paramètres.  
+
+Les valeurs a priori étaient généralement non informatives ou peu informatives et sont résumées dans le tableau \@ref(tab:tab-priors). La valeur a priori $\beta$ était modérément informative avec une moyenne et une variance de 75 % du nombre maximal de géniteurs observés, ce qui empêche le modèle d’explorer des espaces de paramètres irréalistes de la capacité de charge pour le saumon du Pacifique (D. Greenberg, MPO, Nanaimo, Colombie-Britannique, comm. pers.).  
+
+
+## POINTS DE RÉFÉRENCE BIOLOGIQUES  
+
+Nous avons calculé des points de référence biologiques pour chaque échantillon MCCM afin de propager l’incertitude. L’abondance des géniteurs prévue pour maximiser le rendement durable à long terme dans des conditions d’équilibre, $S_{RMD}$, a été calculée comme suit:
+
+\begin{equation}
+S_{RMD} = 1 - W(e^{1-ln(\alpha)})/\beta
+\label{eq:get-Smsy}
+\end{equation}
+
+où $W$ est la fonction Lambert (Scheuerell 2016) et $\alpha$ et $\beta$ sont la productivité intrinsèque et l’ampleur de la dépendance à la densité dans les stocks, respectivement. Nous avons choisi d’appliquer cette solution exacte pour $S_{RMD}$ au lieu de l’approximation couramment appliquée de @hilborn1985simplified parce que l’approximation ne vaut que pour $0 <ln(\alpha) \leq3$, de sorte que des échantillons a posteriori peu fréquents, mais importants, de $\alpha$ peuvent donner des estimations biaisées de la distribution a posteriori de $S_{RMD}$. Nous avons utilisé 80 % de $S_{RMD}$ comme PRS, conformément à @holtEvaluationBenchmarksConservation2009 et à  @dfoSustainableFisheriesFramework2022.  
+
+Nous avons utilisé le taux de prise prévu pour atteindre le rendement maximal durable, $U_{RMD}$, comme TE et l’avons calculé selon la solution proposée par @scheuerellExplicitSolutionCalculating2016 comme suit:  
+
+\begin{equation}
+U_{MSY} = 1 - W(e^{1-ln(\alpha)})
+\label{eq:get-Umsy}
+\end{equation}
+
+et avons résolu numériquement $S_{gén}$, l’abondance des géniteurs qui devrait permettre le rétablissement des stocks à $S_{RMD}$ en une génération en l’absence de pêche [@holtEvaluationBenchmarksConservation2009], que nous avons considérée comme le PRL, selon la formule suivante :
+
+\begin{equation}
+S_{RMD} = S_{gén}\alpha e^{-\beta S_{gén}}
+\label{eq:get-Sgen}
+\end{equation}
+
+Nous avons estimé l’abondance des géniteurs à l’équilibre ($S_{équ}$)), où le recrutement remplace exactement les géniteurs, comme suit :
+
+\begin{equation}
+S_{équ} = ln(\alpha)/\beta
+\label{eq:get-Seq}
+\end{equation}
+
+## CADRE DE SIMULATION EN BOUCLE FERMÉE   
+
+Nous avons mis au point une simulation prospective simple en boucle fermée, conditionnée par nos estimations de l’abondance historique des géniteurs et les points de référence biologiques illustrés à la Figure \@ref(fig:fig-schematic). Nous avons utilisé cette simulation pour projeter le stock dans le temps et évaluer le rendement biologique et halieutique de la RCP actuelle et d’une autre RCP à titre indicatif. Des détails sur les composantes du modèle et le calcul du rendement sont présentés ci-après.
+
+
+### Sous-modèle biologique  
+
+Étant donné que les résidus du recrutement avaient tendance à être négatifs au cours des dernières générations ((Figure \@ref(fig:fig-rec-resid)) et que le potentiel de reproduction a probablement diminué au fil du temps en raison de la diminution des tailles ((Figure \@ref(fig:fig-avg-mass)), nous avons choisi de réajuster une version du modèle décrite dans l’équation \@ref(eq:AR1) avec une productivité intrinsèque variable dans le temps qui pourrait ensuite être utilisée pour conditionner le sous-modèle biologique pour la simulation prospective. Plus précisément, nous avons laissé le paramètre $\alpha$ évoluer dans le temps comme une marche aléatoire, ce qui a donné des estimations annuelles de la productivité:  
+
+\begin{equation}
+\begin{aligned}
+\alpha_y &= \alpha_{y-2} + \varepsilon_y \\
+\varepsilon_y &\sim \mathcal{N}(0, \sigma_\alpha)
+\end{aligned}
+\label{eq:tv-alpha}
+\end{equation}
+
+et dans lesquelles les anomalies du recrutement n’ont plus été modélisées comme autocorrélées, mais où tous les autres paramètres de l’équation \@ref(eq:AR1) sont autrement demeurés les mêmes. Nous avons simulé les trajectoires futures des stocks en commençant par l’estimation la plus récente (c.-à-d. l’état latent) des géniteurs et l’estimation médiane de la productivité sur les trois dernières générations, puis en reproduisant le modèle de processus dans le temps pour cinq générations de saumon rose (10 ans). Nous l’avons fait 1 000 fois pour nous assurer que l’incertitude dans les relations géniteurs-recrutement était propagée en traçant les distributions a posteriori conjointes des paramètres estimés dans chaque itération de la simulation.  
+ 
+
+### Sous-modèle halieutique  
+
+Pour chaque année impaire de la simulation, nous avons supposé que les remontes totales prévues de saumon rose étaient estimées avec une erreur. Cette erreur était présumée avoir une distribution log-normale avec une moyenne égale à la remonte réelle et un CV de `r round(for.error*100, 0)` % d’après une évaluation rétrospective des prévisions d’avant-saison fournies par la CSP pour les années 1987 à 2021. Nous avons ensuite utilisé les remontes prévues comme intrant dans la RCP qui définissait le taux d’exploitation cible compte tenu de la remonte prévue. L’incertitude des résultats (c.-à-d. les écarts par rapport à la prise ciblée) a ensuite été appliquée pour calculer la prise réalisée et l’abondance des géniteurs. Nous avons supposé que cette incertitude des résultats avait une distribution log-normale autour de la prise cible avec un CV de 10 %.  
+ 
+En plus d’évaluer la RCP actuelle, nous en avons également envisagé une autre à titre informatif, ainsi qu’un scénario sans pêche. L’autre RCP est conforme au Cadre de l’approche de précaution (AP) de Pêches et Océans Canada (@dfoFisheryDecisionmakingFramework2009; Figure \@ref(fig:fig-HCRs)). Pour cette autre RCP (« RCP de rechange conforme à l’AP »), le point de contrôle opérationnel (PCO) inférieur est fixé à notre estimation médiane de $S_{gén}$ en dessous de laquelle le taux d’exploitation cible est de zéro, et un PCO supérieur est réglé à la remonte associée à notre estimation médiane de 80 % de $S_{RMD}$, où le taux d’exploitation cible maximum est fixé à notre estimation médiane du TE ou $U_{RMD}$. Le taux d’exploitation cible était interpolé de façon linéaire pour les remontes situées entre le PCO inférieur et le PCO supérieur. Une conséquence imprévue de cette solution de rechange est que l’abondance cible des géniteurs correspondante diminue légèrement à mesure que la remonte se rapproche du PCO supérieur, ce qui n’est pas souhaitable et pose problème sur le plan de la mise en œuvre pratique de la gestion. Pour l’éviter, de légères variations de ce type de RCP ont été utilisées pour le saumon rouge du Fraser [@pestalUpdatedMethodsAssessing2012].  
+
+
+### Mesures du rendement  
+
+Nous avons quantifié le rendement attendu des RCP par rapport aux objectifs biologiques et halieutiques et aux mesures quantitatives du rendement connexes (Tableau \@ref(tab:tab-perf-metrics-descriptions)). Les objectifs biologiques étaient la réduction de la probabilité que l’abondance des géniteurs tombe en dessous du PRL ($S_{gén}$) et la maximisation de la probabilité que le stock maintienne une abondance de géniteurs supérieure au PRS (80 % de $S_{RMD}$) et qu’il soit donc dans un état « sain » ou souhaitable. Les valeurs utilisées pour ces points de référence biologiques reposaient sur les distributions a posteriori conjointes des paramètres estimés dans chaque itération de la simulation, ce qui a permis de tenir compte explicitement de l’incertitude entourant ces points de référence dans les calculs des mesures du rendement. Les pourcentages indiqués sont simplement le pourcentage d’années de simulation qui se situent au-dessus ou en dessous d’un point de référence (p. ex. si une seule année de géniteurs dans une simulation est au-dessus ou en dessous du point de référence, elle est comptée).  
+
+Les objectifs halieutiques étaient la maximisation de la prise moyenne et de la stabilité interannuelle de la prise, et la maximisation de la probabilité que la prise annuelle se situe au-dessus d’un niveau minimal de l’indice des prises qui, à des fins d’illustration, a été choisi comme la prise moyenne des trois prises les plus élevées depuis 2001 (c.-à-d. un indicateur d’une « bonne » année de pêche).
+
+
+### Test de robustesse  
+
+Nous avons utilisé un test de robustesse pour évaluer la sensibilité du rendement de la RCP à une situation potentielle où la productivité intrinsèque future du stock de saumon rose du Fraser diminuait beaucoup plus en raison, par exemple, d’importants changements dans la survie en mer ou en eau douce. À cette fin, nous avons simplement conditionné notre sous-modèle biologique à l’aide de tirages de la distribution a posteriori conjointe des paramètres de Ricker (c.-à-d. $\alpha$, $\beta$, $\sigma$) associés au dixième centile inférieur de la distribution a posteriori médiane des trois dernières générations du paramètre de productivité ($\alpha$), les tirages de l’état de départ (c.-à-d. les géniteurs en 2023) et les points de référence étant échantillonnés à partir de la distribution a posteriori complète.  

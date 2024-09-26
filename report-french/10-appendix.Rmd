@@ -1,0 +1,34 @@
+`r if(knitr:::is_latex_output()) '\\Appendices'`
+
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'`
+
+# COMPUTING ENVIRONMENT {#app:a}  
+Ce document se veut transparent et reproductible. Toutes les données et tous les codes permettant de reproduire l’analyse présentée dans le rapport et de la générer sont disponibles dans ce référentiel GitHub hébergé par [Zenodo](https://doi.org/10.5281/zenodo.13328248).
+This document aims to be transparent and reproducible. 
+Le document décrivant les diagnostics du modèle et quelques figures supplémentaires se trouvent dans le référentiel dans `Supplement-model-check.html`. 
+
+
+Pour reproduire ce rapport, clonez le référentiel à partir de GitHub, vérifiez que le logiciel requis est installé, exécutez fit-sr-stan.R pour ajuster les modèles, puis index.Rmd pour créer le document. Consultez la documentation sur README à la page principale du référentiel pour obtenir plus de détails.
+Les progiciels en R (et leurs dépendances) nécessaires pour recréer cette analyse sont les suivants :
+```{r env}
+suppressWarnings({suppressMessages({
+library(here)
+library(tidyverse)
+library(rosettafish)
+library(csasdown)
+library(kableExtra)
+library(rstan)
+library(gsl)
+library(cowplot)
+library(scales)
+})})
+pkgs <- sort(c("here", "tidyverse", "rosettafish", "csasdown", "kableExtra", "rstan", "gsl", "cowplot", "scales"))
+
+pkg_table <- devtools::session_info()$packages %>%
+  dplyr::filter(package %in% pkgs) %>%
+  dplyr::select(package, loadedversion, date) %>%
+  dplyr::rename(Package = package, Version = loadedversion, Date = date) 
+
+rownames(pkg_table) <- NULL
+csasdown::csas_table(pkg_table)
+```

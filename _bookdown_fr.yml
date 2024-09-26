@@ -1,0 +1,14 @@
+book_filename: "resdoc"
+rmd_files: ["index.Rmd",
+            "report-french/01-introduction.Rmd",
+            "report-french/02-stock-structure-distribution.Rmd",
+            "report-french/03-ecosystem-climate.Rmd",
+            "report-french/04-methods.Rmd",
+            "report-french/05-results.Rmd",
+            "report-french/06-discussion.Rmd",
+            "report-french/07-acknowledgments.Rmd"
+            #"report-french/08-figs-tables.Rmd",
+            #"report-french/09-references.Rmd",
+            #"report-french/10-appendix.Rmd"
+            ]
+delete_merged_file: true

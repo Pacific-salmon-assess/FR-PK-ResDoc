@@ -1,0 +1,66 @@
+# INTRODUCTION 
+
+## CONTEXTE  
+
+### Saumon rose du Fraser  
+
+Le Fraser est un grand fleuve à écoulement libre de 1 375 kilomètres de long qui draine 233 000 kilomètres carrés. Le bassin compte une grande diversité d’habitats qui ont été divisés en plusieurs régions distinctes, dont deux sur le cours principal du Fraser, une à Lillooet et trois dans le bassin hydrographique de la rivière Thompson [@holtbyConservationUnitsPacific2008]. 
+Le Fraser abrite les cinq espèces de saumons du Pacifique et la plupart des variantes de leur cycle biologique. La complexité environnementale du Fraser et la diversité des populations de saumons qui s’y trouvent ont soutenu la sécurité alimentaire des Autochtones pendant des millénaires [@nesbittSpeciesPopulationDiversity2016] et ont probablement contribué à la résilience des populations de saumons aux perturbations environnementales au fil du temps.  
+
+Le saumon rose du Fraser (*Oncorhynchus gorbuscha*) fraye en abondance les années impaires dans le Fraser. À l’heure actuelle, le plus grand groupe de saumons roses fraye dans le bassin hydrographique du bas Fraser. 
+Cependant, avant le glissement à Hells Gate, le saumon rose du Fraser frayait en plus grande abondance dans le bassin hydrographique du haut Fraser, avec des populations importantes dans les réseaux des rivières Thompson et Seton  [@pessInfluencePopulationDynamics2012]. 
+Les alevins de saumon rose dévalent dans l’océan au printemps; les adultes passent environ 18 mois en mer, puis reviennent dans le Fraser de la mi-août au début octobre pour frayer [@dfoSouthernSalmonIntegrated2023]. 
+Ce cycle biologique obligatoire de deux ans du saumon rose se traduit par des cohortes d’années paires et impaires qui sont reproductivement isolées les unes des autres et par des interactions dépendantes de la densité entre les lignées impaires et paires qui contribuent souvent à ce qu’une lignée de cycle soit numériquement dominante par rapport à l’autre [@krkosek2011cycles]. 
+La remonte du saumon rose dans le Fraser est négligeable les années paires, n’est pas évaluée et ne fait pas partie de cette unité de conservation.    
+
+Le saumon rose du Fraser dévale dans l’estuaire du fleuve peu après son émergence et se nourrit pendant plusieurs mois dans le détroit de Georgia avant de migrer vers le nord jusqu’au golfe d’Alaska, où il réside pendant environ un an [@dfoFraserRiverSalmon1998]. 
+Lorsque les saumons roses du Fraser reviennent dans le Fraser depuis le Pacifique Nord, une partie de la remonte contourne l’extrémité nord de l’île de Vancouver en passant par le détroit de Johnstone, tandis que le reste migre autour de l’extrémité sud par le détroit de Juan de Fuca; ce ratio de la migration nord-sud est connu sous le nom de taux de déviation [@folkesEvaluatingModelsForecast2018]. 
+Ce taux de déviation est de plus en plus dominé par les saumons roses qui empruntent la voie migratoire du nord, ce qui a une incidence sur l’exactitude des estimations de la remonte en raison des rencontres différentielles avec les pêches d’essai [@hagueMovingTargetsAssessing2021]. 
+Les variations du taux de déviation pourraient également avoir des répercussions sur la survie en raison des rencontres de proies, de prédateurs, d’agentes pathogènes et d’espèces cooccurrentes du fait des densités différentes des fermes d’élevage de chaque côté de l’île de Vancouver [@grantSummaryFraserRiver2018].
+
+### Géniteurs et prise  
+
+Les données sur les prises et l’abondance des géniteurs (c.-à-d. l’échappée) sont recueillies depuis plus d’un siècle et les indices de l’abondance remontent à 1901 [@rickerHistoryPresentState1989]. Cependant, des données cohérentes et fiables sur les géniteurs et les prises ne sont disponibles que depuis `r min(rec_prop$year)`. 
+De plus amples renseignements sur les données sur les prises et les géniteurs utilisées dans ce rapport sont fournis dans la section Sources des données.
+
+### Mise en valeur  
+
+La mise en valeur du saumon rose du Fraser est limitée et a principalement eu lieu au moyen des chenaux de fraie afin de créer un habitat de fraie supplémentaire de grande qualité. 
+Les registres remontant à l’année d’éclosion 1955 montrent des estimations de plusieurs millions d’alevins de saumon rose dévalant des chenaux de fraie (voir les données dans le référentiel dans le supplément A). 
+La précision des estimations de la dévalaison était variable, les programmes de surveillance étant principalement conçus pour d’autres espèces. 
+On a utilisé l’échantillonnage dans des pièges rotatifs ou les estimations de la survie de l’œuf à l’alevin pour générer les nombres des remises à l’eau. 
+Avant la mise en place du Programme de mise en valeur des salmonidés (PMVS), les installations de mise en valeur des salmonidés du Fraser étaient gérées par la Commission internationale des pêches du saumon du Pacifique (CIPSP) et la production se limitait à l’empoissonnement accessoire dans les chenaux de fraie (Seaton, Jones et Weaver). 
+Après la création du PMVS en 1977, la mise en valeur du saumon rose du Fraser a commencé dans des écloseries où les poissons étaient incubés et élevés dans une installation afin de maximiser les chances de survie de l’incubation, des œufs et des alevins. 
+En raison du temps limité qu’ils passent en eau douce, la mise en valeur des saumons roses nécessite moins de ressources que celle des autres saumons du Pacifique, une caractéristique qui en a fait un poisson populaire à élever pour la pêche en mer. 
+Le PMVS réévalue actuellement les pratiques d’empoissonnement et a réduit le nombre d’alevins non vésiculés produits depuis la fin des années 2000 (Figure \@ref(fig:fig-hatch-cont)), en partie en raison des possibilités limitées de prises et de l’évolution des priorités.
+
+### Gestion actuelle et tendances  
+
+La règle de contrôle des prises (RCP) actuelle pour le saumon rose du Fraser a été mise en œuvre pour la première fois en 1987. Elle est composée de trois zones de gestion : 1) à des remontes inférieures à 7,059 millions (M) de saumons roses, le taux d’exploitation maximal admissible augmente de 0 % lorsqu’il n’y a pas de saumon rose à 15 % pour 7,059 M de saumons roses; 2) à des remontes entre 7,059 et 20 M de saumons roses, l’objectif fixe d’abondance des géniteurs est de 6 M; et 3) à des remontes de plus de 20 M de saumons roses, le taux d’exploitation maximum est de 70 %. La documentation de la justification de la RCP actuelle a été difficile à trouver, mais une note de service manuscrite de la Commission internationale des pêches de saumon du Pacifique de 1983 semble calculer une cible de ponte de 5 milliards d’œufs qui produirait la production désirée et la cible de géniteurs adultes correspondante, en supposant un poids moyen, qui atteindrait la cible de ponte (S. Latham, Commission du saumon du Pacifique [CSP], Vancouver [Colombie-Britannique], comm. pers.). @rickerHistoryPresentState1989 estime également $U_{MSY}$ à 70 %, qui a pu étayer le taux d’exploitation de référence cible (TE) actuel (figure \@ref(fig:fig-HCRs)).
+
+Des mesures de gestion supplémentaires sont souvent prises pendant les pêches ciblant le saumon rose du Fraser afin d’éviter les stocks préoccupants, dans la mesure du possible, et de réduire les répercussions sur les stocks préoccupants qui migrent en même temps que les stocks ciblés, lorsqu’il n’est pas possible de les éviter. Différentes mesures sont prises pour réduire les prises accessoires de saumon rouge : les fermetures temporelles et spatiales (p. ex. fermeture des périodes de pêche du saumon coho du Fraser de l’intérieur), les exigences relatives aux engins (p. ex. l’utilisation de sennes de rivage ou de sennes peu profondes plutôt que de filets maillants dérivants, l’interdiction des appâts pour les pêches récréatives) et les changements opérationnels (p. ex. exigences relatives à l’utilisation d’épuisettes et tailles maximales des filets recommandées pour les sennes coulissantes).
+
+Dans les 14 remontes de saumon rose du Fraser qui ont eu lieu avant la mise en œuvre de la RCP de 1987 (c.-à-d. de 1959 à 1985), la remonte moyenne était de 9,3 M, l’abondance moyenne des géniteurs était de 2,5 M et le taux d’exploitation moyen était de 69 %. Dans les 19 années de montaison de saumon rose du Fraser depuis la mise en œuvre de cette RCP (de 1987 à 2023), la limite du taux d’exploitation fixé par la RCP a été dépassée deux années (en 1987 et 1997), la remonte moyenne était de 12,9 M, l’abondance moyenne des géniteurs était de 9,4 M et le taux d’exploitation moyen était de 25 %. Dans l’ensemble, les remontes de saumon rose du Fraser peuvent être qualifiées de « variables, mais stables ». Au cours des cinq dernières générations (10 ans, 5 montaisons), la remonte et l’abondance des géniteurs ont légèrement augmenté avec une faible variabilité interannuelle, avec une remonte moyenne de `r mean(filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)` M, une abondance moyenne des géniteurs de `r mean(filter(data, year >=2015)$spawn)` M et un taux d’exploitation moyen de `r round(mean(filter(data, year >=2015)$harvest/ ((filter(data, year >=2015)$harvest + filter(data, year >=2015)$spawn)))*100, 0)` % (Figure \@ref(fig:fig-catch-esc)).
+
+### Les pêches du saumon rose du Fraser et les dispositions relatives aux stocks de poissons  
+
+La *Loi sur les pêches* du Canada a été modifiée en juin 2019. 
+Les dispositions relatives aux stocks de poissons (DSP) prévoient de nouvelles exigences qui stipulent que « *le ministre met en œuvre des mesures pour maintenir les grands stocks de poissons au moins au niveau nécessaire pour favoriser la durabilité des stocks, en tenant compte de la biologie du poisson et des conditions du milieu qui touchent les stocks* » [@DFO1985Act]. 
+Le saumon rose du Fraser a été désigné comme un grand stock de poissons et, pour faciliter la mise en œuvre des DSP, les auteurs, en collaboration avec la Direction de la gestion des pêches du MPO, ont déterminé des valeurs possibles pour la composante agrégée du point de référence limite (PRL), du point de référence supérieur du stock (PRS) et du point d’exploitation de référence maximal (TE).
+Tant les préoccupations croissantes entourant les impacts potentiels des changements climatiques (p. ex. réchauffement de la température des océans, inondations d’eau douce; @macdonaldStateCanadianPacific2023) que le risque d’intensification de la concurrence inter- et intraspécifique dans l’océan [@ruggeroneDiatomsKillerWhales2023; @ruggeroneNumbersBiomassNatural2018] et les preuves de l’évolution démographique [@pacificsalmoncommissionPSCBiologicalData2023] soulignent la nécessité d’actualiser notre compréhension de la dynamique et de l’état des stocks. 
+La relation entre la dynamique et la gestion des populations de saumons roses du Fraser n’a pas été évaluée depuis plus de 30 ans (dernière évaluation du MPO : @rickerHistoryPresentState1989), en partie en raison de préoccupations au sujet de l’étalonnage des méthodes d’évaluation des géniteurs [@grantFraserRiverPink2014]. 
+Les nouvelles exigences des DSP exigent un réexamen attentif de la dynamique des populations et de la viabilité de l’actuelle RCP.
+
+## OBJECTIFS  
+Étant donné que la zone de gestion des stocks de saumon rose du Fraser est composée d’une seule unité de conservation, nous utilisons les points de référence de la Politique concernant le saumon sauvage du MPO, qui doivent être fondés sur la biologie et tenir compte explicitement de l’incertitude [@dfoCanadaPolicyConservation2005; @dfoFisheryDecisionmakingFramework2009] afin de déterminer les points de référence possibles selon les DSP.  
+
+Les objectifs sont les suivants :
+
+1.	décrire la compréhension actuelle des éléments suivants : a) la structure et la répartition des stocks; b) l’état et les tendances des stocks; c) les facteurs écosystémiques et climatiques qui influent sur les stocks;  
+
+2.	fournir des estimations des éléments suivants : a) les points de référence possibles et b) le rendement biologique et halieutique prévu des règles de contrôle des prises, actuelles et de rechange;  
+
+3.	proposer des circonstances exceptionnelles ou des déclencheurs d’évaluation pour le stock;  
+
+4.	déterminer les secteurs qui nécessitent des travaux futurs.  
+  
