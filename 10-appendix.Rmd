@@ -27,9 +27,11 @@ library(scales)
 })})
 pkgs <- sort(c("here", "tidyverse", "rosettafish", "csasdown", "kableExtra", "rstan", "gsl", "cowplot", "scales"))
 
-devtools::session_info()$packages %>%
+pkg_table <- devtools::session_info()$packages %>%
   dplyr::filter(package %in% pkgs) %>%
   dplyr::select(package, loadedversion, date) %>%
-  dplyr::rename(Package = package, Version = loadedversion, Date = date) %>%
-  csasdown::csas_table()
+  dplyr::rename(Package = package, Version = loadedversion, Date = date) 
+
+rownames(pkg_table) <- NULL
+csasdown::csas_table(pkg_table)
 ```
