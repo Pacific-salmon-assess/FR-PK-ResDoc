@@ -92,7 +92,7 @@ df <- data.frame(Paramètre = c("% simulations répétées < PRL",
                                "moyenne annuelle des prises", 
                                "stabilité de la prise (1/CV)", 
                                "rparamètre de la prise relative"), 
-                 Description = c("Probabilité que l’abondance des géniteurs du stock soit inférieure au point de référence limite dans les simulations répétées et les années, où n rép est le nombre de simulations répétées et t_1 et t_2 sont les première et dernière années sur lesquelles le paramètre est calculé",
+                 Description = c("Probabilité que l’abondance des géniteurs du stock soit inférieure au point de référence limite dans les simulations répétées et les années, où n rép est le nombre de simulations répétées et $t_1$ et $t_2$ sont les première et dernière années sur lesquelles le paramètre est calculé",
                                  "Probabilité que l’abondance des géniteurs du stock se situe au-dessus du point de référence supérieur du stock dans les simulations répétées et les années",
                                  "Prises moyennes dans les simulations répétées et les années",
                                  "Stabilité de la prise moyenne dans les simulations répétées et les années ($\\mu_C$), où $\\sigma_C$ est l’écart-type de la prise",
@@ -169,8 +169,8 @@ csasdown::csas_table(bench.par.table,
 (ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
 ```{r tab-HCR-performance, results = "asis"}
 if(TRUE){
-  colnames(perf.metrics.fr) <- c("RCP", "Scénario", "\\% en dessous de  $S_{gén}$", 
-                              "\\au-dessus de $S_{RMD}$", "Prise annuelle médiane", 
+  colnames(perf.metrics.fr) <- c("RCP", "Scénario", "\\% en dessous de  $S_{gen}$", 
+                              "au-dessus de $S_{RMD}$", "Prise annuelle médiane", 
                               "Stabilité de la prise", "\\% au-dessus de l’indice de prise")
   perf.metrics.fr |>  
   #mutate_all(function(x){gsub("&", "\\\\&", x)}) |> 
