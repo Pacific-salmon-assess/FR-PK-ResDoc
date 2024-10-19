@@ -61,7 +61,7 @@ knitr::include_graphics(here::here("figure/fwd-SC.png"))
 
 \clearpage
 
-# TABLES  
+# TABLEAUX  
 (ref:tab-spawner-est-methods) Récapitulatif des changements dans les méthodes utilisées pour évaluer l’échappée de géniteurs dans le temps et coefficients de variation (CV) présumés pour chaque période qui ont été utilisés pour définir l’ampleur de l’erreur d’observation dans le modèle géniteurs-recrutement de type état-espace.
 ```{r tab-spawner-est-methods, results = "asis"}
 df <- data.frame(Années = c("De 1957 à 1961", "De 1963 à 1991", "De 1993 à 2001", "De 2003 à 2007", "De 2009 à maintenant"), 
@@ -156,9 +156,9 @@ priors.df |>
 
 (ref:tab-bench-parms) Moyennes a posteriori, médianes et intervalles crédibles pour les principaux paramètres géniteurs-recrutement et les points de référence biologiques connexes. Sont également présentées les estimations de la taille effective de l’échantillon ($N_{eff}$) et du facteur de réduction d’échelle potentiel ($\hat{R}$) pour les paramètres estimés par le modèle. 
 ```{r tab-bench-parms, results = "asis"}
-rownames(bench.par.table) <- c("$S_{gén}$", "80% $S_{RMD}$", "$U_{RMD}$", "$S_{éq}$",
+rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{RMD}$", "$U_{RMD}$", "$S_{eq}$",
                                "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
-colnames(bench.par.table) <- c("Médiane", "10^{e} centile", "90^{e} centile", "Moyenne",
+colnames(bench.par.table) <- c("Médiane", "$10^{e}$ centile", "$90^{e}$ centile", "Moyenne",
                                "$N_{eff}$", "$\\hat{R}$")
 csasdown::csas_table(bench.par.table,
            caption = "(ref:tab-bench-parms)",
@@ -166,7 +166,7 @@ csasdown::csas_table(bench.par.table,
            align = "lccc")
 ```
 
-(ref:tab-HCR-performance) Biological and fishery performance of current and alternative illustrative HCR for both baseline and robustness test operating model scenarios.
+(ref:tab-HCR-performance) Rendement biologique et halieutique de la RCP actuelle et de l’autre RCP à titre indicatif pour les scénarios de référence et le test de robustesse du modèle opérationnel.  
 ```{r tab-HCR-performance, results = "asis"}
 if(TRUE){
   colnames(perf.metrics.fr) <- c("RCP", "Scénario", "\\% en dessous de  $S_{gen}$", 
