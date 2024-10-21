@@ -109,7 +109,6 @@ bench.par.table <- bind_rows(benchmarks, pars) |>
          Rhat = round(Rhat, 4))
 
 bench.par.table[,1:4] <- round(bench.par.table[,1:4], 2)
-bench.par.table[is.na(bench.par.table)] <- ""
 
 rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{MSY}$", "$U_{MSY}$", "$S_{eq}$",
                                "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
@@ -301,7 +300,8 @@ perf.metrics.fr <- perf.metrics |>
          HCR = case_when(HCR == "current" ~ "actuelle",
                          HCR == "PA alt" ~ "autre, AP",
                          HCR == "no fishing" ~ "Pas de peche"),
-         catch.stability = ifelse(catch.stability== "NA", "S. O.", catch.stability))
+         catch.stability = ifelse(catch.stability== "NA", "S. O.", catch.stability)) #|>
+ # mutate(below.Sgen = gsub(".", ",", below.Sgen)) #trying to replace "." with ","?
 
 #take the trash out --
 rm(beta,ln_a, ln_alpha, C, Cs, catch, catch.stability, fwd.states, bench, bench.quant,

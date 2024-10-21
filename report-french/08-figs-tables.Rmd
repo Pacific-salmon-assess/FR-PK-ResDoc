@@ -1,17 +1,17 @@
 # FIGURES  
 (ref:fig-hatch-cont) Nombre d’alevins de saumon rose du Fraser remis à l’eau. Les données ne comprennent que les remises à l’eau de poissons sur lesquels les œufs ont été retirés manuellement et les œufs placés dans des boîtes de rétention (c.-à-d. qu’elles ne comprennent pas la descendance des poissons qui ont frayé naturellement dans des chenaux de fraie construits près des écloseries).
 ```{r fig-hatch-cont, fig.cap= "(ref:fig-hatch-cont)"}
-knitr::include_graphics(here::here("figure/hatchery-influence.png"))
+knitr::include_graphics(here::here("figure/fr-hatchery-influence.png"))
 ```
 
 (ref:fig-HCRs) Règles de contrôle des prises (RCP) actuelle et de rechange (RCP de rechange conforme à l’AP). Le panneau du haut est la RCP qui établit un lien entre la prise cible et la remonte, et le panneau du bas illustre l’échappée cible en fonction de la remonte. Les lignes verticales désignent le point de référence de limite ($S_{gén}$) et le point de référence supérieur du stock (80 % de S_RMD), en unités de remonte.
 ```{r fig-HCRs, fig.cap = "(ref:fig-HCRs)"}
-knitr::include_graphics(here::here("figure/HCRs.png"))
+knitr::include_graphics(here::here("figure/fr-HCRs.png"))
 ```
 
 (ref:fig-catch-esc) Échappée de géniteurs et prises de 1959 à aujourd’hui. Le taux d’exploitation obtenu est indiqué en rouge sur l’axe des y secondaire.
 ```{r fig-catch-esc, fig.cap = "(ref:fig-catch-esc)"}
-knitr::include_graphics(here::here("figure/catch-esc.png"))
+knitr::include_graphics(here::here("figure/fr-catch-esc.png"))
 ```
 
 (ref:fig-map) Bassin du Fraser, étendue de la répartition de la fraie du saumon rose (en rouge) et emplacements approximatifs du site hydroacoustique de Mission, de Hells Gate et de Big Bar. Carte adaptée de [@grantFraserRiverPink2014].
@@ -21,42 +21,42 @@ knitr::include_graphics(here::here("figure/map.png"))
 
 (ref:fig-avg-mass) Masse corporelle moyenne (en kg) du saumon rose du Fraser dans le temps et remontes totales de saumon rose dans le Pacifique Nord, de 1925 à ce jour. Les données sur la masse corporelle proviennent de la @pacificsalmoncommissionPSCBiologicalData2023 et les séries chronologiques sur l’abondance du saumon rose dans le Pacifique Nord sont tirées de [@ruggeroneNumbersBiomassNatural2018] et actualisées jusqu’à présent.
 ```{r fig-avg-mass, fig.cap = "(ref:fig-avg-mass)"}
-knitr::include_graphics(here::here("figure/avg-mass.png"))
+knitr::include_graphics(here::here("figure/fr-avg-mass.png"))
 ```
 
 (ref:fig-schematic) Illustration des étapes de la simulation prospective mettant en évidence d’autres scénarios de la dynamique des populations et des règles de contrôle des prises.
 ```{r fig-schematic, fig.cap = "(ref:fig-schematic)"}
-knitr::include_graphics(here::here("figure/fwd-sim-schematic.png"))
+knitr::include_graphics(here::here("figure/fr-fwd-sim-schematic.png"))
 ```
 
 (ref:fig-rec-resid) Résidus du recrutement de la relation géniteurs-recrutement pour le saumon rose du Fraser dans le temps. La ligne noire épaisse représente les estimations médianes et la bande ombrée, le 80e centile.
 ```{r fig-rec-resid, fig.cap = "(ref:fig-rec-resid)"}
-knitr::include_graphics(here::here("figure/rec-resid.png"))
+knitr::include_graphics(here::here("figure/fr-rec-resid.png"))
 ```
 
 (ref:fig-tv-alpha) Ajustement de la productivité variable dans le temps (paramètre $\alpha$ de Ricker) au modèle utilisé pour projeter la dynamique de la population dans l’avenir dans la simulation en boucle fermée.
 ```{r fig-tv-alpha, fig.cap = "(ref:fig-tv-alpha)"}
-knitr::include_graphics(here::here("figure/tv-alpha.png"))
+knitr::include_graphics(here::here("figure/fr-tv-alpha.png"))
 ```
 
 (ref:fig-SRR) Relation géniteurs-recrutement pour le saumon rose du Fraser. Les barres d’erreur autour des points, qui sont codés par couleur par année d’éclosion, et la relation sont les intervalles crédibles à 80 %, tandis que la ligne noire épaisse est la relation prévue.
 ```{r fig-SRR, fig.cap = "(ref:fig-SRR)"}
-knitr::include_graphics(here::here("figure/SRR.png"))
+knitr::include_graphics(here::here("figure/fr-SRR.png"))
 ```
 
 (ref:fig-kobe) Courbe de Kobe de l’état du saumon rose du Fraser dans le temps. Les années sont codées par couleur; la première et la dernière sont étiquetées. Les intervalles crédibles à 80 % sont inclus pour la dernière année d’évaluation.
 ```{r fig-kobe, fig.cap = "(ref:fig-kobe)"}
-knitr::include_graphics(here::here("figure/kobe.png"))
+knitr::include_graphics(here::here("figure/fr-kobe.png"))
 ```
 
 (ref:fig-status) Distributions a posteriori des points de référence possibles $S_{gén}$, du PRL (en rouge), $S_{RMD}$, du PRS (en vert) et de l’état latent des géniteurs de la génération la plus récente (2023, en noir).
 ```{r fig-status, fig.cap = "(ref:fig-status)"}
-knitr::include_graphics(here::here("figure/recent-status.png"))
+knitr::include_graphics(here::here("figure/fr-recent-status.png"))
 ```
 
 (ref:fig-fwd-SC) Nombre projeté de géniteurs et prises de saumon rose du Fraser (tous les deux en millions de poissons, avec des lignes ombrées et colorées) dans les 10 prochaines années, lorsque la RCP actuelle ou de rechange est appliquée. Les données historiques sur les échappées et les prises (en noir) sont incluses à titre de référence. Les polygones ombrés sont les intervalles crédibles à 80 % et les lignes continues sont les médianes. L’indice des prises dans le panneau de droite est défini comme la moyenne des trois principales années de prises de 2001 à aujourd’hui.
 ```{r fig-fwd-SC, fig.cap = "(ref:fig-fwd-SC)"}
-knitr::include_graphics(here::here("figure/fwd-SC.png"))
+knitr::include_graphics(here::here("figure/fr-fwd-SC.png"))
 ```
 
 \clearpage
@@ -122,7 +122,7 @@ priors.df <- data.frame(Parameter = c("$ln(\\alpha)$",
                                       "$\\sigma_R$", 
                                       "$ln(R_0)$", 
                                       "$\\sigma_{R_0}$"), 
-                        'A priori' = c("$\\sim N(1,2)$", 
+                        Prior = c("$\\sim N(1,2)$", 
                                   "$\\sim N\\bigg(ln(1/S_{MAX}) - 0.5\\sigma_{S_{MAX}}^2, 
                                   \\sqrt{ln(1+ \\cfrac{(\\cfrac{1}{\\sigma S_{MAX}})^2}{(\\cfrac{1}{S_{MAX}})^2}})\\biggr)$", 
                                   "$\\sim U(-1,1)$", 
@@ -156,10 +156,11 @@ priors.df |>
 
 (ref:tab-bench-parms) Moyennes a posteriori, médianes et intervalles crédibles pour les principaux paramètres géniteurs-recrutement et les points de référence biologiques connexes. Sont également présentées les estimations de la taille effective de l’échantillon ($N_{eff}$) et du facteur de réduction d’échelle potentiel ($\hat{R}$) pour les paramètres estimés par le modèle. 
 ```{r tab-bench-parms, results = "asis"}
-rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{RMD}$", "$U_{RMD}$", "$S_{eq}$",
+rownames(bench.par.table) <- c("$S_{gen}$", "80% $S_{RMD}$", "$U_{RMD}$", "$S_{éq}$",
                                "$\\alpha$", "$\\beta$", "$\\phi$", "$\\sigma_{R}$")
 colnames(bench.par.table) <- c("Médiane", "$10^{e}$ centile", "$90^{e}$ centile", "Moyenne",
                                "$N_{eff}$", "$\\hat{R}$")
+
 csasdown::csas_table(bench.par.table,
            caption = "(ref:tab-bench-parms)",
            font_size = 7,
@@ -169,7 +170,7 @@ csasdown::csas_table(bench.par.table,
 (ref:tab-HCR-performance) Rendement biologique et halieutique de la RCP actuelle et de l’autre RCP à titre indicatif pour les scénarios de référence et le test de robustesse du modèle opérationnel.  
 ```{r tab-HCR-performance, results = "asis"}
 if(TRUE){
-  colnames(perf.metrics.fr) <- c("RCP", "Scénario", "\\% en dessous de  $S_{gen}$", 
+  colnames(perf.metrics.fr) <- c("RCP", "Scénario", "\\% en dessous de  $S_{gén}$", 
                               "au-dessus de $S_{RMD}$", "Prise annuelle médiane", 
                               "Stabilité de la prise", "\\% au-dessus de l’indice de prise")
   perf.metrics.fr |>  
