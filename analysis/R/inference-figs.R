@@ -525,15 +525,18 @@ my.ggsave(here("figure/recent-tv-SRR.png"))
 
 # FRENCH FIGS ----------------------------------------------------------------------------
 #copied from above and amended
+Sys.setlocale("LC_CTYPE","french") #so plots now render right
+
 ggplot(catch_esc, aes(x = year, y = n)) +
   geom_bar(position="stack", stat="identity", aes(fill = type)) +
   geom_line(data = data, aes(x=year, y = ER*30), color = "red", lwd = 1) +   #ADD ER to plot
-  scale_fill_manual(values = c("darkgrey", "black"), name = "Type de retour") +
-  scale_y_continuous(sec.axis = sec_axis(~(./30)*100, name = "Taux d’exploitation (%)")) +
+  scale_fill_manual(values = c("darkgrey", "black"), name = "Type de montaison",
+                    labels = c("récolte", "fraie")) +
+  scale_y_continuous(sec.axis = sec_axis(~(./30)*100, name = "Taux d’exploitation (en %)")) +
   scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
   theme(legend.position = "bottom") +
-  labs(x = "Annee de retour",
-       y = "Rendement total (en millions de poissons)")
+  labs(x = "Année de montaison",
+       y = "Remonte totale (en millions de poissons)")
 
 my.ggsave(here("figure/fr-catch-esc.png"))
 
@@ -542,8 +545,8 @@ ggplot(avg_mass, aes(year, avg.weight)) +
   geom_col(data = compitetors, aes(x = return_yr, y = n_pink/200), fill = "pink", color = "pink") +
   geom_line() +
   geom_point() +
-  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "Pacifique N. Abondance rose (en millions)")) +
-  labs(x = "Annee", y = "Masse corporelle moyenne (kg)")
+  scale_y_continuous(sec.axis = sec_axis(~.*200, name = "Abondance du saumon rose du Pacifique Nord (en millions)")) +
+  labs(x = "Année", y = "Masse corporelle moyenne (en kg)")
 
 my.ggsave(here("figure/fr-avg-mass.png"))
 
@@ -552,12 +555,12 @@ ggplot(hatchery, aes(BROOD_YEAR, ReleaseM, color = RELEASE_STAGE_NAME)) +
   geom_point() +
   geom_line() +
   scale_color_manual(values = c("#E69F00", "#0072B2"),
-                     labels = c("nourrie", "non alimente")) +
+                     labels = c("vésiculés", "non vésiculés")) +
   theme(legend.position = "bottom") +
   guides(color=guide_legend(title="Étape de libération")) +
-  labs(title = "Contribution à l’écloserie rose du Fraser",
-       x = "Annee de couvee",
-       y = "Alevins relaches (millions)")
+  labs(title = "Contribution des écloseries de saumon rose du Fraser",
+       x = "Année d’éclosion",
+       y = "Alevins remis à l’eau (en millions)")
 
 my.ggsave(here("figure/fr-hatchery-influence.png"))
 
@@ -566,11 +569,12 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
   geom_vline(xintercept = R.Smsy.8) +
   annotate("text", x = R.Smsy.8+1.5, y = .7,
-           label = expression(italic(R[paste("80%",S)[MSY]]))) +
+           label = expression(italic(R[paste("80%",S)[RMD]]))) +
   geom_vline(xintercept = Sgen) +
   annotate("text", x = Sgen+1, y = .7,
-           label = "italic(S[gen])", parse = TRUE) +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+           label = "italic(S[gén])", parse = TRUE) +
+  scale_color_manual(values = c("#E69F00", "#0072B2"),
+                     labels = c("actuelle", "de rechange conforme à l’AP")) +
   ylim(c(0,1)) +
   labs(x = NULL,
        y = "Target exp. rate") +
@@ -579,15 +583,16 @@ p1 <- ggplot(HCRs, aes(x=run_size, y=ER, color = HCR)) +
 
 p2 <- ggplot(HCRs, aes(x=run_size, y=esc_goal, color = HCR)) +
   geom_line(linewidth=1.1, alpha = 0.7) +
-  scale_color_manual(values = c("#E69F00", "#0072B2")) +
+  scale_color_manual(values = c("#E69F00", "#0072B2"),
+                     labels = c("actuelle", "de rechange conforme à l’AP")) +
   geom_vline(xintercept = R.Smsy.8) +
   geom_vline(xintercept = Sgen) +
-  labs(x = "Run size (millions)",
-       y = "Target spawners")
+  labs(x = "Remonte (en millions)",
+       y = "Géniteurs, cible")
 
 ggarrange(p1, p2, nrow = 2,
           align = "hv", common.legend = TRUE, legend = "bottom")
-my.ggsave(here("figure/HCRs.png"))
+my.ggsave(here("figure/fr-HCRs.png"))
 
 # plot SR relationship ---
 ggplot() +
@@ -605,17 +610,17 @@ ggplot() +
                  color=BroodYear),
              size = 3)+
   coord_cartesian(xlim=c(0, 20), ylim=c(0,max(brood_t[,7])), expand = FALSE) +
-  scale_colour_viridis_c(name = "Brood Year",
+  scale_colour_viridis_c(name = "Année d’éclosion",
                          labels = c("1961", "'81", "'01", "'21"))+
-  labs(x = "Spawners (millions)",
-       y = "Recruits (millions)") +
+  labs(x = "Géniteurs (en millions)",
+       y = "Recrues (en millions)") +
   theme(legend.position = "bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         legend.key.size = unit(0.4, "cm"),
         legend.title = element_text(size=9),
         legend.text = element_text(size=8))
-my.ggsave(here("figure/SRR.png"))
+my.ggsave(here("figure/fr-SRR.png"))
 
 # then residuals---
 resid.quant <- apply(AR1.model.pars$lnresid, 2, quantile, probs=c(0.1,0.25,0.5,0.75,0.9))[,1:33]
@@ -629,22 +634,22 @@ ggplot(resids, aes(x=year, y = mid)) +
   geom_line(lwd = 1.1) +
   coord_cartesian(ylim=c(-2,2)) +
   scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
-  labs(x = "Return year",
-       y = "Recruitment residuals") +
+  labs(x = "Année de montaison",
+       y = "Résidus du recrutement") +
   theme(legend.position = "none",
         panel.grid = element_blank()) +
   geom_abline(intercept = 0, slope = 0, col = "dark grey", lty = 2)
 
-my.ggsave(here("figure/rec-resid.png"))
+my.ggsave(here("figure/fr-rec-resid.png"))
 
 # time varying alpha ---
 ggplot(as.data.frame(a_yrs)) +
   geom_ribbon(aes(x = brood_year, ymin = lwr, ymax = upr), fill = "darkgrey", alpha = 0.5) +
   geom_line(aes(x = brood_year, y = mid), lwd = 2,  color = "black") +
   scale_x_continuous(breaks = c(1961, 1981, 2001, 2021)) +
-  labs(y = "Productivity (Ricker alpha 80th percentiles)", x = "Brood year")
+  labs(y = "Productivité (80e centiles de l’alpha de Ricker)", x = "Année de montaison")
 
-my.ggsave(here("figure/tv-alpha.png"))
+my.ggsave(here("figure/fr-tv-alpha.png"))
 
 # plot Kobe ---
 ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
@@ -660,12 +665,12 @@ ggplot(kobe_df, aes(S_Smsy, U_Umsy)) +
   geom_text(data = filter(kobe_df, year== min(kobe_df$year)|year== max(kobe_df$year)),
             aes(x = S_Smsy, y = U_Umsy, label = c("'59", "'23")), #CHANGE THESE WITH NEW DATA!
             hjust = 0-.2, vjust = 0-.2) +
-  scale_colour_viridis_c(name="Year",
+  scale_colour_viridis_c(name="Année",
                          labels = c("1961", "'81", "'01", "'21")) +
-  labs(y="U/Umsy", x= "S/Smsy") +
+  labs(y="U/Urmd", x= "S/Srmd") +
   theme(legend.position = "bottom")
 
-ggsave(here("figure/kobe.png"), width= 9, height = 9, dpi= 180)
+ggsave(here("figure/fr-kobe.png"), width= 9, height = 9, dpi= 180)
 
 # plot the last distribution of spawners and the posteriors of Sgen and Smsy
 #just use full posteriors from model pars
@@ -676,18 +681,18 @@ ggplot() +
   geom_density(data = data.frame(Sgen.post), aes(x=Sgen.post), fill = "darkred",
                alpha = 0.2, color = "darkred")  +
   annotate("text", x = 5, y = 0.1,
-           label = expression(italic(paste("80%",S)[MSY])), size = 5, color = "forestgreen") +
+           label = expression(italic(paste("80%",S)[RMD])), size = 5, color = "forestgreen") +
   annotate("text", x = 2, y = 0.1,
-           label = "italic(S[gen])", parse = TRUE, size = 5, color = "darkred") +
+           label = "italic(S[gén])", parse = TRUE, size = 5, color = "darkred") +
   annotate("text", x = 9.5, y = 0.1,
            label = "italic(S[23])", parse = TRUE, size = 5) +
   #annotate("text", x = 9.5, y = 0.1,
   #         label = "italic(S[19-23])", parse = TRUE, size = 5) +
   coord_cartesian(xlim=c(0,15)) +
-  labs(y = "Posterior density", x = "Spawners (millions)",
-       title = "Recent spawner distribution relative to benchmarks")
+  labs(y = "Densité a posteriori", x = "Géniteurs (en millions)",
+       title = "Répartition récente des géniteurs par rapport aux points de référence")
 
-my.ggsave(here("figure/recent-status.png"))
+my.ggsave(here("figure/fr-recent-status.png"))
 
 #plot fwd sims of spawners & catch ---
 #how much of the old data do you want to show?
@@ -706,13 +711,13 @@ p1 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_hline(yintercept = benchmarks[1,1]) +
   geom_line(aes(x = year, y = S, color = HCR), lwd = 1.2) +
   annotate("text", x = 2016, y = benchmarks[2,1]+2.5,
-           label = expression(italic(paste("80%",S)[MSY])), size = 5) +
+           label = expression(italic(paste("80%",S)[RMD])), size = 5) +
   geom_hline(yintercept = benchmarks[2,1]) +
   annotate("text", x = 2019, y = 3,
-           label = "italic(S[gen])", parse = TRUE, size = 5) +
+           label = "italic(S[gén])", parse = TRUE, size = 5) +
   scale_x_continuous(breaks = c(2015, 2019, 2023, 2027, 2031),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "", y = "Spawners") +
+  labs(x = "", y = "Géniteurs") +
   scale_color_viridis_d() +
   scale_fill_viridis_d() +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
@@ -731,12 +736,12 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
   geom_line(aes(x = year, y = C, color = HCR), lwd = 1.2) +
   geom_hline(yintercept = rel.catch.index, lty = 2) +
   annotate("text", x = 2016, y = rel.catch.index+2.5,
-           label = "catch index", size = 5) +
+           label = "indice de prise", size = 5) +
   scale_x_continuous(breaks = c(2015, 2019, 2023, 2027, 2031),
                      expand = expansion(mult = c(0, .01))) +
-  labs(x = "Return year", y = "Catch") +
-  scale_color_viridis_d(labels = c("current", "no fishing", "PA alternate")) +
-  scale_fill_viridis_d(labels = c("current", "no fishing", "PA alternate")) +
+  labs(x = "Année de montaison", y = "Prise") +
+  scale_color_viridis_d(labels = c("actuelle", "sans pêche", "de rechange conforme à l’AP")) +
+  scale_fill_viridis_d(labels = c("actuelle", "sans pêche", "de rechange conforme à l’AP")) +
   scale_linetype_manual(values=c(1,1)) + #hack to get lines to stay the same since group arg is broken
   theme(legend.position = "bottom") +
   guides(lty = "none")
@@ -744,4 +749,4 @@ p2 <- ggplot(data = filter(fwd.sim, scenario == "base")) +
 p <- plot_grid(p1, p2, nrow = 2) #+ draw_grob(legend) #fix to make a single legend?
 
 p
-ggsave(here("figure/fwd-SC.png"), width= 9, height = 9, dpi= 180)
+ggsave(here("figure/fr-fwd-SC.png"), width= 9, height = 9, dpi= 180)
