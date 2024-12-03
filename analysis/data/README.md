@@ -1,17 +1,17 @@
--📁`generated` data generated from analyses  
-  -2 `.rds ` files containing the Stan fits with the autocorrelated recruitment residuals (AR1) or the time-varying productivity (TV).  
-  -`benchmarks.csv` are the 3 benchmarks estimated in and their 95th percentiles  
-  -`C_df.csv` and `spwn_df.csv` are quantiles of catch and spawners from the observation model.  
-  -`perf-metrics.csv` are the performance metrics from the forward simulation.  
--📁`raw` data used in the analysis or to show the HCR.  
-    -`HCRs.csv` is a helper .csv to plot the HCRs.  
-    -`fr_pk_spw_har.csv` is the spawn and harvest data from Kaitlyn Dionne with their assumed CVs.  
-    -`escapement_CV_justifications.xlsx` is a file with multiple pages corresponging to options of CVs to use in the observation model. Sampling stanzans and assumed CVs are described here.   
-    -`PinkSalmonPrediction&ObservationDataFile(from Merran).csv` is preseason forecasts and post-season corrected run sizes for Pink and Sockeye from 1987-2021. This data was used to get an empirical estimate of forecast error to be used in the forward simulation.  
-    -📁`bio`   
-        -`HistoricalPinkWeightDownload.csv` is average body mass downloaded from the [PSC's app](https://psc1.shinyapps.io/BioDataApp/).  
-        -`sp-len-fecundity-Grant-etal-2014.csv` is the length fecundity relationship (Table 12) from Grant et al (2014).  
-        -`Ruggerone_Irvine_2018_TS21.csv` is numbers of pink salmon in the north pacific 1925-2015 reported in Table 21 in the supplement of [Ruggerone & Irvine (2018)](https://afspubs.onlinelibrary.wiley.com/doi/full/10.1002/mcf2.10023).   
-    -📁`hatchery`  
-        -`2023 BY Fraser Pink Production Plan.xlsx` is DFO SEP's 2023 hatchery production plans for Lower Fraser Pinks.  
-        -`Fraser Pink Releases 1955-2021.xlsx` is releases of Pinks into the Fraser from 1955-2021.  
+- 📁`raw` data used in the analysis or to show the HCR.  
+    - `HCRs.csv` is a helper .csv to plot the HCRs.  
+    - `fr_pk_spw_har.csv` is the spawn and harvest data from Kaitlyn Dionne with their assumed CVs.  
+    - `escapement_CV_justifications.xlsx` is a file with multiple pages corresponding to options of CVs to use in the observation model.   Sampling stanzas and assumed CVs are described here.   
+    - `PinkSalmonPrediction&ObservationDataFile(from Merran).csv` is preseason forecasts and post-season corrected run sizes for Pink and Sockeye from 1987-2021. This data was used to get an empirical estimate of forecast error to be used in the forward simulation.  
+    - 📁`bio`   
+        - `HistoricalPinkWeightDownload.csv` is average body mass downloaded from the [PSC's app](https://psc1.shinyapps.io/BioDataApp/).  
+        - `sp-len-fecundity-Grant-etal-2014.csv` is the length fecundity relationship (Table 12) from Grant et al (2014).  
+        - `Ruggerone_Irvine_2018_TS21.csv` is numbers of pink salmon in the north pacific 1925-2015 reported in Table 21 in the supplement of [Ruggerone & Irvine (2018)](https://afspubs.onlinelibrary.wiley.com/doi/full/10.1002/mcf2.10023).  
+    - 📁`hatchery`  
+        - `2023 BY Fraser Pink Production Plan.xlsx` is DFO SEP's 2023 hatchery production plans for Lower Fraser Pinks.  
+        - `Fraser Pink Releases 1955-2021.xlsx` is releases of Pinks into the Fraser from 1955-2021.  
+- 📁`generated` data generated from analyses  
+  - 2 `.rds ` files containing the Stan fits with the autocorrelated recruitment residuals (AR1) or the time-varying productivity (TV).  
+  - `benchmarks.csv` are the 3 benchmarks estimated in and their 95th percentiles.  
+  - `C_df.csv` and `spwn_df.csv` are quantiles of catch and spawners from the observation model.  
+  - `perf-metrics.csv` are the performance metrics from the forward simulation.  
