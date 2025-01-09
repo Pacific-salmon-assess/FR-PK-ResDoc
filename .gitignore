@@ -21,7 +21,7 @@ resdoc.tex
 #*.html #to keep model supplement in GitHub - commented out are changed from CSAS defaults
 *.knit.md
 *.log
-*.pdf
+#*.pdf #try to keep rendered output
 #*.png #to keep my figures in GitHub
 *.rda
 *.rds
