@@ -29,7 +29,7 @@ parameters{
   real<lower = 0> sigma_alpha;
 
   //parms
-  real<lower=0> mean_ln_R0;               // "true" mean log recruitment in first a.max years with no spawner link
+  real<lower=0> mean_ln_R0; // "true" mean log recruitment in first a.max years with no spawner link
   real ln_alpha0;         // initial productivity (on log scale)
   real<upper=0> ln_beta;  // Ricker b - force it negative
   vector[T-1] alpha_dev;  // time varying year-to-year deviations in a
