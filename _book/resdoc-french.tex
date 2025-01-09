@@ -1,0 +1,573 @@
+% Documents setup
+\documentclass[french,11pt]{book}
+
+% fix for pandoc 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\usepackage{tabu} % https://tex.stackexchange.com/questions/50332/vertical-spacing-of-a-table-cell
+
+% Location of the csas-style repository: adjust path as needed
+\newcommand{\locRepo}{csas-style}
+
+% Use the style file in the csas-style repository (res-doc.sty)
+\usepackage{\locRepo/res-doc-french}
+
+% header-includes from R markdown entry
+
+
+% Headers and footers
+\lhead{}
+% \lhead{}
+\rhead{}
+% \rfoot{DRAFT - DO NOT CITE}
+
+%%%% Commands for title page etc %%%%%
+
+% Publication year
+\newcommand{\rdYear}{2024}
+
+% Publication month
+\newcommand{\rdMonth}{Mois}
+
+% Report number
+\newcommand{\rdNumber}{2024/063}
+
+% Region
+\newcommand{\rdRegion}{Région du Pacifique}
+
+% Title
+\newcommand{\rdTitle}{Estimation des points de référence de l'approche de précaution et évaluation des conséquences des règles de contrôle des prises pour le saumon rose (\emph{Oncorhynchus gorbuscha}) du Fraser}
+
+\newcommand{\rdISBN}{978-0-660-38322-4}
+\newcommand{\rdCatNo}{Fs70-6/2021-012E-PDF}
+
+% Author names separated by commas and ', and' for the last author in the format 'M.H. Grinnell' (use \textsuperscript{n} for addresses)
+\newcommand{\rdAuth}{Dylan M. Glaser\textsuperscript{1} Brendan M. Connors\textsuperscript{2} Kaitlyn Dionne\textsuperscript{3} and Ann-Marie Huang\textsuperscript{4}}
+
+% Author names reversed separated by commas in the format 'Grinnell, M.H.'
+\newcommand{\rdAuthRev}{Glaser, D.M., Connors, B.M., Dionne, K., and Huang, A.M.}
+
+% Author addresses (use \textsuperscript{n})
+\newcommand{\rdAuthAddy}{\textsuperscript{1}Station biologique du Pacifique\\
+Pêches et Océans Canada, 3190 Hammond Bay Road\\
+Nanaimo, Colombie-Britannique, V9T 6N7, Canada\\
+\smallskip \textsuperscript{2}Loin, très loin\\
+Une autre galaxie}
+
+\newcommand{\citationOtherLanguage}{Glaser, D.M., Connors, B.M., Dionne, K., et Huang, A.M. Estimation des points de référence de l'approche de précaution et évaluation des conséquences des règles de contrôle des prises pour le saumon rose (\emph{Oncorhynchus gorbuscha}) du Fraser. DFO Secr. can. des avis sci. du MPO. Doc. de rech 2024/nnn. iv + 13 p.}
+
+% Name of file with abstract and resume (see \abstract in inst/csas-style/res-doc-french.sty)
+\newcommand{\rdAbstract}{\abstract{Le saumon rose du Fraser fraye dans tout le bassin du Fraser les années impaires, et la zone de gestion des stocks est composée d'une seule unité de conservation. Des glissements de terrain ont causé des obstacles à la montaison des adultes à différentes périodes, le plus notable étant celui de Hells Gate en 1914 et, plus récemment, le glissement de terrain de Big Bar découvert en 2019. La survie en mer du saumon rose du Fraser est influencée par la température de la surface de la mer au début de la vie marine, par le moment de l'efflorescence printanière et par le courant du Pacifique Nord, qui devraient tous changer à mesure que le Pacifique Nord se réchauffe sous l'effet des changements climatiques. La taille des adultes a diminué au fil du temps, ce qui coïncide avec l'augmentation de l'abondance des saumons dans le Pacifique Nord, qui pourrait avoir une incidence sur le taux de reproduction puisque la fécondité est proportionnelle à la taille des femelles. Nous avons ajusté un modèle géniteurs recrutement de type état-espace aux données disponibles afin de caractériser la dynamique des stocks et d'estimer des points de référence biologiques pour évaluer l'état des stocks. Nous avons ensuite élaboré un modèle simple de simulation en boucle fermée fondé sur des estimations récentes de la productivité afin de quantifier le rendement biologique et halieutique futur prévu de la règle actuelle de contrôle des prises (RCP), d'une autre RCP à titre indicatif et d'un scénario sans pêche. Nous avons estimé que le point de référence supérieur (PRS) du stock proposé de 80 \% de S\_RMD était de 4,6 millions (M) de poissons (de 3,64 à 6,11 M; médiane et 80e centiles), que le point de référence limite (PRL), S\_gén, était de 1,72 M (de 1,10 à 2,70 M) et que le taux d'exploitation de référence maximal (TE), U\_RMD, était de 0,56 (de 0,47 à 0,63). L'estimation la plus récente (2023) de l'abondance des géniteurs pour le saumon rose du Fraser est de 9,58 M et nous en concluons que la zone de gestion des stocks est dans un état « sain ». La RCP existante pour le saumon rose du Fraser présente une très faible probabilité (\textless{} 5 \%) que le stock tombe sous son PRL et une probabilité relativement élevée (87,5 \%) que l'abondance des géniteurs soit supérieure au PRS dans les 10 prochaines années. En supposant que les pêches utilisent pleinement la prise permissible, la prise annuelle médiane devrait être de 10,3 M au cours de la même période. L'évaluation d'une autre RCP à titre indicatif, qui est strictement conforme au Cadre de l'approche de précaution de Pêches et Océans Canada (MPO), a donné un rendement biologique semblable et un rendement halieutique légèrement inférieur. Les résultats d'un test de robustesse, dans lequel la productivité a été réduite à 10 \% de son estimation récente, ont montré que la probabilité que le stock tombe en dessous de ses PRL dans les 10 prochaines années était de 9 \% pour la RCP actuelle et de 20 \% pour la RCP de rechange. Nous terminons en formulant des recommandations sur les déclencheurs de réévaluation et les domaines possibles où concentrer les travaux futurs.}}
+
+%%%% End of title page commands %%%%%
+
+% \pdfcompresslevel=5 % faster PNGs
+
+\setcounter{section}{0}
+
+\bibliographystyle{csas-style/res-doc}
+
+\usepackage{amsmath}
+\usepackage{bm}
+
+% commands and environments needed by pandoc snippets
+% extracted from the output of `pandoc -s`
+%% Make R markdown code chunks work
+\usepackage{array}
+\usepackage{amssymb,amsmath}
+\usepackage{color}
+\usepackage{fancyvrb}
+
+% From default template:
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},formatcom=\color[rgb]{0.00,0.00,0.00}}
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textit{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textit{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textit{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textit{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+
+\newcommand{\lt}{\ensuremath <}
+\newcommand{\gt}{\ensuremath >}
+
+%Defines cslreferences environment
+%Required by pandoc 2.8
+%Copied from https://github.com/rstudio/rmarkdown/issues/1649
+% % \newlength{\cslhangindent}
+% \setlength{\cslhangindent}{1.5em}
+% \newenvironment{cslreferences}%
+%   {}%
+%   {\par}
+% 
+\DeclareGraphicsExtensions{.png,.pdf}
+\begin{document}
+\renewcommand{\tablename}{Tableau}
+\frontmatter
+
+\hypertarget{introduction}{%
+\section{INTRODUCTION}\label{introduction}}
+
+\hypertarget{contexte}{%
+\subsection{CONTEXTE}\label{contexte}}
+
+\hypertarget{saumon-rose-du-fraser}{%
+\subsubsection{Saumon rose du Fraser}\label{saumon-rose-du-fraser}}
+
+Le Fraser est un grand fleuve à écoulement libre de 1 375 kilomètres de long qui draine 233 000 kilomètres carrés. Le bassin compte une grande diversité d'habitats qui ont été divisés en plusieurs régions distinctes, dont deux sur le cours principal du Fraser, une à Lillooet et trois dans le bassin hydrographique de la rivière Thompson (\protect\hyperlink{ref-holtbyConservationUnitsPacific2008}{{«~Conservation {Units} for {Pacific Salmon} under the {W}ild {S}almon {P}olicy~»} Sous presse}). Le Fraser abrite les cinq espèces de saumons du Pacifique et la plupart des variantes de leur cycle biologique. La complexité environnementale du Fraser et la diversité des populations de saumons qui s'y trouvent ont soutenu la sécurité alimentaire des Autochtones pendant des millénaires (\protect\hyperlink{ref-nesbittSpeciesPopulationDiversity2016}{Nesbitt et Moore 2016}) et ont probablement contribué à la résilience des populations de saumons aux perturbations environnementales au fil du temps.
+
+Le saumon rose du Fraser (\emph{Oncorhynchus gorbuscha}) fraye en abondance les années impaires dans le Fraser. À l'heure actuelle, le plus grand groupe de saumons roses fraye dans le bassin hydrographique du bas Fraser. Cependant, avant le glissement à Hells Gate, le saumon rose du Fraser frayait en plus grande abondance dans le bassin hydrographique du haut Fraser, avec des populations importantes dans les réseaux des rivières Thompson et Seton (\protect\hyperlink{ref-pessInfluencePopulationDynamics2012}{Pess \emph{et al.} 2012}). Les alevins de saumon rose dévalent dans l'océan au printemps; les adultes passent environ 18 mois en mer, puis reviennent dans le Fraser de la mi-août au début octobre pour frayer (\protect\hyperlink{ref-dfoSouthernSalmonIntegrated2023}{DFO 2023}). Ce cycle biologique obligatoire de deux ans du saumon rose se traduit par des cohortes d'années paires et impaires qui sont reproductivement isolées les unes des autres et par des interactions dépendantes de la densité entre les lignées impaires et paires qui contribuent souvent à ce qu'une lignée de cycle soit numériquement dominante par rapport à l'autre (\protect\hyperlink{ref-krkosek2011cycles}{Krkošek \emph{et al.} 2011}). La remonte du saumon rose dans le Fraser est négligeable les années paires, n'est pas évaluée et ne fait pas partie de cette unité de conservation.
+
+Le saumon rose du Fraser dévale dans l'estuaire du fleuve peu après son émergence et se nourrit pendant plusieurs mois dans le détroit de Georgia avant de migrer vers le nord jusqu'au golfe d'Alaska, où il réside pendant environ un an (\protect\hyperlink{ref-dfoFraserRiverSalmon1998}{DFO 1998}). Lorsque les saumons roses du Fraser reviennent dans le Fraser depuis le Pacifique Nord, une partie de la remonte contourne l'extrémité nord de l'île de Vancouver en passant par le détroit de Johnstone, tandis que le reste migre autour de l'extrémité sud par le détroit de Juan de Fuca; ce ratio de la migration nord-sud est connu sous le nom de taux de déviation (\protect\hyperlink{ref-folkesEvaluatingModelsForecast2018}{Folkes \emph{et al.} 2018}). Ce taux de déviation est de plus en plus dominé par les saumons roses qui empruntent la voie migratoire du nord, ce qui a une incidence sur l'exactitude des estimations de la remonte en raison des rencontres différentielles avec les pêches d'essai (\protect\hyperlink{ref-hagueMovingTargetsAssessing2021}{Hague \emph{et al.} 2021}). Les variations du taux de déviation pourraient également avoir des répercussions sur la survie en raison des rencontres de proies, de prédateurs, d'agentes pathogènes et d'espèces cooccurrentes du fait des densités différentes des fermes d'élevage de chaque côté de l'île de Vancouver (\protect\hyperlink{ref-grantSummaryFraserRiver2018}{Grant \emph{et al.} 2018}).
+
+\hypertarget{guxe9niteurs-et-prise}{%
+\subsubsection{Géniteurs et prise}\label{guxe9niteurs-et-prise}}
+
+Les données sur les prises et l'abondance des géniteurs (c.-à-d.~l'échappée) sont recueillies depuis plus d'un siècle et les indices de l'abondance remontent à 1901 (\protect\hyperlink{ref-rickerHistoryPresentState1989}{Ricker 1989}). Cependant, des données cohérentes et fiables sur les géniteurs et les prises ne sont disponibles que depuis \text{1959}. De plus amples renseignements sur les données sur les prises et les géniteurs utilisées dans ce rapport sont fournis dans la section Sources des données.
+
+\hypertarget{mise-en-valeur}{%
+\subsubsection{Mise en valeur}\label{mise-en-valeur}}
+
+La mise en valeur du saumon rose du Fraser est limitée et a principalement eu lieu au moyen des chenaux de fraie afin de créer un habitat de fraie supplémentaire de grande qualité. Les registres remontant à l'année d'éclosion 1955 montrent des estimations de plusieurs millions d'alevins de saumon rose dévalant des chenaux de fraie (voir les données dans le référentiel dans le supplément A). La précision des estimations de la dévalaison était variable, les programmes de surveillance étant principalement conçus pour d'autres espèces. On a utilisé l'échantillonnage dans des pièges rotatifs ou les estimations de la survie de l'œuf à l'alevin pour générer les nombres des remises à l'eau. Avant la mise en place du Programme de mise en valeur des salmonidés (PMVS), les installations de mise en valeur des salmonidés du Fraser étaient gérées par la Commission internationale des pêches du saumon du Pacifique (CIPSP) et la production se limitait à l'empoissonnement accessoire dans les chenaux de fraie (Seaton, Jones et Weaver). Après la création du PMVS en 1977, la mise en valeur du saumon rose du Fraser a commencé dans des écloseries où les poissons étaient incubés et élevés dans une installation afin de maximiser les chances de survie de l'incubation, des œufs et des alevins. En raison du temps limité qu'ils passent en eau douce, la mise en valeur des saumons roses nécessite moins de ressources que celle des autres saumons du Pacifique, une caractéristique qui en a fait un poisson populaire à élever pour la pêche en mer. Le PMVS réévalue actuellement les pratiques d'empoissonnement et a réduit le nombre d'alevins non vésiculés produits depuis la fin des années 2000 (Figure~\ref{fig:fig-hatch-cont}), en partie en raison des possibilités limitées de prises et de l'évolution des priorités.
+
+\hypertarget{gestion-actuelle-et-tendances}{%
+\subsubsection{Gestion actuelle et tendances}\label{gestion-actuelle-et-tendances}}
+
+La règle de contrôle des prises (RCP) actuelle pour le saumon rose du Fraser a été mise en œuvre pour la première fois en 1987. Elle est composée de trois zones de gestion~: 1) à des remontes inférieures à 7,059 millions (M) de saumons roses, le taux d'exploitation maximal admissible augmente de 0 \% lorsqu'il n'y a pas de saumon rose à 15 \% pour 7,059 M de saumons roses; 2) à des remontes entre 7,059 et 20 M de saumons roses, l'objectif fixe d'abondance des géniteurs est de 6 M; et 3) à des remontes de plus de 20 M de saumons roses, le taux d'exploitation maximum est de 70 \%. La documentation de la justification de la RCP actuelle a été difficile à trouver, mais une note de service manuscrite de la Commission internationale des pêches de saumon du Pacifique de 1983 semble calculer une cible de ponte de 5 milliards d'œufs qui produirait la production désirée et la cible de géniteurs adultes correspondante, en supposant un poids moyen, qui atteindrait la cible de ponte (S. Latham, Commission du saumon du Pacifique {[}CSP{]}, Vancouver {[}Colombie-Britannique{]}, comm. pers.). Ricker (\protect\hyperlink{ref-rickerHistoryPresentState1989}{1989}) estime également \(U_{MSY}\) à 70 \%, qui a pu étayer le taux d'exploitation de référence cible (TE) actuel (figure~\ref{fig:fig-HCRs}).
+
+Des mesures de gestion supplémentaires sont souvent prises pendant les pêches ciblant le saumon rose du Fraser afin d'éviter les stocks préoccupants, dans la mesure du possible, et de réduire les répercussions sur les stocks préoccupants qui migrent en même temps que les stocks ciblés, lorsqu'il n'est pas possible de les éviter. Différentes mesures sont prises pour réduire les prises accessoires de saumon rouge~: les fermetures temporelles et spatiales (p.~ex. fermeture des périodes de pêche du saumon coho du Fraser de l'intérieur), les exigences relatives aux engins (p.~ex. l'utilisation de sennes de rivage ou de sennes peu profondes plutôt que de filets maillants dérivants, l'interdiction des appâts pour les pêches récréatives) et les changements opérationnels (p.~ex. exigences relatives à l'utilisation d'épuisettes et tailles maximales des filets recommandées pour les sennes coulissantes).
+
+Dans les 14 remontes de saumon rose du Fraser qui ont eu lieu avant la mise en œuvre de la RCP de 1987 (c.-à-d.~de 1959 à 1985), la remonte moyenne était de 9,3 M, l'abondance moyenne des géniteurs était de 2,5 M et le taux d'exploitation moyen était de 69 \%. Dans les 19 années de montaison de saumon rose du Fraser depuis la mise en œuvre de cette RCP (de 1987 à 2023), la limite du taux d'exploitation fixé par la RCP a été dépassée deux années (en 1987 et 1997), la remonte moyenne était de 12,9 M, l'abondance moyenne des géniteurs était de 9,4 M et le taux d'exploitation moyen était de 25 \%. Dans l'ensemble, les remontes de saumon rose du Fraser peuvent être qualifiées de « variables, mais stables ». Au cours des cinq dernières générations (10 ans, 5 montaisons), la remonte et l'abondance des géniteurs ont légèrement augmenté avec une faible variabilité interannuelle, avec une remonte moyenne de \text{7,38} M, une abondance moyenne des géniteurs de \text{6,89} M et un taux d'exploitation moyen de \text{6} \% (Figure~\ref{fig:fig-catch-esc}).
+
+\hypertarget{les-puxeaches-du-saumon-rose-du-fraser-et-les-dispositions-relatives-aux-stocks-de-poissons}{%
+\subsubsection{Les pêches du saumon rose du Fraser et les dispositions relatives aux stocks de poissons}\label{les-puxeaches-du-saumon-rose-du-fraser-et-les-dispositions-relatives-aux-stocks-de-poissons}}
+
+La \emph{Loi sur les pêches} du Canada a été modifiée en juin 2019. Les dispositions relatives aux stocks de poissons (DSP) prévoient de nouvelles exigences qui stipulent que « \emph{le ministre met en œuvre des mesures pour maintenir les grands stocks de poissons au moins au niveau nécessaire pour favoriser la durabilité des stocks, en tenant compte de la biologie du poisson et des conditions du milieu qui touchent les stocks} » (\protect\hyperlink{ref-DFO1985Act}{DFO 1985}). Le saumon rose du Fraser a été désigné comme un grand stock de poissons et, pour faciliter la mise en œuvre des DSP, les auteurs, en collaboration avec la Direction de la gestion des pêches du MPO, ont déterminé des valeurs possibles pour la composante agrégée du point de référence limite (PRL), du point de référence supérieur du stock (PRS) et du point d'exploitation de référence maximal (TE). Tant les préoccupations croissantes entourant les impacts potentiels des changements climatiques (p.~ex. réchauffement de la température des océans, inondations d'eau douce; MacDonald et Grant (\protect\hyperlink{ref-macdonaldStateCanadianPacific2023}{2023})) que le risque d'intensification de la concurrence inter- et intraspécifique dans l'océan (\protect\hyperlink{ref-ruggeroneNumbersBiomassNatural2018}{Ruggerone et Irvine 2018}; \protect\hyperlink{ref-ruggeroneDiatomsKillerWhales2023}{Ruggerone \emph{et al.} 2023}) et les preuves de l'évolution démographique (\protect\hyperlink{ref-pacificsalmoncommissionPSCBiologicalData2023}{Pacific Salmon Commission 2023}) soulignent la nécessité d'actualiser notre compréhension de la dynamique et de l'état des stocks. La relation entre la dynamique et la gestion des populations de saumons roses du Fraser n'a pas été évaluée depuis plus de 30 ans (dernière évaluation du MPO~: Ricker (\protect\hyperlink{ref-rickerHistoryPresentState1989}{1989})), en partie en raison de préoccupations au sujet de l'étalonnage des méthodes d'évaluation des géniteurs (\protect\hyperlink{ref-grantFraserRiverPink2014}{Grant \emph{et al.} 2014}). Les nouvelles exigences des DSP exigent un réexamen attentif de la dynamique des populations et de la viabilité de l'actuelle RCP.
+
+\hypertarget{objectifs}{%
+\subsection{OBJECTIFS}\label{objectifs}}
+
+Étant donné que la zone de gestion des stocks de saumon rose du Fraser est composée d'une seule unité de conservation, nous utilisons les points de référence de la Politique concernant le saumon sauvage du MPO, qui doivent être fondés sur la biologie et tenir compte explicitement de l'incertitude (\protect\hyperlink{ref-dfoCanadaPolicyConservation2005}{DFO 2005}, \protect\hyperlink{ref-dfoFisheryDecisionmakingFramework2009}{2009}) afin de déterminer les points de référence possibles selon les DSP.
+
+Les objectifs sont les suivants~:
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  décrire la compréhension actuelle des éléments suivants~: a) la structure et la répartition des stocks; b) l'état et les tendances des stocks; c) les facteurs écosystémiques et climatiques qui influent sur les stocks;
+\item
+  fournir des estimations des éléments suivants~: a) les points de référence possibles et b) le rendement biologique et halieutique prévu des règles de contrôle des prises, actuelles et de rechange;
+\item
+  proposer des circonstances exceptionnelles ou des déclencheurs d'évaluation pour le stock;
+\item
+  déterminer les secteurs qui nécessitent des travaux futurs.
+\end{enumerate}
+\hypertarget{stock-structure-and-distribution}{%
+\section{STOCK STRUCTURE AND DISTRIBUTION}\label{stock-structure-and-distribution}}
+
+Fraser River Pink Salmon predominantly spawn in the lower portion of the Fraser Basin, below the Fraser Canyon and Hells Gate (Figure~\ref{fig:fig-map}). However, there is a large component of the stock that returns to the Thompson River and the Seton-Anderson complex. Before the slide at Hells Gate in 1914, most of the Fraser River Pink Salmon run returned and spawned in the upper Fraser River (\protect\hyperlink{ref-pessInfluencePopulationDynamics2012}{Pess \emph{et al.} 2012}). Although there is a lack of abundance data at the tributary level in recent decades for Fraser Pink Salmon, assessment observations from other species have persistently noted Pink Salmon in the Quesnel, Chilcotin, and the Nechako Rivers. In 2019, DFO was alerted to a landslide in the middle Fraser near Big Bar. Pink Salmon were noted as being among the species delayed in their upstream migration by the slide. Slide mitigation efforts have largely been successful and Pink Salmon were in the Nechako River upstream of the slide in 2023 (R. Martin, DFO, Kamloops, British Columbia, pers. comm.).
+
+Fraser Pink Salmon are assumed to comprise a single Conservation Unit (\protect\hyperlink{ref-holtbyConservationUnitsPacific2008}{{«~Conservation {Units} for {Pacific Salmon} under the {W}ild {S}almon {P}olicy~»} Sous presse}). However, there is some evidence for life history differences between Pinks that spawn above and below Hells Gate. For example, Pink Salmon from above Hells Gate have higher maximum swimming speeds, allowing them to negotiate the Hells Gate rapids (\protect\hyperlink{ref-williams1983EarlyRun1986}{Williams \emph{et al.} 1986}; \protect\hyperlink{ref-rickerHistoryPresentState1989}{Ricker 1989}), which may be based on genetic differences (\protect\hyperlink{ref-beachamVariationBodySize1988}{Beacham \emph{et al.} 1988}). In addition, Pink Salmon returning to areas upstream and downstream of Hells Gate have slightly different return timing as evidenced through recent sampling for genetic stock identification in lower Fraser test fisheries (S. Latham, PSC, Vancouver, British Columbia, pers. comm). The differences suggest that there may be more genetic and life history differences between spawning populations above and below Hells Gate than previously thought. The Committee on the Status of Endangered Wildlife in Canada (COSEWIC) is currently reviewing Pink Salmon population structure in Canada including in the Fraser River (B. Leaman, COSEWIC, Duncan, British Columbia, pers. comm.).
+
+\hypertarget{ecosystem-and-climate-factors-affecting-the-stock}{%
+\section{ECOSYSTEM AND CLIMATE FACTORS AFFECTING THE STOCK}\label{ecosystem-and-climate-factors-affecting-the-stock}}
+
+As a result of their extensive migrations spanning both freshwater and marine environments, Fraser Pink Salmon interact with a broad range of ecosystem and climate conditions over the course of their life cycle. The freshwater habitats that Fraser River Pink Salmon spawn and incubate in are broadly distributed through the river basin (Figure~\ref{fig:fig-map}). Most Pink Salmon production occurs in the lower Fraser from the Fraser Canyon downstream and habitats in this region are relatively highly impacted by anthropogenic activities.
+
+Pink Salmon have exceptional aerobic scope and cardiovascular performance which has been hypothesized to contribute to their resilience to warming freshwaters (\protect\hyperlink{ref-clarkExceptionalAerobicScope2011}{Clark \emph{et al.} 2011}). However, due to their relatively small body size they are especially vulnerable to flow related impacts during return freshwater migrations. The impacts from the initial railway construction at Hells Gate in the 1880's (i.e., rock dumping into river), construction of the new railway in 1913, and subsequent rockslide in 1914, created hydrologic barriers that severely limited upstream migration of Pink Salmon to spawning locations in the upper Fraser River. After observing a large population of Sockeye apparently stuck downstream of the slide in 1941, fish passage facilities were completed in 1944 that enabled upstream migration and reestablished spawning populations in the upper Fraser (\protect\hyperlink{ref-roosRestoringFraserRiver1991}{Roos 1991}). The 2018/19 rockslide at Big Bar in the Fraser Canyon further upstream from Hells Gate created another partial barrier to upstream migration, during periods of high flow, to headwater spawning locations.
+
+In addition to flow related impacts on adult migration, extreme flows (e.g., from fall rain events) can cause high mortality in the egg to alevin stage of Pacific salmon as a result of scouring spawning redds where eggs incubate (\protect\hyperlink{ref-montgomeryStreambedScourEgg1996}{Montgomery \emph{et al.} 1996}). Though extreme flows and flooding have occurred in the lower Fraser in recent years (e.g., fall 2021) there has been little examination of extreme flow related impacts on Fraser River Pink Salmon incubation success.
+
+In the marine environment, Fraser Pink Salmon survival is negatively associated with above average sea-surface temperatures during early marine life (\protect\hyperlink{ref-mueterOppositeEffectsOcean2002}{Mueter \emph{et al.} 2002}), earlier spring bloom timing (\protect\hyperlink{ref-malickEffectsNorthPacific2017}{Malick \emph{et al.} 2017}), higher salinity (\protect\hyperlink{ref-dfoPreseasonRunSize2021}{DFO 2021}) and a weak North Pacific Current (\protect\hyperlink{ref-malickEffectsNorthPacific2017}{Malick \emph{et al.} 2017}), all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. In addition, increasing abundances of Pacific salmon abundances across the North Pacific (dominated by Pink, Chum, and Sockeye) are associated with declines in Fraser River Pink Salmon adult size (Figure~\ref{fig:fig-avg-mass}) which may result from inter- and intra-specific competition among salmon for limited prey resources at sea (\protect\hyperlink{ref-ruggeroneDiatomsKillerWhales2023}{Ruggerone \emph{et al.} 2023}). These declines in spawner size in turn likely impact reproductive output as fecundity scales with female size (\protect\hyperlink{ref-beachamFecundityEggSize1993}{Beacham et Murray 1993}).
+
+The physical and biological oceanographic conditions that affect prey production and Pink Salmon survival are likely to continue to vary as the North Pacific warms as a result of climate change (\protect\hyperlink{ref-litzowClimateAttributionTime2024}{Litzow \emph{et al.} 2024}). These changes may include reduced production and availability of lipid rich zooplankton during early marine life and/or increasing mismatch between timing of ocean entry and timing of marine productivity (e.g., spring bloom (\protect\hyperlink{ref-wilsonPhenologicalShiftsMismatch2023}{Wilson \emph{et al.} 2023})).
+
+\hypertarget{methods}{%
+\section{METHODS}\label{methods}}
+
+We compiled available data on Fraser Pink Salmon spawner abundance and catch, then developed and fit a state-space spawner-recruitment model to these data to describe stock dynamics and population characteristics. We then derived estimates of biological reference points to assess stock status. Lastly, we developed a closed-loop simulation model conditioned on recent estimates of productivity to quantify future expected biological and fishery performance of the current HCR, an alternative HCR and a no fishing scenario for the stock. Each of these steps is described in detail below.
+
+\hypertarget{data-sources}{%
+\subsection{DATA SOURCES}\label{data-sources}}
+
+Spawner and catch data from 1959 to present were provided by the PSC (\protect\hyperlink{ref-pacificsalmoncommissionFraserRiverPanel2024}{Pacific Salmon Commission 2024}). Estimates of spawner abundance have been derived over this time period using a variety of approaches ranging from mark-recapture based methods in individual spawning tributaries or the Fraser mainstem to sonar based enumeration in the lower Fraser River in more recent years (Table~\ref{tab:tab-spawner-est-methods}). It should be noted that no calibration was done when switching between spawner abundance estimation methods, but methods prior to the extensive data review by Andrew et Webb (\protect\hyperlink{ref-andrewReviewAssessmentAdult1987}{1987}) have had corrections made, and more recent estimation methods benefited from lessons in that review and methodological advances. These approaches have varied in their precision but, based on conversations with area staff and other analysts familiar with the data, were assumed to account for the vast majority of the spawning population in any given year, and to not be systematically biased.
+
+Commercial catch has typically been estimated by multiplying the total coastal Pink catch (Canada and US) by the estimated contribution of Fraser stock to the coastal catch, where the contribution of the Fraser stock was estimated based on run-reconstructions (1959-85) and genetic stock identification methodologies (1987-present). Methods used to estimate catch vary by fishery type (i.e., commercial, recreational, First Nations) and country. The Canadian commercial catch is estimated using a sales-slip program that began in 1951, while US catch is estimated through mandatory catch reporting to state fisheries departments in Washington and Oregon. Data prior to \text{1959} were not available because commercial landings did not partition catch into specific stocks, which is why our time series begins in \text{1959}. Recreational catch is estimated through agency creel surveys (e.g., effort surveys of catch per unit effort paired with flights or other counts) in both countries. First Nations Economic Opportunity catch is reported using similar methods of estimating commercial catch, while the First Nations Food, Social, and Ceremonial catch (FSC) is estimated using methods that differ by fishery and location. The total return (or recruitment) in any given year was assumed to be the sum of catch and spawner abundance.
+
+See Grant \emph{et al.} (\protect\hyperlink{ref-grantFraserRiverPink2014}{2014}) for a detailed overview of the Fraser River Pink data landscape including methodologies used to collect spawner abundance, catch, and biological data.
+
+\hypertarget{spawner-recruit-model}{%
+\subsection{SPAWNER-RECRUIT MODEL}\label{spawner-recruit-model}}
+
+We modeled the spawner-recruitment data in a state-space framework, following the approach described in Fleischman \emph{et al.} (\protect\hyperlink{ref-fleischmanAgestructuredStatespaceStock2013}{2013}). State-space models allow for the separation of observation (e.g., sampling) error and true underlying process variation and have become increasingly common in ecological modelling (\protect\hyperlink{ref-auger-metheGuideStateSpace2021}{Auger-Mèthè \emph{et al.} 2021}). State-space spawner-recruitment models tend to generate less biased estimates of leading parameters (e.g., intrinsic productivity and density dependence) than traditional regression based approaches that do not separate observation error and process variation and hence can be vulnerable to errors-in-variables and time series biases (\protect\hyperlink{ref-suPerformanceBayesianStatespace2012}{Su et Peterman 2012}; \protect\hyperlink{ref-statonEvaluationMethodsSpawner2020}{Staton \emph{et al.} 2020}; \protect\hyperlink{ref-adkisonReviewSalmonSpawnerRecruitment2021}{Adkison 2021}).
+
+\hypertarget{process-model}{%
+\subsubsection{Process model}\label{process-model}}
+
+The process model is intended to represent the true population dynamics (i.e., free of measurement error). This component of our state-space spawner-recruitment model specifies productivity and density-dependence. Recruitment abundances of adult Pinks (\(R_y\)) in odd year \(y\) were treated as unobserved states and modeled as a function of spawner abundance in year (\(S_{y-1}\)) assuming a Ricker (\protect\hyperlink{ref-rickerStockRecruitment1954}{1954}) spawner-recruitment relationship with serially auto-correlated log-normal process variation:
+\begin{equation}
+\ln(R_y) = \ln(S_{y-2}) + \ln(\alpha) - \beta S_{y-2} + v_y
+\label{eq:AR1-ricker}
+\end{equation}
+where \(\alpha\) is productivity (intrinsic rate of growth), \(\beta\) is the magnitude of within brood year density-dependent effects, and \(v_y\) reflects inter-annual variation in survival from egg to adulthood, which we term ``recruitment anomalies''. This variation was assumed to follow a lag-1 autoregressive process (AR1) over time:
+\begin{equation}
+\begin{aligned}
+v_y &= \phi v_{y-2} + \varepsilon_y \\
+\varepsilon_y &\sim \mathcal{N}(0, \sigma_R)
+\end{aligned}
+\label{eq:AR1}
+\end{equation}
+where \(\phi\) is the correlation coefficient and \(\varepsilon_y\) reflects the portion of the recruitment anomaly \(v_y\) that is temporally independent (i.e., white noise). The first year of recruitment was not linked to observations of spawner abundance in the spawner-recruitment relationship (Eqn.~\ref{eq:AR1-ricker}) and were modeled as random draws from a log-normal distribution with mean \(\ln(R_0)\) and standard deviation \(\sigma_{R}^2\). Rather than estimating \(\ln(R_0)\) as a free parameter as in Fleischman \emph{et al.} (\protect\hyperlink{ref-fleischmanAgestructuredStatespaceStock2013}{2013}), we choose to follow Staton \emph{et al.} (\protect\hyperlink{ref-statonEvaluationMethodsSpawner2020}{2020}) and inform its value using the expected recruitment under equilibrium unfished conditions \(\ln(\alpha)/\beta\).
+
+Catch in a given odd year (\(C_y\)) was modeled as the product of total run size and the catch rate (\(U_y\)) experienced that year:
+\begin{equation}
+ C_y = R_y U_y
+\label{eq:harvest}
+\end{equation}
+and spawner abundance (\(S_y\)) was modeled as the portion of \(R_y\) remaining after catch \(C_y\):
+\begin{equation}
+S_y = R_y (1 - U_y)
+\label{eq:get-S}
+\end{equation}
+\hypertarget{observation-model}{%
+\subsubsection{Observation model}\label{observation-model}}
+
+We assumed that observation error in spawning abundance varied among assessment regimes, \(r\) (Table~\ref{tab:tab-spawner-est-methods}):
+\begin{equation}
+S_y = S_{obs_y} + \sigma^2_{r,y}
+\label{eq:get-S}
+\end{equation}
+and then directly accounted for this by assuming observed spawner abundance was log-normally distributed with the coefficient of variation (CV) converted to log-normal variance following (\protect\hyperlink{ref-forbes_statistical_2011}{Forbes \emph{et al.} 2011}):
+\begin{equation}
+\sigma^2_{r,y} = \ln\left(\mathrm{CV}_{r,y}^2 + 1\right)
+\label{eq:get-sigma}
+\end{equation}
+We assumed that catch had a 5\% CV and so catch observations were also assumed to be log-normally distributed with the CV converted to log-normal variance as per Eqn.~\ref{eq:get-sigma}, then substituting catch, \(C\), for spawners, \(S\), into Eqn.~\ref{eq:get-S} and dropping the regime script, \(r\).
+
+\hypertarget{model-fitting-and-diagnostics}{%
+\subsubsection{Model fitting and diagnostics}\label{model-fitting-and-diagnostics}}
+
+We fit the spawner-recruitment model in a Bayesian estimation framework with Stan (\protect\hyperlink{ref-carpenter_stan_2017}{Carpenter \emph{et al.} 2017}; \protect\hyperlink{ref-standevelopmentteamRstanInterfaceStan2023}{Stan Development Team 2023}), which implements the No-U-Turn Hamiltonian Markov chain Monte Carlo (MCMC) algorithm (\protect\hyperlink{ref-hoffman2014}{Hoffman et Gelman 2014}) for Bayesian statistical inference to generate a joint posterior probability distribution of all unknowns in the model. We sampled from 4 chains with 2,000 iterations each and discarded the first half as warm-up. We assessed chain convergence visually via trace plots and by ensuring that \(\hat{R}\) (potential scale reduction factor; Vehtari \emph{et al.} (\protect\hyperlink{ref-vehtari2021rank}{2021})) was less than 1.01 and that the effective sample size was greater than 200, or 10\% or the iterations. Posterior predictive checks were used to make sure that the model returned data similar to the data used to fit parameters.
+
+Priors were generally uninformative or weakly informative and are summarized in Table~\ref{tab:tab-priors}. The \(\beta\) prior was moderately informative with a mean and variance of 75\% of the maximum observed spawners, which prevents the model from exploring unrealistic parameter spaces of carrying capacity for Pacific Salmon (D. Greenberg, DFO, Nanaimo, British Columbia, pers. comm.).
+
+\hypertarget{biological-reference-points}{%
+\subsection{BIOLOGICAL REFERENCE POINTS}\label{biological-reference-points}}
+
+We calculated biological reference points for each MCMC sample to propagate uncertainty. The spawning abundance expected to maximize sustainable yield over the long-term under equilibrium conditions, \(S_{MSY}\) was derived as:
+\begin{equation}
+S_{MSY} = 1 - W(e^{1-ln(\alpha)})/\beta
+\label{eq:get-Smsy}
+\end{equation}
+where \(W\) is the Lambert function (\protect\hyperlink{ref-scheuerellExplicitSolutionCalculating2016}{Scheuerell 2016}), and \(\alpha\) and \(\beta\) are intrinsic productivity and the magnitude of within stock density dependence, respectively. We chose to apply this exact solution for \(S_{MSY}\) instead of the commonly applied Hilborn (\protect\hyperlink{ref-hilborn1985simplified}{1985}) approximation because the approximation only holds for \(0 <ln(\alpha) \leq3\) such that infrequent, but large, posterior samples of \(\alpha\) can result in biased estimates of the posterior distribution of \(S_{MSY}\). We used 80\% of \(S_{MSY}\) as the USR following Holt (\protect\hyperlink{ref-holtEvaluationBenchmarksConservation2009}{2009}) and DFO (\protect\hyperlink{ref-dfoSustainableFisheriesFramework2022}{2022}).
+
+The catch rate expected to lead to maximum sustainable yield, \(U_{MSY}\) was used as the RR and derived according to the solution proposed by Scheuerell (\protect\hyperlink{ref-scheuerellExplicitSolutionCalculating2016}{2016}) as:
+\begin{equation}
+U_{MSY} = 1 - W(e^{1-ln(\alpha)})
+\label{eq:get-Umsy}
+\end{equation}
+and \(S_{gen}\), the spawner abundance expected to result in the stock rebuilding to \(S_{MSY}\) in one generation in the absence of fishing (\protect\hyperlink{ref-holtEvaluationBenchmarksConservation2009}{Holt 2009}), which we considered the LRP, was solved numerically according to:
+\begin{equation}
+S_{MSY} = S_{gen}\alpha e^{-\beta S_{gen}}
+\label{eq:get-Sgen}
+\end{equation}
+Equilibrium spawner abundance (\(S_{eq}\)), where recruitment exactly replaces spawners, was estimated as:
+\begin{equation}
+S_{eq} = ln(\alpha)/\beta
+\label{eq:get-Seq}
+\end{equation}
+\hypertarget{closed-loop-simulation-model}{%
+\subsection{CLOSED-LOOP SIMULATION MODEL}\label{closed-loop-simulation-model}}
+
+We developed a simple closed loop forward simulation, conditioned on our estimates of historical spawner abundance, and biological benchmarks illustrated in Figure~\ref{fig:fig-schematic}. We used this simulation to project the stock forward in time and evaluate the biological and fishery performance of the current, and an illustrative alternative HCR. Details on model components and calculation of performance are provided below.
+
+\hypertarget{biological-sub-model}{%
+\subsubsection{Biological sub-model}\label{biological-sub-model}}
+
+Because recruitment residuals tended to be negative in recent generations (Figure~\ref{fig:fig-rec-resid}), and reproductive potential has likely declined through time due to declining size (Figure~\ref{fig:fig-avg-mass}), we chose to refit a version of the model described in equation~\ref{eq:AR1} with time-varying intrinsic productivity that could then be used to condition the biological sub-model for the forward simulation. Specifically, we allowed the \(\alpha\) parameter to evolve through time as a random walk, yielding annual estimates of productivity:
+\begin{equation}
+\begin{aligned}
+\alpha_y &= \alpha_{y-2} + \varepsilon_y \\
+\varepsilon_y &\sim \mathcal{N}(0, \sigma_\alpha)
+\end{aligned}
+\label{eq:tv-alpha}
+\end{equation}
+and where recruitment anomalies were no longer modeled as being auto-correlated but all other parameters in equation~\ref{eq:AR1} otherwise remained the same. We simulated future stock trajectories by starting with the most recent estimate (i.e., latent state) of spawners and the median estimate of productivity in the last 3 generations, then iterating the process model forward in time for five Pink Salmon generations (10 years) This was done 1000 times to ensure that uncertainty in the spawner-recruitment relationships was propagated by drawing for the joint posterior distributions of estimated parameters in each iteration of the simulation.
+
+\hypertarget{fishery-sub-model}{%
+\subsubsection{Fishery sub-model}\label{fishery-sub-model}}
+
+In each odd-year of the simulation, forecasted total returns of Pink Salmon were assumed to be estimated with error. This error was assumed to be lognormally distributed with a mean equal to the true run size and CV of \text{64}\% based on retrospective assessment of pre-season forecasts provided by the PSC for years 1987-2021. Forecasted returns were then used as an input into the HCR that specified target exploitation rate given the expected run-size. Outcome uncertainty (i..e., deviations from targeted catch) was then applied to calculate realized catch and spawning abundance We assumed this outcome uncertainty was normally distributed around the target catch with a CV of \text{10}\%.
+
+In addition to evaluating the current HCR we also considered an illustrative alternative and a no fishing scenario. The alternative HCR is fit to Fisheries and Oceans Canada's Precautionary Approach Framework (\protect\hyperlink{ref-dfoFisheryDecisionmakingFramework2009}{DFO 2009}) (Figure~\ref{fig:fig-HCRs}). Under this alternative (``PA alternate'') HCR the lower operational control point (OCP) is set to our median estimate of \(S_{gen}\) below which the target exploitation rate is zero, and an upper OCP is set to run-size associated with our median estimate of 80\% \(S_{MSY}\) where the maximum target exploitation rate is set to our median estimate of the RR or \(U_{MSY}\). At run-sizes between the lower and upper OCPs the target exploitation rate was linearly interpolated. An unintended consequence of this alternative is that the associated target spawner abundance declines slightly as run-sizes increases toward the upper OCP which is undesirable and problematic from a practical management implementation perspective. To avoid this, slight variations on this type of HCR have been used for Fraser Sockeye (\protect\hyperlink{ref-pestalUpdatedMethodsAssessing2012}{Pestal \emph{et al.} 2012}).
+
+\hypertarget{performance-measures}{%
+\subsubsection{Performance measures}\label{performance-measures}}
+
+We quantified the expected performance of the HCRs against biological and fishery objectives and associated quantitative performance measures (Table~\ref{tab:tab-perf-metrics-descriptions}). Biological objectives included minimizing the probability spawner abundances fall below the LRP (\(S_{gen}\)), and maximizing the probability the stock maintains spawner abundances above the USR (80\% \(S_{MSY}\)) and is hence in a ``healthy'' or desirable state. The values used for these biological reference points were based on the joint posterior distributions of estimated parameters in each iteration of the simulation thereby ensuring that uncertainty in these reference points was explicitly accounted for in the performance measure calculations. The percentages reported are simply the percentage of simulation-years that fall above or below a reference point (e.g.~if a single year of spawners within a simulation is above or below the reference point it is counted).
+
+Fishery objectives included maximizing average catch and inter-annual stability in catch, and maximizing the probability annual catch fall above a minimum catch index level which, for illustrative purposes, was chosen as the mean catch of the highest three catches since the year 2001 (i.e., an indicator of a ``good'' fishing year).
+
+\hypertarget{robustness-test}{%
+\subsubsection{Robustness test}\label{robustness-test}}
+
+We used a robustness test to evaluate the sensitivity of HCR performance to a potential situation where future intrinsic productivity of the Fraser Pink stock dramatically further declined due to, for example, large changes in marine or freshwater survival. To implement this we simply conditioned our biological sub-model using draws from the joint posterior distribution of Ricker parameters (i.e., \(\alpha\), \(\beta\), \(\sigma\)) associated with the lower tenth percentile of the median posterior distribution of the last 3 generations of the productivity parameter (\(\alpha\)), while draws from the starting state (i.e., spawners in 2023) and benchmarks were sampled from the full posterior distribution.
+
+\hypertarget{results}{%
+\section{RESULTS}\label{results}}
+
+\hypertarget{model-fit-and-diagnostics}{%
+\subsection{MODEL FIT AND DIAGNOSTICS}\label{model-fit-and-diagnostics}}
+
+Visual inspection of trace plots indicated all chains were well mixed for leading parameters, all parameters had R-hat \textless{} 1.01 (maximum of 1.003), effective sample sizes \textgreater{} 10\% of draws (minimum 39\% in time-varying model) suggesting reasonable model convergence, and posterior predictive checks that resembled data that was used to fit the model. (See Appendix A for details of computing environment and details on reproducing analysis, and a link to a supplement describing model fits).
+
+\hypertarget{biological-benchmarks-stock-status-and-trends}{%
+\subsection{BIOLOGICAL BENCHMARKS, STOCK STATUS AND TRENDS}\label{biological-benchmarks-stock-status-and-trends}}
+
+Posterior means, medians and 80\% credible intervals for leading spawner-recruitment parameters and biological benchmarks are summarized in Table~\ref{tab:tab-bench-parms}. We found that the Fraser Pink stock is moderately productive with intrinsic productivity (\(\alpha\)) estimated to be \text{3,94} (\text{3,02}-\text{5,02} recruits per spawner; median and 80\% credible interval) and equilibrium stock size \(S_{eq}\), which is a function of intrinsic productivity (\(\alpha\)) and the strength of within stock density dependence (\(\beta\)), estimated to be \text{14,1}M (\text{11,41}-\text{18,48}M). Recruitment anomalies were estimated to be weakly positively correlated through time with \(\phi\) estimated to be \text{0,06} (\text{-0,09}-\text{0,31}) with no strong time trend, though the most recent 4 brood years were all negative. (Figure~\ref{fig:fig-rec-resid}). Estimates of time varying productivity suggest a decline beginning in the 1980's (Figure~\ref{fig:fig-tv-alpha}) with the median productivity in the last 3 generations estimated at \text{2,27} (\text{1,44}-\text{3,62}).
+
+As a result of relatively weak density dependence, expected yield (i.e., ``surplus'' production above replacement) and recruitment was relatively flat across a wide range of spawner abundances (Figure~\ref{fig:fig-SRR}). Nonetheless, the spawner abundance expected to maximize long-term sustainable yield (\(S_{MSY}\)) was estimated to be \text{5,75}M and so the USR of 80\% \(S_{MSY}\) was \text{4,6}M (\text{3,64}-\text{6,11}M). The RR, \(U_{MSY}\) (Eqn.~\ref{eq:get-Umsy}) was estimated to be \text{0,56} (\text{0,47}-\text{0,63}), and lastly, the LRP \(S_{gen}\) was estimated to be \text{1,72}M (\text{1,1}-\text{2,7}M).
+
+The history of the status of the Fraser Pink stock can be visualized as a ``Kobe plot'', a common way to visualize stock status over time relative to biomass (or abundance) and exploitation rate based reference points. The Kobe plot for Fraser Pinks (Figure~\ref{fig:fig-kobe}) highlights that the stock was overfished and experiencing overfishing (i.e.,\,catch above \(U_{MSY}\), with spawners below \(S_{MSY}\)) at the beginning of the time series in 1959 and that this generally continued until the current management regime was adopted in 1987. Overfishing may have been due, at least in part, to the troll fishery learning to catch Pinks in outside waters; and this overfishing was recognized in 1957 when the IPSFC was put in charge to manage Fraser Pink fisheries shared by the US and Canada (\protect\hyperlink{ref-rickerHistoryPresentState1989}{Ricker 1989}). Since then, catch has been reduced and the stock has rebounded to higher levels of spawner abundance (Figure~\ref{fig:fig-catch-esc}), with some years being intermediate where the stock was over fished at high abundances (top right quadrant, Figure~\ref{fig:fig-kobe}), and under fished at low abundances (bottom left quadrant, Figure~\ref{fig:fig-kobe}). Overall, the Kobe plot suggests the stock is currently being under fished, but attaining the catch goal defined in the HCR can be difficult due to other management considerations.
+
+The most recent (2023) observation of spawner abundance for Fraser Pink Salmon is \text{9,58}M, which is well above the USR of 80\% \(S_{MSY}\) suggesting the stock is in a ``healthy'' state (Figure~\ref{fig:fig-status}). The stock being considered healthy is consistent with the Wild Salmon Policy rapid status assessment tool that takes data quality and multiple metrics into account (\protect\hyperlink{ref-pestalStateSalmonRapid2023}{Pestal \emph{et al.} 2023}), and which has assessed the stock as in the green with high confidence (\link{https://doi.org/10.5281/zenodo.12549905}{Supplement A}).
+
+\hypertarget{harvest-control-rule-performance}{%
+\subsection{HARVEST CONTROL RULE PERFORMANCE}\label{harvest-control-rule-performance}}
+
+We found that the existing HCR for Fraser Pinks has a very low probability of the stock falling below the LRP (\(S_{gen}\), 4.28\%), and a relatively high probability of spawner abundance being above the USR (80\% \(S_{MSY}\), 87.54\%), over the next 10 years (Table~\ref{tab:tab-HCR-performance}; Figure~\ref{fig:fig-fwd-SC}). Assuming fisheries fully utilize allowable catch, which may not be the case if the Pink fishery is constrained to limit impacts on non-target species, the median annual catch is projected to 10.3m fish. Approximately 64.3\% of years are expected to result in catches greater than the ``good catch'' index (\text{6,31}M; a semi-arbitrary indicator of a `good year' based on the average of the top 3 catches since the year 2000). In contrast, the alternative, illustrative Precautionary Approach compliant HCR had a slightly higher probability of the stock falling below the LRP (5.16\% vs 4.28\%) and performed similarly in spawner abundance being above the USR (87.46\% vs 87.54\%) (Table~\ref{tab:tab-HCR-performance}; Figure~\ref{fig:fig-fwd-SC}). These slightly increased biological risks were paired with 1.5M less fish being caught in the alternate HCR. Compared to the current HCR, the no fishing scenario increased the probability of being above the LRP and USR by \text{0,32} and \text{5,6}\% respectively (Table~\ref{tab:tab-HCR-performance}; Figure~\ref{fig:fig-fwd-SC}).
+
+Performance in the low productivity scenario, where recent productivity was reduced to its lower 10th percentile, showed the different HCRs perform in relatively the same way, but with increased biological risk and less catch. Percentage of simulations below \(S_{gen}\) or above 80\% \(S_{MSY}\) changed into riskier zones by up to approximately 15\%, and catch was less than half of what it was in the base scenario (Table~\ref{tab:tab-HCR-performance}). The alternate HCR performed relatively worse than the current HCR under the low productivity scenario. In the alternate HCR the number of simulations with spawner abundance below \(S_{gen}\) quadrupled and the number above 80\% \(S_{MSY}\) was reduced to 72\% of what it was in the base scenario, compared to the current HCR doubling the number below \(S_{gen}\) and a 84\% reduction in the number of simulations above \(S_{MSY}\).
+
+\hypertarget{discussion}{%
+\section{DISCUSSION}\label{discussion}}
+
+\hypertarget{summary-of-key-findings}{%
+\subsection{SUMMARY OF KEY FINDINGS}\label{summary-of-key-findings}}
+
+In this research document we briefly review our current understanding of Fraser River Pink Salmon stock structure and distribution, assessment history, and ecosystem and climate factors affecting the stock. We then fit a state-space spawner-recruitment model to available to data to characterize stock dynamics, and derive estimates of biological benchmarks to assess stock status. Lastly, we developed a simple closed-loop simulation model based on recent productivity estimates to quantify future expected biological and fishery performance of the current, an illustrative alternative HCR, and a no fishing scenario.
+
+Odd year Fraser Pinks spawn throughout the Fraser Basin and comprise a single Conservation Unit though there is evidence of life history differences between populations that spawn in the upper and lower Fraser River (above and below Hells Gate). Landslides have occurred throughout the Fraser causing migratory impediments that have impacted returning adult salmon at different periods with the most notable being Hells Gate in 1914 and more recently the Big Bar Landslide in 2018/19. Fraser Pink Salmon marine survival is associated with sea-surface temperatures during early marine life, spring bloom timing and the North Pacific Current, all of which index physical and biological oceanographic conditions that likely affect prey production, transport, and availability during early marine life. Adult body size has declined over time, coincident with increasing abundances of salmon in the North Pacific, which has the potential to impact reproductive output as fecundity scales with female size.
+
+We found that the Fraser Pink stock is moderately productive with intrinsic productivity (\(\alpha\)) estimated to be \text{3,94} (\text{3,02}-\text{5,02} recruits per spawner) and equilibrium stock size \(S_{EQ}\) equal to \text{14,1}M (\text{11,41}-\text{18,48}M). We estimated the USR of 80\% \(S_{MSY}\) to be \text{4,6}M (\text{3,64}-\text{6,11}M), and the Limit Reference Point \(S_{gen}\) to be \text{1,72}M (\text{1,1}-\text{2,7}M). The most recent (2023) observation of spawner abundance for Fraser Pink Salmon is 9.58M which is well above the 90th percentile of the USR estimate suggesting the stock is in a ``healthy'' state which is consistent with the Wild Salmon Policy rapid status assessment tool that has assessed the stock as in the ``green'' Wild Salmon Policy status zone with high confidence.
+
+A time-varying productivity model used to condition the forward simulation showed that productivity of Fraser Pinks has been declining since the 1980s, roughly coincident with onset of decline in average size of returning adults. Productivity in recent years is nearly half of what it was at its peak in the 1980s.
+
+We found that the existing HCR for Fraser Pinks has a very low probability (4.28\%) of the stock falling below the Limit Reference Point, and a relatively high probability (87.54) of spawner abundance being above the USR, over the next 10 years. Assuming fisheries fully utilize allowable catch, which may not be the case if the Pink fishery is constrained, for example, to limit impacts on non-target species, average annual catch is projected to 10.3M over the same time period. Assessment of an illustrative alternative HCR which is strictly compliant with DFO's Precautionary Approach Framework had similar biological performance with slightly less catch. When compared to the existing HCR, a no fishing scenario showed 0.3\% and 5.6\% more simulations being above the LRP and USR, respectively.
+
+The robustness test of the current HCR suggest that if stock productivity were to decline sharply and/or be depressed for a prolonged period the current HCR would have \textasciitilde5\% greater probability of falling below the LRP, \textasciitilde14\% greater probability of falling below USR in ``amber'' zone, and \textasciitilde7M less fish caught than under the baseline scenario. The alternative, strictly PA compliant, HCR performed relatively worse than the current HCR under the robustness test, possibly due to the higher allowable exploitation rates at intermediate run sizes under this HCR. To mitigate these risks, one option to explore in the future could be to use a dynamic version of our alternate HCR, where the removal reference \(U_{MSY}\) changes in relation to current estimates of time-varying productivity.
+
+\hypertarget{caveats-and-assumptions}{%
+\subsection{CAVEATS AND ASSUMPTIONS}\label{caveats-and-assumptions}}
+
+The performance measures from the forward simulations should be interpreted with caution for several reasons. First, our performance measures are calculated across the full five generations of the simulations and so do not capture finer, shorter term performance as shown in the trajectory figures (e.g., the relatively higher median catch in the current HCR could be due to a short term gain in catch in 2025). Second, we made the simplifying assumption that forecast error and outcome uncertainty were lognormally and normally distributed across run sizes, respectively. When run sizes are forecast to be low, there may not be additional commercial fishing data to support in season adjustments (\protect\hyperlink{ref-hagueImprovementsFraserRiver2022}{Hague \emph{et al.} 2022}). Small sample sizes in Pink catch could also cascade uncertainty through the various methods to estimate stock size: test fisheries, CPUE analyses, genetic stock identification, and the hydroacoustic program (\protect\hyperlink{ref-hagueMovingTargetsAssessing2021}{Hague \emph{et al.} 2021}). Low sample size and fishing effort can exacerbate forecast error at low run size, therefore potentially violating our assumption forecast error is consistent among run sizes. Second, outcome uncertainty (i.e., how close you are toward the target exploitation rate) may be lower than expected for practical management reasons (e.g., reducing Pink fishing effort to protect at-risk Sockeye populations). In addition, the price of Pink Salmon has been so low in recent years that it may not be economically feasible for commercial fishers to operate. Taken together, these reasons for reductions in fishing effort may make the shape of true outcome uncertainty right skewed, since fisheries are typically under harvesting their total allowable catch. Therefore, it is important to consider the values in table~\ref{tab:tab-HCR-performance} as relative performance measures and not absolutes; catches may not be realized due to various management considerations.
+
+\hypertarget{exceptional-circumstances-or-assessment-triggers-for-the-stock}{%
+\subsection{EXCEPTIONAL CIRCUMSTANCES OR ASSESSMENT TRIGGERS FOR THE STOCK}\label{exceptional-circumstances-or-assessment-triggers-for-the-stock}}
+
+Exceptional circumstances are assessment triggers intended to proactively identify conditions and/or circumstances that may represent a substantial departure from those under which the advice in this assessment was developed (i.e., reassess model assumptions). In addition to routine re-assessment every 2 generations to ensure stock status can be updated and captures contemporary fishery and biological processes, we recommend a re-assessment be triggered if any of the following occur:
+\begin{itemize}
+\item
+  Stock productivity changes drastically, where the median estimate of time-varying productivity (annual Ricker \(\alpha\)) falls outside the 50th percentile (i.e., \text{1,8}-\text{2,93}), of the 3 generation median productivity used to condition our forward simulation;
+\item
+  New information becomes available that results in changes to the historical time-series of spawner abundance and catches used in this research document; or
+\item
+  New information becomes available that results in changes to our understanding of stock-structure (e.g., the current Conservation Unit is split into two) and/or major drivers of stock dynamics.
+\end{itemize}
+Lastly, should Fisheries Management consider changes to the existing HCR and/or revisions to the fishery objectives against which it needs to be evaluated, then the assessment model and closed-loop simulation framework we describe should be revisited to ensure they adequately capture key attributes needed to support decision making.
+
+\hypertarget{areas-of-potential-future-work}{%
+\subsection{AREAS OF POTENTIAL FUTURE WORK}\label{areas-of-potential-future-work}}
+\begin{itemize}
+\item
+  \emph{Develop a Fraser Pink Salmon life cycle model.} Outmigrating Fraser Pink fry abundance has been enumerated near Mission since 1984, and coarse methods have been used to estimate annual migration. Development of a life cycle model that partitions freshwater and marine dynamics, and explicitly accounts for changing reproductive potential (due to declines in body size, changing marine survival or egg to fry survival), would enable more explicit consideration of ecosystem and climate drivers of stock dynamics and enable them to be accounted for when estimating benchmarks and assessing stock status. When used to condition the biological sub-model in the closed loop simulations, these drivers of life stage specific dynamics could then be explicitly accounted for when evaluating HCR performance. Adding time-varying productivity or trending marine survival, then pairing these with environmental data, will allow us to explore which processes are influencing survival at certain stages.
+\item
+  \emph{Improve understanding of changes in spatial distribution of adult spawners.} The last detailed assessment of changes in the spatial distribution Fraser Pink Salmon was conducted by Pess \emph{et al.} (\protect\hyperlink{ref-pessInfluencePopulationDynamics2012}{2012}) with tributary level data through 1947-87. Since that time there has not been formal tributary level assessment of spawner abundance, but there has been anecdotal evidence of continued changes in the spatial distribution of spawning Pink Salmon. This information could be compiled, along with observations from assessment projects focused on other species, to critically re-examine our understanding of spatial dynamics of Fraser Pink Salmon and their implication for stock status and expectations of future production.
+\item
+  \emph{Adapt closed-loop simulation model to better capture contemporary fishery dynamics.} The fishery sub-model we developed is extremely simple and does not capture a number of potentially important process that have the potential to influence fishery outcomes. This includes the influence of other, non-target, species like Fraser sockeye salmon whose depressed abundance in recent years has led to restrictions on fisheries targeting co-migrating Fraser Pink Salmon. These weak stock fishery restrictions mean that our characterization of the biological and fishery performance of the current HCR may be pessimistic when it comes to conservation risk, and optimistic when it comes to fishery performance. A multi-species Operating Model in our closed loop simulations that explicitly or implicitly incorporates contemporary Fraser Sockeye dynamics, and revised fishery sub-model that takes at-risk sockeye considerations into account, could be developed to enable more realistic evaluation of HCR performance.
+\end{itemize}
+\hypertarget{acknowledgements}{%
+\section{ACKNOWLEDGEMENTS}\label{acknowledgements}}
+
+We are thankful for the numerous technicians and biologists that have collected data on Fraser River Pinks for over 60 years. We thank Dan Greenberg for analytical advice, Angus Straight for providing hatchery context, Maxime Veilleux and Colin Schwindt for a description of current catch allocation. Matt Townsend, Sue Grant, Steve Latham, Catherine Michielsens, Adam Keizer, Mike Hawkshaw, Merran Hague and Luke Rogers provided helpful background context and feedback on an earlier version of this document. We thank Teri Tarita for help accessing historical documentation on the rationale for the current spawner abundance goals and wish her a happy retirement.
+
+\hypertarget{refs}{}
+\begin{CSLReferences}{1}{0}
+\leavevmode{\hypertarget{ref-adkisonReviewSalmonSpawnerRecruitment2021}{}}%
+Adkison, M.D. 2021. \link{https://doi.org/gpdfdc}{A {Review} of {Salmon Spawner-Recruitment Analysis}: {The Central Role} of the {Data} and {Its Impact} on {Management Strategy}}. Reviews in Fisheries Science \& Aquaculture: 1‑37.
+
+\leavevmode{\hypertarget{ref-andrewReviewAssessmentAdult1987}{}}%
+Andrew, J.H., et Webb, T.M. 1987. \link{https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/341453.pdf}{Review \& {Assessment} of {A}dult {P}ink {S}almon {E}numeration {P}rograms on the {Fraser River}}. {ESSA Ltd.}, Vancouver, BC.
+
+\leavevmode{\hypertarget{ref-auger-metheGuideStateSpace2021}{}}%
+Auger-Mèthè, M., Newman, K., Cole, D., Empacher, F., Gryba, R., King, A.A., Leos-Barajas, V., Mills Flemming, J., Nielsen, A., Petris, G., et Thoma, L. 2021. \link{https://doi.org/gm2g4v}{A Guide to State--Space Modeling of Ecological Time Series}. Ecol Monogr 91(4).
+
+\leavevmode{\hypertarget{ref-beachamFecundityEggSize1993}{}}%
+Beacham, T.D., et Murray, C.B. 1993. \link{https://doi.org/10.1111/j.1095-8649.1993.tb00354.x}{Fecundity and Egg Size Variation in {N}orth {A}merican {P}acific Salmon ({\emph{Oncorhynchus}})}. Journal of Fish Biology 42(4): 485‑508.
+
+\leavevmode{\hypertarget{ref-beachamVariationBodySize1988}{}}%
+Beacham, T.D., Withler, R.E., Murray, C.B., et Barner, L.W. 1988. \link{https://doi.org/10.1577/1548-8659(1988)117\%3C0109:VIBSME\%3E2.3.CO;2}{Variation in {Body Size}, {Morphology}, {Egg Size}, and {Biochemical Genetics} of {Pink Salmon} in {British Columbia}}. Transactions of the American Fisheries Society 117(2): 109‑126.
+
+\leavevmode{\hypertarget{ref-carpenter_stan_2017}{}}%
+Carpenter, B., Gelman, A., Hoffman, M.D., Lee, D., Goodrich, B., Betancourt, M., Brubaker, M., Guo, J., Li, P., et Riddell, A. 2017. \link{https://doi.org/10.18637/jss.v076.i01}{Stan: {A} Probabilistic Programming Language}. J. Stat. Soft. 76(1).
+
+\leavevmode{\hypertarget{ref-clarkExceptionalAerobicScope2011}{}}%
+Clark, T.D., Jeffries, K.M., Hinch, S.G., et Farrell, A.P. 2011. \link{https://doi.org/10.1242/jeb.060517}{Exceptional Aerobic Scope and Cardiovascular Performance of Pink Salmon ( {\emph{Oncorhynchus}}{ \emph{Gorbuscha}} ) May Underlie Resilience in a Warming Climate}. Journal of Experimental Biology 214(18): 3074‑3081.
+
+\leavevmode{\hypertarget{ref-holtbyConservationUnitsPacific2008}{}}%
+Conservation {Units} for {Pacific Salmon} under the {W}ild {S}almon {P}olicy. (Sous presse).
+
+\leavevmode{\hypertarget{ref-DFO1985Act}{}}%
+DFO. 1985. \link{https://laws-lois.justice.gc.ca/eng/acts/F-14/}{Canada's Fisheries Act, Revised Statutes of Canada (1985, c. {F-14})}.
+
+\leavevmode{\hypertarget{ref-dfoFraserRiverSalmon1998}{}}%
+DFO. 1998. \link{https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/227528.pdf}{Fraser {River Salmon Summary}}. Vancouver, BC.
+
+\leavevmode{\hypertarget{ref-dfoCanadaPolicyConservation2005}{}}%
+DFO. 2005. \link{https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/315577.pdf}{Canada's {Policy} for {Conservation} of {Wild Pacific Salmon}}. {Fisheries and Oceans Canada}, {Vancouver, British Columbia}.
+
+\leavevmode{\hypertarget{ref-dfoFisheryDecisionmakingFramework2009}{}}%
+DFO. 2009. \link{https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/precaution-eng.htm}{A Fishery Decision-Making Framework Incorporating the Precautionary Approach}.
+
+\leavevmode{\hypertarget{ref-dfoPreseasonRunSize2021}{}}%
+DFO. 2021. \link{https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ScR-RS/2021/2021_038-eng.html}{Pre-Season {Run Size Forecasts} for {Fraser River Sockeye} ({Oncorhynchus} Nerka) and {Pink} ({Oncorhynchus} Gorbuscha) {Salmon} in 2021}.
+
+\leavevmode{\hypertarget{ref-dfoSustainableFisheriesFramework2022}{}}%
+DFO. 2022. \link{https://www.dfo-mpo.gc.ca/reports-rapports/regs/sff-cpd/overview-cadre-eng.htm}{Sustainable {Fisheries Framework}}.
+
+\leavevmode{\hypertarget{ref-dfoSouthernSalmonIntegrated2023}{}}%
+DFO. 2023. \link{https://waves-vagues.dfo-mpo.gc.ca/library-bibliotheque/41187404.pdf}{Southern {Salmon Integrated Fisheries Management Plan} 2023/2024}. {Fisheries and Oceans Canada = Pêches et océans Canada}, {Vancouver}.
+
+\leavevmode{\hypertarget{ref-fleischmanAgestructuredStatespaceStock2013}{}}%
+Fleischman, S.J., Catalano, M.J., Clark, R.A., et Bernard, D.R. 2013. \link{https://doi.org/gd53k5}{An Age-Structured State-Space Stock--Recruit Model for {Pacific} Salmon ({Oncorhynchus} Spp.)}. Can. J. Fish. Aquat. Sci. 70(3): 401‑414.
+
+\leavevmode{\hypertarget{ref-folkesEvaluatingModelsForecast2018}{}}%
+Folkes, M.J.P., Thomson, R.E., et Hourston, R.A.S. 2018. \link{https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ResDocs-DocRech/2017/2017_021-eng.html}{Evaluating {Models} to {F}orecast {R}eturn {T}iming and {Diversion Rate} of {Fraser Sockeye Salmon}}.
+
+\leavevmode{\hypertarget{ref-forbes_statistical_2011}{}}%
+Forbes, C., Evans, M., Hastings, N., et Peacock, B. 2011. \link{https://onlinelibrary.wiley.com/doi/book/10.1002/9780470627242}{Statistical Distributions}. John Wiley \& Sons.
+
+\leavevmode{\hypertarget{ref-grantSummaryFraserRiver2018}{}}%
+Grant, S.C.H., Holt, C., Wade, J., Mimeault, C., Burgetz, I.J., Johnson, S., et Trudel, M. 2018. \link{https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ResDocs-DocRech/2017/2017_074-eng.html}{Summary of {Fraser River Sockeye Salmon} ({Oncorhynchus} Nerka) Ecology to Inform Pathogen Transfer Risk Assessments in the {Discovery Islands}, {BC}}. DFO Can. Sci. Advis. Sec. Res. Doc.
+
+\leavevmode{\hypertarget{ref-grantFraserRiverPink2014}{}}%
+Grant, S.C.H., Townsend, M., White, B., et Lapointe, M. 2014. \link{https://doi.org/10.1098/rspb.2010.2335}{Fraser {River Pink Salmon} ({Oncorhynchus} Gorbuscha) {Data Review}: {Inputs} for {Biological Status} and {E}scapement {G}oals}.
+
+\leavevmode{\hypertarget{ref-hagueMovingTargetsAssessing2021}{}}%
+Hague, M.J., Hornsby, R.L., Gill, J.A., Michielsens, C.G.J., Jenkins, E.J., et Wong, S. 2021. \link{https://doi.org/10.23849/npafctr17/18.22}{Moving {Targets}: {Assessing Fraser River Pink Salmon Run Size} during a {Period} of {Change} and {Uncertainty}}. {North Pacific Anadromous Fish Comission}.
+
+\leavevmode{\hypertarget{ref-hagueImprovementsFraserRiver2022}{}}%
+Hague, M., Michielsens, C., Gill, J., Hornsby, R., et Phung, A. 2022. Improvements to {Fraser River Pink Salmon Run Reconstruction Models} and {In-Season Assessments}. Southern Boundary Restoration and Enhancement Fund: Final Report, Pacific Salmon Commission.
+
+\leavevmode{\hypertarget{ref-hilborn1985simplified}{}}%
+Hilborn, R. 1985. \link{https://doi.org/10.1139/f85-230}{Simplified Calculation of Optimum Spawning Stock Size from {Ricker}'s Stock Recruitment Curve}. Canadian Journal of Fisheries and Aquatic Sciences 42(11): 1833‑1834. NRC Research Press Ottawa, Canada.
+
+\leavevmode{\hypertarget{ref-hoffman2014}{}}%
+Hoffman, M.D., et Gelman, A. 2014. \link{https://jmlr.org/papers/volume15/hoffman14a/hoffman14a.pdf}{The {No-U-Turn Sampler}: adaptively setting path lengths in {Hamiltonian Monte Carlo}}. Journal of Machine Learning Research 15: 1593‑1623.
+
+\leavevmode{\hypertarget{ref-holtEvaluationBenchmarksConservation2009}{}}%
+Holt, C.A. 2009. \link{http://www.dfo-mpo.gc.ca/csas-sccs/publications/resdocs-docrech/2009/2009_059-eng.htm}{Evaluation of {Benchmarks} for {Conservation Units} in {Canada}'s {W}ild {S}almon {P}olicy: {Technical Documentation}}. DFO Can. Sci. Advis. Sec. Res. Doc. 2009/059. x + 50.
+
+\leavevmode{\hypertarget{ref-krkosek2011cycles}{}}%
+Krkošek, M., Hilborn, R., Peterman, R.M., et Quinn, T.P. 2011. \link{https://royalsocietypublishing.org/doi/10.1098/rspb.2010.2335}{Cycles, stochasticity and density dependence in pink salmon population dynamics}. Proceedings of the Royal Society B: Biological Sciences 278(1714): 2060‑2068. The Royal Society.
+
+\leavevmode{\hypertarget{ref-litzowClimateAttributionTime2024}{}}%
+Litzow, M.A., Malick, M.J., Kristiansen, T., Connors, B.M., et Ruggerone, G.T. 2024. \link{https://doi.org/10.1088/1748-9326/ad0c88}{Climate Attribution Time Series Track the Evolution of Human Influence on {North Pacific} Sea Surface Temperature}. Environ. Res. Lett. 19(1): 014014.
+
+\leavevmode{\hypertarget{ref-macdonaldStateCanadianPacific2023}{}}%
+MacDonald, B., et Grant, S.C.H. 2023. \link{https://publications.gc.ca/collections/collection_2023/mpo-dfo/Fs144-70-2023-eng.pdf}{State of {Canadian Pacific} Salmon~: Considerations for {Pacific} Salmon Management in a Changing Climate}. {Department of Fisheries Canada}.
+
+\leavevmode{\hypertarget{ref-malickEffectsNorthPacific2017}{}}%
+Malick, M.J., Cox, S.P., Mueter, F.J., Dorner, B., et Peterman, R.M. 2017. \link{https://doi.org/10.1111/fog.12190}{Effects of the {North Pacific Current} on the Productivity of 163 {Pacific} Salmon Stocks}. Fisheries Oceanography 26(3): 268‑281.
+
+\leavevmode{\hypertarget{ref-montgomeryStreambedScourEgg1996}{}}%
+Montgomery, D.R., Buffington, J.M., Peterson, N.P., Schuett-Hames, D., et Quinn, T.P. 1996. \link{https://doi.org/10.1139/f96-028}{Stream-Bed Scour, Egg Burial Depths, and the Influence of Salmonid Spawning on Bed Surface Mobility and Embryo Survival}. 53.
+
+\leavevmode{\hypertarget{ref-mueterOppositeEffectsOcean2002}{}}%
+Mueter, F.J., Peterman, R.M., et Pyper, B.J. 2002. \link{https://doi.org/10.1139/f02-020}{Opposite Effects of Ocean Temperature on Survival Rates of 120 Stocks of {Pacific} Salmon ( {\emph{Oncorhynchus}} Spp.) in Northern and Southern Areas}. Can. J. Fish. Aquat. Sci. 59(3): 456‑463.
+
+\leavevmode{\hypertarget{ref-nesbittSpeciesPopulationDiversity2016}{}}%
+Nesbitt, H.K., et Moore, J.W. 2016. \link{https://doi.org/10.1111/1365-2664.12717}{Species and Population Diversity in {Pacific} Salmon Fisheries Underpin Indigenous Food Security}. Journal of Applied Ecology 53(5): 1489‑1499.
+
+\leavevmode{\hypertarget{ref-pacificsalmoncommissionPSCBiologicalData2023}{}}%
+Pacific Salmon Commission. 2023. \link{https://psc1.shinyapps.io/BioDataApp/}{{PSC Biological Data App}}. Shiny App.
+
+\leavevmode{\hypertarget{ref-pacificsalmoncommissionFraserRiverPanel2024}{}}%
+Pacific Salmon Commission. 2024. \link{https://psc1.shinyapps.io/PSC_Annual_Fraser/}{Fraser {River Panel Annual Report Data}}. Shiny app, Fraser River Panel Annual Report Data.
+
+\leavevmode{\hypertarget{ref-pessInfluencePopulationDynamics2012}{}}%
+Pess, G.R., Hilborn, R., Kloehn, K., et Quinn, T.P. 2012. \link{https://doi.org/10.1139/f2012-030}{The Influence of Population Dynamics and Environmental Conditions on Pink Salmon ( {\emph{Oncorhynchus}}{ \emph{Gorbuscha}} ) Recolonization after Barrier Removal in the {Fraser River}, {British Columbia}, {Canada}}. Can. J. Fish. Aquat. Sci. 69(5): 970‑982.
+
+\leavevmode{\hypertarget{ref-pestalUpdatedMethodsAssessing2012}{}}%
+Pestal, G., Huang, A.-M., Cass, A., et the FRSSI Working Group. 2012. \link{https://www.dfo-mpo.gc.ca/csas-sccs/Publications/ResDocs-DocRech/2011/2011_133-eng.html}{Updated {M}ethods {F}or {A}ssessing {H}arvest {R}ules {F}or {F}raser {R}iver {S}ockeye Salmon ({Oncorhynchus} Nerka)}.
+
+\leavevmode{\hypertarget{ref-pestalStateSalmonRapid2023}{}}%
+Pestal, G., MacDonald, B.L., Grant, S.C.H., et Holt, C.A. 2023. \link{https://publications.gc.ca/collections/collection_2023/mpo-dfo/Fs97-6-3570-eng.pdf}{State of the {Salmon}: Rapid Status Assessment Approach for {Pacific} Salmon under {Canada}'s {Wild Salmon Policy}}. Can. Tech. Rep. Fish. Aquat. Sci.
+
+\leavevmode{\hypertarget{ref-rickerStockRecruitment1954}{}}%
+Ricker, W.E. 1954. \link{https://doi.org/fwm2gj}{Stock and {Recruitment}}. Journal of the Fisheries Research Board of Canada 11(5): 559‑623.
+
+\leavevmode{\hypertarget{ref-rickerHistoryPresentState1989}{}}%
+Ricker, W.E. 1989. \link{https://publications.gc.ca/collections/collection_2014/mpo-dfo/Fs97-6-1702-eng.pdf}{History and {Present State} of the {Odd-Year Pink Salmon Runs} of the {F}raser {R}iver {R}egion}. Can. Tech. Rep. Fish. Aquat. Sci.
+
+\leavevmode{\hypertarget{ref-roosRestoringFraserRiver1991}{}}%
+Roos, J.F. 1991. \link{https://www.psc.org/publications/ipsfc-publications/}{Restoring {Fraser River Salmon}}. Pacific Salmon Commission, Vancouver, BC.
+
+\leavevmode{\hypertarget{ref-ruggeroneDiatomsKillerWhales2023}{}}%
+Ruggerone, G., Springer, A., Van Vliet, G., Connors, B., Irvine, J., Shaul, L., Sloat, M., et Atlas, W. 2023. \link{https://doi.org/10.3354/meps14402}{From Diatoms to Killer Whales: Impacts of Pink Salmon on {North Pacific} Ecosystems}. Mar. Ecol. Prog. Ser. 719: 1‑40.
+
+\leavevmode{\hypertarget{ref-ruggeroneNumbersBiomassNatural2018}{}}%
+Ruggerone, G.T., et Irvine, J.R. 2018. \link{https://doi.org/10.1002/mcf2.10023}{Numbers and {Biomass} of {Natural}‐ and {H}atchery-{O}rigin {P}ink {S}almon, {Chum Salmon}, and {Sockeye Salmon} in the {North Pacific Ocean}, 1925--2015}. Mar Coast Fish 10(2): 152‑168.
+
+\leavevmode{\hypertarget{ref-scheuerellExplicitSolutionCalculating2016}{}}%
+Scheuerell, M.D. 2016. \link{https://doi.org/10.7717/peerj.1623}{An Explicit Solution for Calculating Optimum Spawning Stock Size from {Ricker}'s Stock Recruitment Model}. PeerJ 4: e1623.
+
+\leavevmode{\hypertarget{ref-standevelopmentteamRstanInterfaceStan2023}{}}%
+Stan Development Team. 2023. \link{https://mc-stan.org/users/interfaces/rstan}{Rstan: The {R} Interface to {Stan}}.
+
+\leavevmode{\hypertarget{ref-statonEvaluationMethodsSpawner2020}{}}%
+Staton, B.A., Catalano, M.J., Connors, B.M., Coggins, L.G., Jones, M.L., Walters, C.J., Fleischman, S.J., et Gwinn, D.C. 2020. \link{https://doi.org/gn5pgm}{Evaluation of Methods for Spawner--Recruit Analysis in Mixed-Stock Pacific Salmon Fisheries}. Canadian Journal of Fisheries and Aquatic Sciences 77(7): 1149‑1162.
+
+\leavevmode{\hypertarget{ref-suPerformanceBayesianStatespace2012}{}}%
+Su, Z., et Peterman, R.M. 2012. \link{https://doi.org/10.1016/j.ecolmodel.2011.11.001}{Performance of a {Bayesian} State-Space Model of Semelparous Species for Stock-Recruitment Data Subject to Measurement Error}. Ecological Modelling 224(1): 76‑89.
+
+\leavevmode{\hypertarget{ref-vehtari2021rank}{}}%
+Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., et Burkner, P.-C. 2021. \link{https://doi.org/10.1214/20-BA1221}{Rank-Normalization, Folding, and Localization: {An} Improved {R}-hat for Assessing Convergence of {MCMC} (with {Discussion})}. Bayesian analysis 16(2): 667‑718. International Society for Bayesian Analysis.
+
+\leavevmode{\hypertarget{ref-williams1983EarlyRun1986}{}}%
+Williams, I.V., Brett, J.R., Bell, G.R., Traxler, G.S., Bagshaw, J., McBride, J.R., Fagerlund, U.H.M., Dye, H.M., Sumpter, J.P., Donaldson, E.M., Bilinski, E., Tsuyuki, H., Peters, M.D., Choromanski, E.M., Cheng, J.H.Y., et Coleridge, W.L. 1986. \link{https://www.psc.org/wp-admin/admin-ajax.php?juwpfisadmin=false\&action=wpfd\&task=file.download\&wpfd_category_id=48\&wpfd_file_id=2389\&token=\&preview=1}{The 1983 {E}arly {R}un {T}hompson {R}iver {P}ink {S}almon; {Morphology}, {Energetics} and {Fish Health}}. Bulletin, International Pacific Salmon Fisheries Commission.
+
+\leavevmode{\hypertarget{ref-wilsonPhenologicalShiftsMismatch2023}{}}%
+Wilson, S.M., Moore, J.W., Ward, E.J., Kinsel, C.W., Anderson, J.H., Buehrens, T.W., Carr-Harris, C.N., Cochran, P.C., Davies, T.D., Downen, M.R., Godbout, L., Lisi, P.J., Litz, M.N.C., Patterson, D.A., Selbie, D.T., Sloat, M.R., Suring, E.J., Tattam, I.A., et Wyatt, G.J. 2023. \link{https://doi.org/10.1038/s41559-023-02057-1}{Phenological Shifts and Mismatch with Marine Productivity Vary among {Pacific} Salmon Species and Populations}. Nat Ecol Evol.
+
+\end{CSLReferences}
+\end{document}
