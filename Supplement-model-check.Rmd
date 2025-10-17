@@ -42,11 +42,11 @@ TV.model.pars <- rstan::extract(TV.stan.fit)
 ```
 
 
-This document describes fits from both state-space Ricker spawner-recruit models used fit in the Research Document (**link once published online**:
+This document describes fits from both state-space Ricker spawner-recruit models used fit in the [Research Document](https://publications.gc.ca/collections/collection_2025/mpo-dfo/fs70-5/Fs70-5-2024-063-eng.pdf):
 
 Glaser, D.M., Connors, B.M., Dionne, K., and Huang, A.M. 2024. Estimating Precautionary
 Approach reference points and assessing consequences of harvest control rules for Fraser
-River Pink Salmon (*Oncorhynchus gorbuscha*). DFO Can. Sci. Advis. Sec. Res. Doc. 2024/**nnn**.
+River Pink Salmon (*Oncorhynchus gorbuscha*). DFO Can. Sci. Advis. Sec. Res. Doc. 2024/063.
 iv + 31 p.
 
 Two state-space spawner-recruit models were fit in this paper that serve different purposes. First, a Ricker model with autoregressive (AR1) recruitment residuals was fit to estimate biological benchmarks ($S_{gen}$, $S_{MSY}$, and $U_{MSY}$), then a model with time-varying productivity (Ricker $\alpha$ parameter) was fit in order to condition the biological submodel on recent population dynamics in the closed-loop forward simulation. Data and code to reproduce the analysis and report is available in this [GitHub repository](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main), where you can see the [R code](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/blob/main/analysis/R/fit-sr-stan.R) to run the models, and the [models](https://github.com/Pacific-salmon-assess/FR-PK-ResDoc/tree/main/analysis/Stan) themselves.   
